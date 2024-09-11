@@ -1,0 +1,37 @@
+# The analysis workflow step 1 (ref: README.MD)
+#  Based on the branch name the analysis is run for, the environment changes
+#  The environments are configured within GitHub
+name: Step 1 - Get Environment
+
+on:
+  push:
+    branches:
+      - dev
+      - qa
+      - release/**
+      - hotfix/**
+      - main
+  workflow_dispatch:
+
+jobs:
+  get-environment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extract branch name
+        id: extract_branch
+        run: |
+          branch=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}
+          echo "BRANCH=$branch" >> $GITHUB_ENV
+      - name: Set environment from branch
+        id: set_environment
+        run: |
+          if [ $branch = "refs/heads/main" ]; then
+            environment=prod
+          elif [[ ${{ env.BRANCH }} =~ refs/heads/release/.* ]] || [[ ${{ env.BRANCH }} =~ refs/heads/hotfix/.* ]] || [[ ${{ env.BRANCH }} =~ refs/heads/qa ]]; then
+            environment=qa
+          else
+            environment=dev
+          fi
+          echo "ENVIRONMENT=$environment" >> $GITHUB_ENV
+
+
