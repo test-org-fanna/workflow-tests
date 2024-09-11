@@ -4,6 +4,7 @@
 name: Step 1 - Get Environment
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - dev
@@ -11,7 +12,6 @@ on:
       - release/**
       - hotfix/**
       - main
-  workflow_dispatch:
 
 jobs:
   get-environment:
