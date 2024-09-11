@@ -25,7 +25,7 @@ jobs:
       - name: Set environment from branch
         id: set_environment
         run: |
-          if [ $branch = "refs/heads/main" ]; then
+          if [ ${{ env.BRANCH }} = "refs/heads/main" ]; then
             environment=prod
           elif [[ ${{ env.BRANCH }} =~ refs/heads/dev/.* ]]; then
             environment=dev
