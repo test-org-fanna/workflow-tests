@@ -22,7 +22,7 @@ jobs:
         run: |
           branch=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}
           echo "BRANCH=$branch" >> $GITHUB_ENV
-      - name: Set environment from branch
+      - name: Get environment from branch
         id: set_environment
         run: |
           if [ $BRANCH = "main" ]; then
