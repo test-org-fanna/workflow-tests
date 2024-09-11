@@ -4,6 +4,7 @@
 name: Step 1 - Get Environment
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - dev
@@ -11,7 +12,6 @@ on:
       - release/**
       - hotfix/**
       - main
-  workflow_dispatch:
 
 jobs:
   get-environment:
@@ -27,11 +27,13 @@ jobs:
         run: |
           if [ $branch = "refs/heads/main" ]; then
             environment=prod
-          elif [[ ${{ env.BRANCH }} =~ refs/heads/release/.* ]] || [[ ${{ env.BRANCH }} =~ refs/heads/hotfix/.* ]] || [[ ${{ env.BRANCH }} =~ refs/heads/qa ]]; then
-            environment=qa
-          else
+          elif [[ ${{ env.BRANCH }} =~ refs/heads/dev/.* ]]; then
             environment=dev
+          else
+            environment=qa
           fi
           echo "ENVIRONMENT=$environment" >> $GITHUB_ENV
+      - name: should be dev - feature 1
+        run: echo $ENVIRONMENT && echo $BRANCH
 
-
+      
