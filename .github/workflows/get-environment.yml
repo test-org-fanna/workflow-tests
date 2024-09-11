@@ -22,7 +22,7 @@ jobs:
         run: |
           branch=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}
           echo "BRANCH=$branch" >> $GITHUB_ENV
-      - name: Set environment from branch
+      - name: Get environment from branch
         id: set_environment
         run: |
           if [ $BRANCH = "main" ]; then
@@ -33,7 +33,6 @@ jobs:
             environment=qa
           fi
           echo "ENVIRONMENT=$environment" >> $GITHUB_ENV
-      - name: should be prod - main
-        run: echo $ENVIRONMENT && echo $BRANCH
-
+      - name: test
+        run: echo "Retrieved environment '$ENVIRONMENT' for branch '$BRANCH'"
       
