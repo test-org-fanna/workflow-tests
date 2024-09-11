@@ -33,7 +33,7 @@ jobs:
             environment=qa
           fi
           echo "ENVIRONMENT=$environment" >> $GITHUB_ENV
-      - name: should be prod - main
+      - name: should be dev - dev
         run: echo $ENVIRONMENT && echo $BRANCH
 
       
