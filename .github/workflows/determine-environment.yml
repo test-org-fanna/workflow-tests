@@ -33,5 +33,7 @@ jobs:
             environment=dev
           fi
           echo "ENVIRONMENT=$environment" >> $GITHUB_ENV
+      - name: test it
+        run: echo $ENVIRONMENT && echo $BRANCH
 
-
+      
