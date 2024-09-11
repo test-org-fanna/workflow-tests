@@ -33,6 +33,4 @@ jobs:
             environment=qa
           fi
           echo "ENVIRONMENT=$environment" >> $GITHUB_ENV
-      - name: test
-        run: echo "Retrieved environment '$ENVIRONMENT' for branch '$BRANCH'"
       
