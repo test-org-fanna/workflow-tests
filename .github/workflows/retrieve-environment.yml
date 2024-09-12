@@ -1,0 +1,35 @@
+# Repowered analysis step 1 (ref: README.MD)
+#  Based on the branch name the analysis is run for, the environment changes
+#  The environments are configured within GitHub
+name: Step 1 - Retrieve Environment
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - dev
+      - qa
+      - release/**
+      - hotfix/**
+      - main
+
+jobs:
+  retrieve-environment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extract branch name
+        run: |
+          branch=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}
+          echo "BRANCH=$branch" >> $GITHUB_ENV
+      - name: Get environment from branch
+        id: set_environment
+        run: |
+          if [ $BRANCH = "main" ]; then
+            environment=prod
+          elif [[ $BRANCH = "dev" ]]; then
+            environment=dev
+          else
+            environment=qa
+          fi
+          echo "ENVIRONMENT=$environment" >> $GITHUB_ENV
+      
