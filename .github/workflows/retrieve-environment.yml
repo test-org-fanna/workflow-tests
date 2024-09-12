@@ -36,9 +36,10 @@ jobs:
           HUB: ${{ secrets.DOCKER_HUB_USERNAME }}
         run:
           repo_name=$GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER
-#          latest_tag=$HUB$repo_name:latest-$ENVIRONMENT # tag will be overwritten
+          latest_tag=$HUB$repo_name:latest-$ENVIRONMENT # tag will be overwritten
 #          sha_tag=$HUB$repo_name:$GITHUB_SHA-$ENVIRONMENT # tag reference to keep
-#          echo "LATEST_TAG=latest_tag" >> $GITHUB_ENV && echo "SHA_TAG=sha_tag" >> $GITHUB_ENV
+          echo "LATEST_TAG=latest_tag" >> $GITHUB_ENV
+          #&& echo "SHA_TAG=sha_tag" >> $GITHUB_ENV
       - name: test it
         run: echo $LATEST_TAG $SHA_TAG
 
