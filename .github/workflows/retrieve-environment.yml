@@ -22,7 +22,6 @@ jobs:
           branch=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}
           echo "BRANCH=$branch" >> $GITHUB_ENV
       - name: Get environment from branch
-        id: set_environment
         run: |
           if [ $BRANCH = "main" ]; then
             environment=prod
@@ -31,7 +30,7 @@ jobs:
           else
             environment=qa
           fi
-          echo "ENVIRONMENT=$environment" >> $GITHUB_ENV
+#          echo "ENVIRONMENT=$environment" >> $GITHUB_ENV
       - name: Generate tags
         env:
           HUB: ${{ secrets.DOCKER_HUB_USERNAME }}
