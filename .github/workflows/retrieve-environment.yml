@@ -34,9 +34,9 @@ jobs:
       - name: Generate tags
 #        env:
 #          HUB: ${{ secrets.DOCKER_HUB_USERNAME }}
-        run:
-#          repo_name=${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER}
+        run: |
           echo "REPO_NAME=hoi" >> GITHUB_ENV
+#          repo_name=${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER}
 #          latest_tag=$HUB$repo_name:latest-$ENVIRONMENT # tag will be overwritten
 #          sha_tag=$HUB$repo_name:$GITHUB_SHA-$ENVIRONMENT # tag reference to keep
 #          echo "LATEST_TAG=latest_tag" >> $GITHUB_ENV
