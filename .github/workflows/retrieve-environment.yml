@@ -32,8 +32,8 @@ jobs:
           fi
           echo "ENVIRONMENT=$environment" >> $GITHUB_ENV
       - name: Generate tags
-        env:
-          HUB: ${{ secrets.DOCKER_HUB_USERNAME }}
+#        env:
+#          HUB: ${{ secrets.DOCKER_HUB_USERNAME }}
         run:
           repo_name=${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER}
           echo $repo_name
