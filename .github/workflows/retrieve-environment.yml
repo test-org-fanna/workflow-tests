@@ -21,15 +21,15 @@ jobs:
         run: |
           branch=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}
           echo "BRANCH=$branch" >> $GITHUB_ENV
-      - name: Get environment from branch
-        run: |
-          if [ $BRANCH = "main" ]; then
-            environment=prod
-          elif [[ $BRANCH = "dev" ]]; then
-            environment=dev
-          else
-            environment=qa
-          fi
+#      - name: Get environment from branch
+#        run: |
+#          if [ $BRANCH = "main" ]; then
+#            environment=prod
+#          elif [[ $BRANCH = "dev" ]]; then
+#            environment=dev
+#          else
+#            environment=qa
+#          fi
 #          echo "ENVIRONMENT=$environment" >> $GITHUB_ENV
       - name: Generate tags
         env:
