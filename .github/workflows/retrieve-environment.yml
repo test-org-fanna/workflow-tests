@@ -30,6 +30,7 @@ jobs:
           else
             environment=qa
           fi
+          echo "ENVIRONMENT=$environment" >> $GITHUB_ENV
 #      - name: Generate tags
 #        env:
 #          HUB: ${{ secrets.DOCKER_HUB_USERNAME }}
