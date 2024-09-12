@@ -1,0 +1,41 @@
+# Repowered analysis step 1 (ref: README.MD)
+name: Step 1 - Retrieve Environment
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - dev
+      - qa
+      - release/**
+      - hotfix/**
+      - main
+
+jobs:
+  generate_tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extract branch name
+        run: |
+          branch=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}
+          echo "BRANCH=$branch" >> $GITHUB_ENV
+
+      - name: Get environment from branch
+        run: |
+          if [ $BRANCH = "main" ]; then
+            environment=prod
+          elif [[ $BRANCH = "dev" ]]; then
+            environment=dev
+          else
+            environment=qa
+          fi
+          echo "ENVIRONMENT=$environment" >> $GITHUB_ENV
+
+      - name: Generate tags  # latest tag will be overwritten, sha tag is the reference to keep
+        env:
+          HUB: ${{ secrets.DOCKER_HUB_USERNAME }}
+        run: |
+          repo_name=${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER}
+          latest_tag=$HUB$repo_name:latest-$ENVIRONMENT 
+          sha_tag=$HUB$repo_name:$GITHUB_SHA
+          echo "TAGS=$latest_tag,$sha_tag" >> $GITHUB_ENV
