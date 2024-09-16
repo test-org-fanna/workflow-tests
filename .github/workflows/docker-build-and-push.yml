@@ -1,4 +1,4 @@
-# Repowered analysis step 2 (ref: README.MD)
+# Repowered analysis step 1 (ref: README.MD)
 name: Step 2 - Docker build and push
 
 on:
@@ -38,7 +38,7 @@ jobs:
           repo_name=${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER}
           latest_tag=$HUB$repo_name:latest-$ENVIRONMENT 
           sha_tag=$HUB$repo_name:$GITHUB_SHA
-          echo "TAGS=$latest_tag,$sha_tag" >> GITHUB_OUTPUTS
+          echo "TAGS=${latest_tag},${sha_tag}" >> GITHUB_OUTPUTS
 
   docker-build-and-push:
     needs: generate_tag
