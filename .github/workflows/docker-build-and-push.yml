@@ -6,10 +6,8 @@ on:
   push:
     branches:
       - dev
-      - qa
-      - release/**
-      - hotfix/**
       - main
+concurrency: production
 
 jobs:
   docker-build-and-push:
@@ -36,14 +34,37 @@ jobs:
       - name: Checkout ${{ github.repository }}
         uses: actions/checkout@v4
 
+      - name: Dryrun version for each merge
+        id: taggerDryRun
+        uses: anothrNick/github-tag-action@1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          DRY_RUN: true
+
+      - name: echo new tag
+        run: |
+          echo "The next tag version will be: ${{ steps.taggerDryRun.outputs.new_tag }}"
+
+      - name: echo tag
+        run: |
+          echo "The current tag is: ${{ steps.taggerDryRun.outputs.tag }}"
+      - name: echo part
+        run: |
+          echo "The version increment was: ${{ steps.taggerDryRun.outputs.part }}"
+
+      - name: version for each merge
+        id: taggerFinal
+        uses: anothrNick/github-tag-action@1.36.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+
       - name: Docker metadata
         id: meta
         uses: docker/metadata-action@v5
         with:
           images: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}
-
-      - name: output tags
-        run: echo ${{ steps.meta.outputs.tags }}
 
 #      - name: Build ${{ matrix.dockerfile }} and push
 #        uses: docker/build-push-action@v6
