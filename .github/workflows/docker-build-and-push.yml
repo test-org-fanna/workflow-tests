@@ -12,6 +12,7 @@ concurrency: production
 jobs:
   docker-build-and-push:
     runs-on: ubuntu-latest
+    permissions: write
     strategy:
       matrix:
         # Add your Dockerfile name(s) in the list below
@@ -38,7 +39,6 @@ jobs:
           fetch-depth: '0'
 
       - name: Generate Tag
-        permissions: write
         uses: anothrNick/github-tag-action@1
         env:
           WITH_V: true
