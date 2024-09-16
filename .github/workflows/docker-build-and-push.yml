@@ -42,6 +42,7 @@ jobs:
           latest_tag=$HUB$repo_name:latest-$ENVIRONMENT 
           sha_tag=$HUB$repo_name:$GITHUB_SHA
           echo "tags=$latest_tag,$sha_tag" >> GITHUB_OUTPUT
+          echo $latest_tag,$sha_tag
 
   docker-build-and-push:
     needs: generate_tags
