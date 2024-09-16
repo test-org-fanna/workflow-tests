@@ -42,12 +42,15 @@ jobs:
         with:
           images: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}
 
-      - name: Build ${{ matrix.dockerfile }} and push
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: ${{ matrix.dockerfile }}
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          secrets: ${{ matrix.secrets }}
+      - name: output tags
+        run: echo ${{ steps.meta.outputs.tags }}
+
+#      - name: Build ${{ matrix.dockerfile }} and push
+#        uses: docker/build-push-action@v6
+#        with:
+#          context: .
+#          file: ${{ matrix.dockerfile }}
+#          push: ${{ github.event_name != 'pull_request' }}
+#          tags: ${{ steps.meta.outputs.tags }}
+#          labels: ${{ steps.meta.outputs.labels }}
+#          secrets: ${{ matrix.secrets }}
