@@ -38,7 +38,7 @@ jobs:
           repo_name=${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER}
           latest_tag=$HUB$repo_name:latest-$ENVIRONMENT 
           sha_tag=$HUB$repo_name:$GITHUB_SHA
-          echo "TAGS=$latest_tag" >> GITHUB_OUTPUTS
+          echo "TAGS=$latest_tag" >> GITHUB_ENV
 
   docker-build-and-push:
     needs: generate_tag
@@ -69,7 +69,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: echo tags
-        run: echo ${{ needs.generate_tag.outputs.TAGS }}
+        run: echo ${{ env.TAGS }}
 
       - name: Build ${{ matrix.dockerfile }} and push
         uses: docker/build-push-action@v6
