@@ -39,7 +39,7 @@ jobs:
       - name: Build ${{ matrix.dockerfile }} and push
         uses: docker/build-push-action@v6
         with:
-          context: .
+          context: ./
           file: ${{ matrix.dockerfile }}
           push: true
           tags: test-1
