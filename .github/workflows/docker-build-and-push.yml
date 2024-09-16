@@ -1,5 +1,5 @@
 # Repowered analysis step 1 (ref: README.MD)
-name: Step 1 - Tag, build and push
+name: Step 1 - Docker; tag, build and push
 
 on:
   workflow_dispatch:
@@ -12,40 +12,7 @@ on:
       - main
 
 jobs:
-  generate_tags:
-    runs-on: ubuntu-latest
-    outputs:
-      tags: ${{ steps.generate_tags.outputs.tags }}
-    steps:
-      - name: Extract branch name
-        run: |
-          branch=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}
-          echo "BRANCH=$branch" >> $GITHUB_ENV
-
-      - name: Get environment from branch
-        run: |
-          if [ $BRANCH = "main" ]; then
-            environment=prod
-          elif [[ $BRANCH = "dev" ]]; then
-            environment=dev
-          else
-            environment=qa
-          fi
-          echo "ENVIRONMENT=$environment" >> $GITHUB_ENV
-
-      - name: Generate tags  # latest tag will be overwritten, sha tag is the reference to keep
-        id: generate_tags
-        env:
-          HUB: ${{ secrets.DOCKER_HUB_USERNAME }}
-        run: |
-          repo_name=${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER}
-          latest_tag=$HUB$repo_name:latest-$ENVIRONMENT 
-          sha_tag=$HUB$repo_name:$GITHUB_SHA
-          echo "tags=$latest_tag,$sha_tag" >> GITHUB_OUTPUT
-          echo $latest_tag,$sha_tag
-
   docker-build-and-push:
-    needs: generate_tags
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -66,22 +33,21 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
       - name: Checkout ${{ github.repository }}
         uses: actions/checkout@v4
 
-      - name: echo tags
-        env:
-          TAGS: ${{ needs.generate_tags.outputs.tags }}
-        run: echo $TAGS
+      - name: Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER}
 
       - name: Build ${{ matrix.dockerfile }} and push
         uses: docker/build-push-action@v6
         with:
           context: .
           file: ${{ matrix.dockerfile }}
-          push: true
-          tags: ${{ needs.generate_tags.outputs.tags }}
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
           secrets: ${{ matrix.secrets }}
