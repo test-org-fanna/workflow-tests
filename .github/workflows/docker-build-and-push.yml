@@ -13,6 +13,7 @@ on:
 
 jobs:
   docker-build-and-push:
+    needs: ./.github/workflows/generate_tag.yml
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -36,11 +37,11 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: checkout
+      - name: Checkout ${{ github.repository }}
         uses: actions/checkout@v4
 
-      - name: run ls
-        run: ls -alh
+      - name: echo tags
+        run: echo ${{ needs.generate_tag.outputs.TAGS }}
 
       - name: Build ${{ matrix.dockerfile }} and push
         uses: docker/build-push-action@v6
@@ -48,5 +49,5 @@ jobs:
           context: .
           file: ${{ matrix.dockerfile }}
           push: true
-          tags: test-1
+          tags: ${{ needs.generate_tag.outputs.TAGS }}
           secrets: ${{ matrix.secrets }}
