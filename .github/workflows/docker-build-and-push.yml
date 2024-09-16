@@ -40,7 +40,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER}
+          images: ${{GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER}}
 
       - name: Build ${{ matrix.dockerfile }} and push
         uses: docker/build-push-action@v6
