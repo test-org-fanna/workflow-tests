@@ -1,5 +1,5 @@
 # Repowered analysis step 1 (ref: README.MD)
-name: Step 2 - Docker build and push
+name: Step 1 - Tag, build and push
 
 on:
   workflow_dispatch:
@@ -12,8 +12,10 @@ on:
       - main
 
 jobs:
-  generate_tag:
+  generate_tags:
     runs-on: ubuntu-latest
+    outputs:
+      tags: ${{ steps.generate_tags.outputs.tags }}
     steps:
       - name: Extract branch name
         run: |
@@ -32,16 +34,17 @@ jobs:
           echo "ENVIRONMENT=$environment" >> $GITHUB_ENV
 
       - name: Generate tags  # latest tag will be overwritten, sha tag is the reference to keep
+        id: generate_tags
         env:
           HUB: ${{ secrets.DOCKER_HUB_USERNAME }}
         run: |
           repo_name=${GITHUB_REPOSITORY#$GITHUB_REPOSITORY_OWNER}
           latest_tag=$HUB$repo_name:latest-$ENVIRONMENT 
           sha_tag=$HUB$repo_name:$GITHUB_SHA
-          echo "TAGS=$latest_tag" >> GITHUB_ENV
+          echo "tags=$latest_tag,$sha_tag" >> GITHUB_OUTPUT
 
   docker-build-and-push:
-    needs: generate_tag
+    needs: generate_tags
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -69,7 +72,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: echo tags
-        run: echo ${{ env.TAGS }}
+        run: echo ${{ needs.generate_tags.outputs.tags }}
 
       - name: Build ${{ matrix.dockerfile }} and push
         uses: docker/build-push-action@v6
@@ -77,5 +80,5 @@ jobs:
           context: .
           file: ${{ matrix.dockerfile }}
           push: true
-          tags: ${{ needs.generate_tag.outputs.TAGS }}
+          tags: ${{ needs.generate_tags.outputs.tags }}
           secrets: ${{ matrix.secrets }}
