@@ -33,6 +33,9 @@ jobs:
 
       - name: Checkout ${{ github.repository }}
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
+          fetch-depth: '0'
 
       - name: Dryrun version for each merge
         id: taggerDryRun
@@ -55,7 +58,7 @@ jobs:
 
       - name: version for each merge
         id: taggerFinal
-        uses: anothrNick/github-tag-action@1.36.0
+        uses: anothrNick/github-tag-action@1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
