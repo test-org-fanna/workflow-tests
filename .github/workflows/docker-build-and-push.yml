@@ -37,30 +37,10 @@ jobs:
           ref: ${{ github.event.pull_request.merge_commit_sha }}
           fetch-depth: '0'
 
-      - name: Dryrun version for each merge
-        id: taggerDryRun
+      - name: Generate Tag
+        permissions: write
         uses: anothrNick/github-tag-action@1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          WITH_V: true
-          DRY_RUN: true
-
-      - name: echo new tag
-        run: |
-          echo "The next tag version will be: ${{ steps.taggerDryRun.outputs.new_tag }}"
-
-      - name: echo tag
-        run: |
-          echo "The current tag is: ${{ steps.taggerDryRun.outputs.tag }}"
-      - name: echo part
-        run: |
-          echo "The version increment was: ${{ steps.taggerDryRun.outputs.part }}"
-
-      - name: version for each merge
-        id: taggerFinal
-        uses: anothrNick/github-tag-action@1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
 
       - name: Docker metadata
