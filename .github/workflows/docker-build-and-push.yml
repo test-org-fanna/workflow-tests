@@ -56,9 +56,9 @@ jobs:
       - name: export name
         env:
           full_name =  ${{ matrix.dockerfile }}
-        run: echo $NAME=${{ ${full_name}##Dockerfile }}>> GITHUB_ENV
+        run: echo NAME=${{ $full_name}##Dockerfile }}>> GITHUB_ENV
 
-      - name: test ${{ GITHUB_ENV.NAME }}
+      - name: test $NAME
         run: I did it
 
 #      - name: Login to Docker Hub
