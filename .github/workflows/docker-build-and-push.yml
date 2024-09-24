@@ -43,6 +43,7 @@ jobs:
       - name: test it
         needs: generate-tag
         run: echo ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}:${github.ref##*/}
+
 #  docker-build-and-push:
 #    runs-on: ubuntu-latest
 #    # This strategy enables to tag, build and push multiple Dockerfiles
