@@ -44,7 +44,7 @@ jobs:
         # Add your Dockerfile name(s) in the list below
         #   They always have to start with 'Dockerfile' -> wrong: foo.Dockerfile, correct: Dockerfile.foo
         #   Standard use is just 'Dockerfile'
-        dockerfile: [ Dockerfile ]
+        dockerfile: [ Dockerfile, Dockerfile.name-test ]
     #        # Add secrets (if any) in a secure way to a specific Dockerfile using the structure below:
     #        include:
     #          - dockerfile: Dockerfile
@@ -55,7 +55,7 @@ jobs:
       #  Log in to the private Repowered docker hub space
       - name: test docker file splitter for ${{ matrix.dockerfile }}
         env:
-          name: ${${{ matrix.dockerfile }}##Dockerfile}
+          name: ${${{ matrix.dockerfile }}##Dockerfile.}
         run: echo ${{ env.name }}
 
 #      - name: Login to Docker Hub
