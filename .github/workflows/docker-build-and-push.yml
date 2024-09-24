@@ -50,7 +50,7 @@ jobs:
       - name: another
         run: echo ${GITHUB_REF#refs/*/}
       - name: toe maar
-        run: echo ${GITHUB_REF/refs\/tags\//
+        run: echo ${GITHUB_REF/refs\/tags\//}
 
 
 #  docker-build-and-push:
