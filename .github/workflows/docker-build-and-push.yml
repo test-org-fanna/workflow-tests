@@ -31,13 +31,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
           PRERELEASE: true
-#          DRY_RUN: true
+          DRY_RUN: true
 
       - name: git fetch --tags
-        run: git fetch --tags
+        run: git fetch --tags --force
 
       - name: git describe --tags `git rev-list --tags --max-count=1`
-        run: echo "git describe --tags `git rev-list --tags --max-count=1`"
+        run: git describe --tags `git rev-list --tags --max-count=1`
 
   test-pull-image-tag:
     runs-on: ubuntu-latest
