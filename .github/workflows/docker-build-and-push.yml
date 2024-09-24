@@ -34,8 +34,6 @@ jobs:
           PRERELEASE: true
 #          DRY_RUN: true
 
-      - name: image tag
-
 
   test-pull-image-tag:
     runs-on: ubuntu-latest
