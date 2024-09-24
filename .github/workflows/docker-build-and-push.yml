@@ -34,49 +34,44 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
           PRERELEASE: true
-          DRY_RUN: true
 
-#      - name: git fetch --tags
-#        run: git fetch --tags --force
-
-  test-pull-image-tag:
+  docker-build-and-push:
     runs-on: ubuntu-latest
     needs: generate-tag
+    # This strategy enables to tag, build and push multiple Dockerfiles
+    strategy:
+      matrix:
+        # Add your Dockerfile name(s) in the list below
+        #   They always have to start with 'Dockerfile' -> wrong: foo.Dockerfile, correct: Dockerfile.foo
+        #   Standard use is just 'Dockerfile'
+        dockerfile: [ Dockerfile ]
+    #        # Add secrets (if any) in a secure way to a specific Dockerfile using the structure below:
+    #        include:
+    #          - dockerfile: Dockerfile
+    #            secrets: |
+    #              FIRST_ENV=${{ secrets.FIRST_ENV }}
+    #              SECOND_ENV=${{ secrets.SECOND_ENV }}
     steps:
-      - name: test it
+      #  Log in to the private Repowered docker hub space
+      - name: test docker file splitter for ${{ matrix.dockerfile }}
         env:
-          tag: v${{ needs.generate-tag.outputs.tag }} #v is needed in front (2024.09.24: bug in anothrNick/github-tag-action@1)
-        run: echo ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}:${{ env.tag }}
+          name: ${${{ matrix.dockerfile }}#Dockerfile}
+        run: echo ${name}
 
-
-#  docker-build-and-push:
-#    runs-on: ubuntu-latest
-#    # This strategy enables to tag, build and push multiple Dockerfiles
-#    strategy:
-#      matrix:
-#        # Add your Dockerfile name(s) in the list below
-#        #   They always have to start with 'Dockerfile' -> wrong: foo.Dockerfile, correct: Dockerfile.foo
-#        #   Standard use is just 'Dockerfile'
-#        dockerfile: [ Dockerfile ]
-#    #        # Add secrets (if any) in a secure way to a specific Dockerfile using the structure below:
-#    #        include:
-#    #          - dockerfile: Dockerfile
-#    #            secrets: |
-#    #              FIRST_ENV=${{ secrets.FIRST_ENV }}
-#    #              SECOND_ENV=${{ secrets.SECOND_ENV }}
-#    steps:
-#      #Log in to the private Repowered docker hub space
-#      #      - name: Login to Docker Hub
-#      #        uses: docker/login-action@v3
-#      #        with:
-#      #          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-#      #          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+#      - name: Login to Docker Hub
+#        uses: docker/login-action@v3
+#        with:
+#          username: ${ { secrets.DOCKER_HUB_USERNAME } }
+#          password: ${ { secrets.DOCKER_HUB_ACCESS_TOKEN } }
 #
+#      # Build the Dockerfile(s) with the image tag in the correct format and pushes them to the hub
 #      - name: Build ${{ matrix.dockerfile }} and push with tag
 #        needs: generate-tag
 #        uses: docker/build-push-action@v6
 #        env:
-#          IMAGE_TAG: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}:${github.ref##*/}
+#          TAG: ${{ needs.generate-tag.outputs.tag }}
+#          DOCKER_NAME:
+#          IMAGE_TAG: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}:${{ env.TAG }}
 #        with:
 #          context: .
 #          file: ${{ matrix.dockerfile }}
