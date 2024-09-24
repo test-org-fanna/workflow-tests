@@ -32,8 +32,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
           PRERELEASE: true
-          DRY_RUN: true
+#          DRY_RUN: true
 
+      - name: image tag
+
+
+  test-pull-image-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: test it
+        needs: generate-tag
+        run: echo ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}:${github.ref##*/}
 #  docker-build-and-push:
 #    runs-on: ubuntu-latest
 #    # This strategy enables to tag, build and push multiple Dockerfiles
