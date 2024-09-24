@@ -39,7 +39,7 @@ jobs:
     needs: generate-tag
     steps:
       - name: test it
-        run: echo ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}:${github.ref##*/}
+        run: echo ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}:${GITHUB_REF##*/}
 
 #  docker-build-and-push:
 #    runs-on: ubuntu-latest
