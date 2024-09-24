@@ -22,7 +22,6 @@ jobs:
       - name: Checkout ${{ github.repository }}
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.merge_commit_sha }}
           fetch-depth: '0'
 
       # Automatically bump and tag with the latest SemVer formatted version.
@@ -39,7 +38,9 @@ jobs:
     needs: generate-tag
     steps:
       - name: test it
-        run: echo ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}:${GITHUB_REF##*/}
+        run: echo ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}:${{ github.ref_name }}
+      - name: another
+        run: echo ${GITHUB_REF#refs/*/}
 
 #  docker-build-and-push:
 #    runs-on: ubuntu-latest
