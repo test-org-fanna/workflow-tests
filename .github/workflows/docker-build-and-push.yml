@@ -2,7 +2,7 @@
 name: Step 1 - Docker; tag, build and push
 
 on:
-#  workflow_dispatch:
+  #  workflow_dispatch:
   push:
     branches:
       - dev
@@ -13,23 +13,10 @@ on:
 concurrency: production
 
 jobs:
-  docker-tag-build-and-push:
+  generate-tag:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    # Strategy enables to tag, build and push multiple Dockerfiles
-    strategy:
-      matrix:
-        # Add your Dockerfile name(s) in the list below
-        #   They always have to start with 'Dockerfile' -> wrong: foo.Dockerfile, correct: Dockerfile.foo
-        #   Standard use is just 'Dockerfile'
-        dockerfile: [ Dockerfile ]
-#        # Add secrets (if any) in a secure way to a specific Dockerfile using the structure below:
-#        include:
-#          - dockerfile: Dockerfile
-#            secrets: |
-#              FIRST_ENV=${{ secrets.FIRST_ENV }}
-#              SECOND_ENV=${{ secrets.SECOND_ENV }}
     steps:
       # Checkout the repository with all commit history with reference to the PR it comes from
       - name: Checkout ${{ github.repository }}
@@ -39,36 +26,45 @@ jobs:
           fetch-depth: '0'
 
       # Automatically bump and tag with the latest SemVer formatted version.
-      - name: Generate Tag
+      - name: Generate and push GitHub tag
         uses: anothrNick/github-tag-action@1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
           PRERELEASE: true
+          DRY_RUN: true
 
-      # Retrieves
-      - name: Extract metadata for Docker
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}
-
-      - name: output meta
-        run: echo  ${{ steps.meta.outputs.tags }}  ${{ steps.meta.outputs.labels }}
-
-      # Log in to the private Repowered docker hub space
-#      - name: Login to Docker Hub
-#        uses: docker/login-action@v3
-#        with:
-#          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-#          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-
-#      - name: Build ${{ matrix.dockerfile }} and push
+#  docker-build-and-push:
+#    runs-on: ubuntu-latest
+#    # This strategy enables to tag, build and push multiple Dockerfiles
+#    strategy:
+#      matrix:
+#        # Add your Dockerfile name(s) in the list below
+#        #   They always have to start with 'Dockerfile' -> wrong: foo.Dockerfile, correct: Dockerfile.foo
+#        #   Standard use is just 'Dockerfile'
+#        dockerfile: [ Dockerfile ]
+#    #        # Add secrets (if any) in a secure way to a specific Dockerfile using the structure below:
+#    #        include:
+#    #          - dockerfile: Dockerfile
+#    #            secrets: |
+#    #              FIRST_ENV=${{ secrets.FIRST_ENV }}
+#    #              SECOND_ENV=${{ secrets.SECOND_ENV }}
+#    steps:
+#      #Log in to the private Repowered docker hub space
+#      #      - name: Login to Docker Hub
+#      #        uses: docker/login-action@v3
+#      #        with:
+#      #          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+#      #          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+#
+#      - name: Build ${{ matrix.dockerfile }} and push with tag
+#        needs: generate-tag
 #        uses: docker/build-push-action@v6
+#        env:
+#          IMAGE_TAG: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}:${github.ref##*/}
 #        with:
 #          context: .
 #          file: ${{ matrix.dockerfile }}
 #          push: ${{ github.event_name != 'pull_request' }}
-#          tags: ${{ steps.meta.outputs.tags }}
-#          labels: ${{ steps.meta.outputs.labels }}
+#          tags: $IMAGE_TAG
 #          secrets: ${{ matrix.secrets }}
