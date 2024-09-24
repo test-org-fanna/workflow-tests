@@ -45,7 +45,7 @@ jobs:
     steps:
       - name: test it
         env:
-          tag: ${{ needs.generate-tag.outputs.tag }}
+          tag: v${{ needs.generate-tag.outputs.tag }} #v is needed in front (2024.09.24: bug in anothrNick/github-tag-action@1)
         run: echo ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}:${{ env.tag }}
 
 
