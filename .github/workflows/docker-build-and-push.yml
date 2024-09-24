@@ -54,7 +54,7 @@ jobs:
     steps:
       #  Log in to the private Repowered docker hub space
       - name: export name
-        run: echo NAME=${{ ${{ matrix.dockerfile }}##Dockerfile }}>> GITHUB_ENV
+        run: echo NAME=${ ${{ matrix.dockerfile }}##Dockerfile }>> GITHUB_ENV
 
       - name: test $NAME
         run: I did it
