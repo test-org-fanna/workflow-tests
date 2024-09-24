@@ -17,6 +17,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    outputs:
+      tag: $${{ steps.github-tag.outputs.tag }}
     steps:
       # Checkout the repository with all commit history with reference to the PR it comes from
       - name: Checkout ${{ github.repository }}
@@ -42,9 +44,9 @@ jobs:
     needs: generate-tag
     steps:
       - name: test it
-        run: echo ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}:tag
-      - name: job outsputs
-        run: echo ${{ needs.generate-tag.outputs.tag }}
+        env:
+          tag: ${{ needs.generate-tag.outputs.tag }}
+        run: echo ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}:${{ env.tag }}
 
 
 #  docker-build-and-push:
