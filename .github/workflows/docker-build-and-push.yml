@@ -34,7 +34,6 @@ jobs:
           PRERELEASE: true
 #          DRY_RUN: true
 
-
   test-pull-image-tag:
     runs-on: ubuntu-latest
     steps:
