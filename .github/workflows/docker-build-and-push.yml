@@ -61,7 +61,7 @@ jobs:
       - name: test ${{ matrix.dockerfile }}
         env:
           DOCKER_FILE: ${{ matrix.dockerfile }}
-        run: echo "DOCKER_NAME=${${${$DOCKER_FILE#Dockerfile}#(*.)}:-main}" >> GITHUB_ENV
+        run: echo "DOCKER_NAME=${${${${DOCKER_FILE}#Dockerfile}#(*.)}:-main}" >> GITHUB_ENV
 
 #      - name: Set Docker image tag
 #        env:
