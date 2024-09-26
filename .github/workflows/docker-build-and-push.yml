@@ -62,7 +62,7 @@ jobs:
         env:
           hub_repo: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}
           # Retrieves the Docker image name using shell parameter expansion. No name means "main"
-          docker_name: ${${${${{ matrix.dockerfile }}#Dockerfile}#(*.)}:-main}
+          docker_name: ${${${${matrix.dockerfile}#Dockerfile}#(*.)}:-main}
           tag: ${{ needs.generate-tag.outputs.tag }}
         run: echo IMAGE_TAG=${{ env.hub_repo }}-${{ env.docker_name }}:${{ env.tag }} >> GITHUB_ENV
 
