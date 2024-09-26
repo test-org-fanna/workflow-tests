@@ -59,7 +59,9 @@ jobs:
       # - with name (i.e. Dockerfile.foobar): thehubusername/repositoryfoobar-foobar:v1.0.1.beta.3
       # - Repowered example: repowered/platform-django:v1.0.1.beta.3
       - name: test ${{ matrix.dockerfile }}
-        run: echo DOCKER_NAME=${${${${{ matrix.dockerfile }}#Dockerfile}#(*.)}:-main} >> GITHUB_ENV
+        env:
+          DOCKER_FILE: ${{ matrix.dockerfile }}
+        run: echo "DOCKER_NAME=${${${$DOCKER_FILE#Dockerfile}#(*.)}:-main}" >> GITHUB_ENV
 
 #      - name: Set Docker image tag
 #        env:
