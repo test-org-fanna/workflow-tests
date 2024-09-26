@@ -60,12 +60,13 @@ jobs:
       # - Repowered example: repowered/platform-django:v1.0.1.beta.3
       - name: Set Docker image tag
         env:
+          hub_repo: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}
           # Retrieves the Docker image name using shell parameter expansion. No name means "main"
-          name: ${${${matrix.dockerfile}#(Dockerfile}#(*.)}:-main}
+          docker_name: ${${${matrix.dockerfile}#(Dockerfile}#(*.)}:-main}
           tag: ${{ needs.generate-tag.outputs.tag }}
-        run: echo IMAGE_TAG=${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}-${env.name}:${{ env.tag }} >> GITHUB_ENV
+        run: echo IMAGE_TAG=${{ env.hub_repo }-${{ env.docker_name }:${{ env.tag } >> GITHUB_ENV
 
-      - name: test ${env.NAME}
+      - name: test ${env.IMAGE_TAG}
         run: echo 'I did it'
 
 
