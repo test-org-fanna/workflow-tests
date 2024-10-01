@@ -46,6 +46,8 @@ jobs:
       # Checks whether a 'package.json' file exists in the root of the repository
       - name: Check if 'package.json' exists
         id: exist-package-json
+        env:
+          test: ${{ env.FILE_LOCATION }}
         run: echo "files_exists=${{ hashFiles('${{ env.FILE_LOCATION }}') }}" >> $GITHUB_OUTPUT
 
       # Changes the version to the generated tag from above iff the repository contains a 'package.json' file
