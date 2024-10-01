@@ -45,7 +45,7 @@ jobs:
         id: exist-package-json
         env:
           FILE_LOCATION: ${{ github.event.repository.name }}/package.json
-        run: echo "files_exists=${{ hashFiles(${{ env.FILE_LOCATION }}) != '' }}" >> $GITHUB_OUTPUT
+        run: echo "files_exists=${{ hashFiles('${{ env.FILE_LOCATION }}') != '' }}" >> $GITHUB_OUTPUT
 
       - name: NPM version bump if 'package.json' exists
         if: ${{ steps.exist-package-json.outputs.files_exists }} == 'true'
