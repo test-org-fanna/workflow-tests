@@ -60,26 +60,28 @@ jobs:
 #              FIRST_ENV=${{ secrets.FIRST_ENV }}
 #              SECOND_ENV=${{ secrets.SECOND_ENV }}"
     steps:
-      - name: output dockerfile with vars or secrets
-        env:
-          FILE: ${{ matrix.dockerfile }}
-          FIRST_ENV: ${{ secrets[matrix.first] }}
-          TOTAL_ENV: "|
-              FIRST_ENV=${{ secrets[matrix.first] }}
-              SECOND_ENV=${{ secrets[matrix.second] }}"
-        run: echo ${{ env.FIRST_ENV }} ${{ env.TOTAL_ENV }}
+# #WORKS
+#      - name: output dockerfile with vars or secrets
+#        env:
+#          FILE: ${{ matrix.dockerfile }}
+#          FIRST_ENV: ${{ secrets[matrix.first] }}
+#          TOTAL_ENV: "|
+#              FIRST_ENV=${{ secrets[matrix.first] }}
+#              SECOND_ENV=${{ secrets[matrix.second] }}"
+#        run: echo ${{ env.FIRST_ENV }} ${{ env.TOTAL_ENV }}
+      -
       # Sets the docker image tag according to the file system structure of Dockerhub with versioning
       # Examples:
       # - standard Dockerfile: thehubusername/repositoryfoobar:v1.0.1.beta.3
       # - with name (i.e. Dockerfile.foobar): thehubusername/repositoryfoobar-helloworld:v1.0.1.beta.3
       # - Repowered example: repowered/platform-django:v1.0.1.beta.3
-#      - name: Set docker image tag for '${{ matrix.dockerfile }}'
-#        env:
-#          hub_repo: ${{ vars.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}
-#        run: |
-#          DOCKERFILE=${{ matrix.dockerfile }}
-#          DOCKERFILE_NAME=$(echo $DOCKERFILE | sed 's/Dockerfile./-/;s/Dockerfile//')
-#          echo "IMAGE_TAG=${{ env.hub_repo }}${DOCKERFILE_NAME}:${{ needs.generate-tag.outputs.tag }}" >> $GITHUB_ENV
+      - name: Set docker image tag for '${{ matrix.dockerfile }}'
+        env:
+          hub_repo: ${{ vars.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}
+        run: |
+          DOCKERFILE=${{ matrix.dockerfile }}
+          DOCKERFILE_NAME=$(echo $DOCKERFILE | sed 's/Dockerfile./-/;s/Dockerfile//')
+          echo "IMAGE_TAG=${{ env.hub_repo }}${DOCKERFILE_NAME}:${{ needs.generate-tag.outputs.tag }}" >> $GITHUB_ENV
 
       #  Log in to the desired docker hub space
 #      - name: Login to Docker Hub
@@ -89,11 +91,15 @@ jobs:
 #          password: ${ { secrets.DOCKER_HUB_ACCESS_TOKEN } }
 
       # Build the Dockerfile(s) with the image tag in the correct format and push to the hub
-#      - name: Build ${{ matrix.dockerfile }} and push with tag
-#        uses: docker/build-push-action@v6
-#        with:
-#          context: .
-#          file: ${{ matrix.dockerfile }}
-#          push: ${{ github.event_name == 'pull_request' }} #TEMPORARILY so no push
-#          tags: ${{ env.IMAGE_TAG }}
-#          secrets: ${{ matrix.secrets }}
+      - name: Build ${{ matrix.dockerfile }} and push with tag
+        uses: docker/build-push-action@v6
+        env:
+          SECRETS: "|
+              FIRST_ENV=${{ secrets[matrix.first] }}
+              SECOND_ENV=${{ secrets[matrix.second] }}"
+        with:
+          context: .
+          file: ${{ matrix.dockerfile }}
+          push: ${{ github.event_name == 'pull_request' }} #TEMPORARILY so no push
+          tags: ${{ env.IMAGE_TAG }}
+          secrets: ${{ env.SECRETS }}
