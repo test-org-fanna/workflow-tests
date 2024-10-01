@@ -20,7 +20,7 @@ jobs:
     outputs:
       tag: $${{ steps.github-tag.outputs.tag }}
     steps:
-      # Checkout the repository with all commit history with reference to the PR it comes from
+      # Checkout the repository with all commit history
       - name: Checkout ${{ github.repository }}
         uses: actions/checkout@v4
         with:
@@ -65,8 +65,10 @@ jobs:
         run: |
           DOCKERFILE=${{ matrix.dockerfile }}
           DOCKERFILE_NAME=$(echo $DOCKERFILE | sed 's/Dockerfile\|Dockerfile.//')
-          echo IMAGE_TAG=${{ env.hub_repo }}-${DOCKERFILE_NAME}:${{ env.tag }} >> GITHUB_ENV
-          echo "$IMAGE_TAG"
+          echo "IMAGE_TAG=${{ env.hub_repo }}-${DOCKERFILE_NAME}:${{ env.tag }}" >> GITHUB_ENV
+
+      - run: |
+          echo ${{ env.IMAGE_TAG }}
 
       #  Log in to the private Repowered docker hub space
 #      - name: Login to Docker Hub
@@ -75,7 +77,7 @@ jobs:
 #          username: ${ { secrets.DOCKER_HUB_USERNAME } }
 #          password: ${ { secrets.DOCKER_HUB_ACCESS_TOKEN } }
 #
-#      # Build the Dockerfile(s) with the image tag in the correct format and pushes them to the hub
+#      # Build the Dockerfile(s) with the image tag in the correct format and pushes to the hub
 #      - name: Build ${{ matrix.dockerfile }} and push with tag
 #        needs: generate-tag
 #        uses: docker/build-push-action@v6
