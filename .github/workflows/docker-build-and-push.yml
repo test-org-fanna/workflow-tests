@@ -68,7 +68,7 @@ jobs:
       - name: dockerfile name
         run: |
           DOCKERFILE=${{ matrix.dockerfile }}
-          DOCKERFILE_NAME=$(echo $DOCKERFILE | sed 's/Dockerfile\|Dockerfile.//\') 
+          DOCKERFILE_NAME=$(echo $DOCKERFILE | sed 's/Dockerfile\|Dockerfile.//') 
           echo DOCKERFILE_NAME=${DOCKERFILE_NAME} >> GITHUB_ENV
 
       - name: test ${env.DOCKERFILE_NAME}
