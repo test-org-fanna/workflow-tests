@@ -50,8 +50,8 @@ jobs:
         include:
           - dockerfile: Dockerfile
             file_secrets: |
-              FIRST_ENV='${{ vars.FIRST_ENV }}'
-              SECOND_ENV='${{ vars.SECOND_ENV }}'
+              "FIRST_ENV='${{ vars.FIRST_ENV }}'"
+              "SECOND_ENV='${{ vars.SECOND_ENV }}'"
 #          - dockerfile: Dockerfile.name
 #            file_secrets: '|
 #              "THIRD_ENV=${{ secrets.THIRD_ENV }}"
