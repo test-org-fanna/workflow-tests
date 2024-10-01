@@ -58,14 +58,17 @@ jobs:
       # - standard Dockerfile: thehubusername/repositoryfoobar:v1.0.1.beta.3
       # - with name (i.e. Dockerfile.foobar): thehubusername/repositoryfoobar-helloworld:v1.0.1.beta.3
       # - Repowered example: repowered/platform-django:v1.0.1.beta.3
-      - name: test ${{ matrix.dockerfile }}
-        env:
-          hub_repo: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}
-          docker_name: echo ${{ matrix.dockerfile }} | sed -i 's/Dockerfile\|Dockerfile.//'
-          tag: ${{ needs.generate-tag.outputs.tag }}
-        run: echo IMAGE_TAG=${{ env.hub_repo }}-${{ env.docker_name }}:${{ env.tag }} >> GITHUB_ENV
+#      - name: test ${{ matrix.dockerfile }}
+#        env:
+#          hub_repo: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}
+#          docker_name: echo ${{ matrix.dockerfile }} | sed -i 's/Dockerfile\|Dockerfile.//'
+#          tag: ${{ needs.generate-tag.outputs.tag }}
+#        run: echo IMAGE_TAG=${{ env.hub_repo }}-${{ env.docker_name }}:${{ env.tag }} >> GITHUB_ENV
 
-      - name: test ${env.IMAGE_TAG}
+      - name: dockerfile name
+        run:  echo TEST=(${{ matrix.dockerfile }} | sed -i 's/Dockerfile\|Dockerfile.//') >> GITHUB_ENV
+
+      - name: test ${env.TEST}
         run: echo 'I did it'
 
 
