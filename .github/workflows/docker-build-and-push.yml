@@ -59,7 +59,7 @@ jobs:
       # - Repowered example: repowered/platform-django:v1.0.1.beta.3
       - name: Set docker image tag for '${{ matrix.dockerfile }}'
         env:
-          hub_repo: ${{ vars.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}
+          hub_repo: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}
         run: |
           DOCKERFILE=${{ matrix.dockerfile }}
           DOCKERFILE_NAME=$(echo $DOCKERFILE | sed 's/Dockerfile./-/;s/Dockerfile//')
@@ -69,8 +69,8 @@ jobs:
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${ { vars.DOCKER_HUB_USERNAME } }
-          password: ${ { secrets.DOCKER_HUB_ACCESS_TOKEN } }
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
       # Build the Dockerfile(s) with the image tag in the correct format and push to the hub
       - name: Build ${{ matrix.dockerfile }} and push with tag
