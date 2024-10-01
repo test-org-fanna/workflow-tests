@@ -49,19 +49,25 @@ jobs:
         # Add secrets (if any) in a secure way to a specific Dockerfile using the structure below:
         include:
           - dockerfile: Dockerfile
+            first: FIRST_ENV
+            second: SECOND_ENV
 # #WORKS
 #            file_secrets: "|
 #              FIRST_ENV=${{ vars.FIRST_TEST }}
 #              SECOND_ENV=${{ vars.SECOND_TEST }}"
-            file_secrets: "|
-              FIRST_ENV=${{ secrets.FIRST_ENV }}
-              SECOND_ENV=${{ secrets.SECOND_ENV }}"
+# #NOT ALLOWED
+#            file_secrets: "|
+#              FIRST_ENV=${{ secrets.FIRST_ENV }}
+#              SECOND_ENV=${{ secrets.SECOND_ENV }}"
     steps:
       - name: output dockerfile with vars or secrets
         env:
           FILE: ${{ matrix.dockerfile }}
-          SECRETS: ${{ matrix.file_secrets }}
-        run: echo ${{ env.SECRETS }}
+          FIRST_ENV: ${{ secrets[matrix.first] }}
+          TOTAL_ENV: "|
+              FIRST_ENV=${{ secrets[matrix.first] }}
+              SECOND_ENV=${{ secrets[matrix.second }}"
+        run: echo ${{ env.FIRST_ENV }} ${{ env.TOTAL_ENV }}
       # Sets the docker image tag according to the file system structure of Dockerhub with versioning
       # Examples:
       # - standard Dockerfile: thehubusername/repositoryfoobar:v1.0.1.beta.3
