@@ -69,7 +69,7 @@ jobs:
         run:  echo TEST=$(echo ${{ matrix.dockerfile }} | sed -e 's/Dockerfile\|Dockerfile.//') >> GITHUB_ENV
 
       - name: test ${{ matrix.dockerfile }} ${env.TEST}
-        run: echo ${env.TEST}
+        run: echo ${TEST}
 
 
       #  Log in to the private Repowered docker hub space
