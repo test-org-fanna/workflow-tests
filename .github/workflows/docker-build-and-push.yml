@@ -59,7 +59,7 @@ jobs:
     steps:
       - name: output dockerfile with secrets
         env:
-          FILE=${{ matrix.dockerfile }}
+          FILE: ${{ matrix.dockerfile }}
         run: echo ${{ vars[matrix.file_secrets] }}
       # Sets the docker image tag according to the file system structure of Dockerhub with versioning
       # Examples:
