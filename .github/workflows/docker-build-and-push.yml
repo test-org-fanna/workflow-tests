@@ -18,7 +18,7 @@ jobs:
     permissions:
       contents: write
     outputs:
-      tag: $${{ steps.github-tag.outputs.tag }}
+      tag: ${{ steps.github-tag.outputs.tag }}
     steps:
       # Checkout the repository with all commit history
       - name: Checkout ${{ github.repository }}
@@ -61,16 +61,13 @@ jobs:
       - name: Set docker image tag for '${{ matrix.dockerfile }}'
         env:
           hub_repo: ${{ vars.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}
-          tag: ${{ needs.generate-tag.outputs.tag }}
         run: |
           DOCKERFILE=${{ matrix.dockerfile }}
-          DOCKERFILE_NAME=$(echo $DOCKERFILE | sed 's/Dockerfile\|Dockerfile.//')
-          echo "IMAGE_TAG=${{ env.hub_repo }}-${DOCKERFILE_NAME}:${{ env.tag }}" >> $GITHUB_ENV
+          DOCKERFILE_NAME=$(echo $DOCKERFILE | sed 's/Dockerfile\|Dockerfile./-/')
+          echo "IMAGE_TAG=${{ env.hub_repo }}${DOCKERFILE_NAME}:${{ needs.generate-tag.outputs.tag }}" >> $GITHUB_ENV
 
       - name: do it
-        env:
-          image_tag: ${{ env.IMAGE_TAG }}
-        run: echo ${{ env.IMAGE_TAG }} ${{ env.image_tag }}
+        run: echo ${{ needs.generate-tag.outputs.tag }}
 
       #  Log in to the private Repowered docker hub space
 #      - name: Login to Docker Hub
