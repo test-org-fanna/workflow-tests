@@ -66,7 +66,7 @@ jobs:
           FIRST_ENV: ${{ secrets[matrix.first] }}
           TOTAL_ENV: "|
               FIRST_ENV=${{ secrets[matrix.first] }}
-              SECOND_ENV=${{ secrets[matrix.second }}"
+              SECOND_ENV=${{ secrets[matrix.second] }}"
         run: echo ${{ env.FIRST_ENV }} ${{ env.TOTAL_ENV }}
       # Sets the docker image tag according to the file system structure of Dockerhub with versioning
       # Examples:
