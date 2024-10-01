@@ -50,7 +50,7 @@ jobs:
 
       # Changes the version to the generated tag from above iff the repository contains a 'package.json' file
       - name: NPM version change
-        if: ${{ steps.exist-package-json.outputs.files_exists }} == 'true'
+        if: steps.exist-package-json.outputs.files_exists == 'true'
         uses: BellCubeDev/update-package-version-by-release-tag@v2
         with:
           version: ${{ needs.generate-tag.outputs.tag }}
