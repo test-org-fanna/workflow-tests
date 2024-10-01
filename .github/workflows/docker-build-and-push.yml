@@ -34,7 +34,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
           PRERELEASE: true
-          DRY_RUN: true #TEMP
 
   build-and-push:
     runs-on: ubuntu-latest
@@ -51,24 +50,9 @@ jobs:
           - dockerfile: Dockerfile
             first: FIRST_ENV
             second: SECOND_ENV
-    # #WORKS
-    #            file_secrets: "|
-    #              FIRST_ENV=${{ vars.FIRST_TEST }}
-    #              SECOND_ENV=${{ vars.SECOND_TEST }}"
-    # #NOT ALLOWED
-    #            file_secrets: "|
-    #              FIRST_ENV=${{ secrets.FIRST_ENV }}
-    #              SECOND_ENV=${{ secrets.SECOND_ENV }}"
+          - dockerfile: Dockerfile.name
+            test: DOES_NOT_EXIST
     steps:
-      # #WORKS
-      #      - name: output dockerfile with vars or secrets
-      #        env:
-      #          FILE: ${{ matrix.dockerfile }}
-      #          FIRST_ENV: ${{ secrets[matrix.first] }}
-      #          TOTAL_ENV: "|
-      #              FIRST_ENV=${{ secrets[matrix.first] }}
-      #              SECOND_ENV=${{ secrets[matrix.second] }}"
-      #        run: echo ${{ env.FIRST_ENV }} ${{ env.TOTAL_ENV }}
       # Sets the docker image tag according to the file system structure of Dockerhub with versioning
       # Examples:
       # - standard Dockerfile: thehubusername/repositoryfoobar:v1.0.1.beta.3
@@ -82,29 +66,24 @@ jobs:
           DOCKERFILE_NAME=$(echo $DOCKERFILE | sed 's/Dockerfile./-/;s/Dockerfile//')
           echo "IMAGE_TAG=${{ env.hub_repo }}${DOCKERFILE_NAME}:${{ needs.generate-tag.outputs.tag }}" >> $GITHUB_ENV
 
-      - name: Check Dockerfiles
-        run: ls ./ | echo
-
       #  Log in to the desired docker hub space
-      #      - name: Login to Docker Hub
-      #        uses: docker/login-action@v3
-      #        with:
-      #          username: ${ { vars.DOCKER_HUB_USERNAME } }
-      #          password: ${ { secrets.DOCKER_HUB_ACCESS_TOKEN } }
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${ { vars.DOCKER_HUB_USERNAME } }
+          password: ${ { secrets.DOCKER_HUB_ACCESS_TOKEN } }
 
       # Build the Dockerfile(s) with the image tag in the correct format and push to the hub
-      #  It uses a pinned version for the base image
       - name: Build ${{ matrix.dockerfile }} and push with tag
         uses: docker/build-push-action@v6
         env:
           SECRETS: "|
               FIRST_ENV=${{ secrets[matrix.first] }}
-              SECOND_ENV=${{ secrets[matrix.second] }}"
+              SECOND_ENV=${{ secrets[matrix.second] }}
+              DOES_NOT_EXIST=${{ secrets[matrix.test] }}"
         with:
           context: "{{defaultContext}}:./"
-#          build-contexts: |
-#            alpine=python:3.11.10-alpine
           file: ${{ matrix.dockerfile }}
-          push: ${{ github.event_name == 'pull_request' }} #TEMPORARILY so no push
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ env.IMAGE_TAG }}
           secrets: ${{ env.SECRETS }}
