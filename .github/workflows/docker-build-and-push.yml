@@ -71,9 +71,14 @@ jobs:
           DOCKERFILE_NAME=$(echo $DOCKERFILE | sed 's/Dockerfile\|Dockerfile.//') 
           echo DOCKERFILE_NAME=${DOCKERFILE_NAME} >> GITHUB_ENV
 
-      - name: test ${env.DOCKERFILE_NAME}
-        run: echo "hi"
+      - name: test it 1
+        run: echo ${{ env.DOCKERFILE_NAME }}
 
+      - name: test it 2
+        run: echo ${DOCKERFILE_NAME} $DOCKERFILE_NAME
+
+      - name: test it 3
+        run: echo $DOCKERFILE_NAME
 
       #  Log in to the private Repowered docker hub space
 #      - name: Login to Docker Hub
