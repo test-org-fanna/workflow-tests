@@ -61,7 +61,7 @@ jobs:
       - name: test ${{ matrix.dockerfile }}
         env:
           hub_repo: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}
-          docker_name: echo ${{ matrix.dockerfile }} | sed 's/Dockerfile\|Dockerfile.//'
+          docker_name: echo ${{ matrix.dockerfile }} | sed -e 's/Dockerfile\|Dockerfile.//'
           tag: ${{ needs.generate-tag.outputs.tag }}
         run: echo IMAGE_TAG=${{ env.hub_repo }}-${{ env.docker_name }}:${{ env.tag }} >> GITHUB_ENV
 
