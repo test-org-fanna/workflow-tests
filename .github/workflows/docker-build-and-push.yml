@@ -65,12 +65,12 @@ jobs:
         run: |
           DOCKERFILE=${{ matrix.dockerfile }}
           DOCKERFILE_NAME=$(echo $DOCKERFILE | sed 's/Dockerfile\|Dockerfile.//')
-          echo "IMAGE_TAG=${{ env.hub_repo }}-${DOCKERFILE_NAME}:${{ env.tag }}" >> GITHUB_ENV
+          echo "IMAGE_TAG=${{ env.hub_repo }}-${DOCKERFILE_NAME}:${{ env.tag }}" >> $GITHUB_ENV
 
       - name: do it
         env:
           image_tag: ${{ env.IMAGE_TAG }}
-        run: echo ${{ env.image_tag }}
+        run: echo ${{ env.IMAGE_TAG }} ${{ env.image_tag }}
 
       #  Log in to the private Repowered docker hub space
 #      - name: Login to Docker Hub
