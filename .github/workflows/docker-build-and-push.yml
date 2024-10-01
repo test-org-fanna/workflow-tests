@@ -49,7 +49,7 @@ jobs:
         # Add secrets (if any) in a secure way to a specific Dockerfile using the structure below:
         include:
           - dockerfile: Dockerfile
-            file_secrets: |
+            file_secrets:
               FIRST_TEST: FIRST_TEST
               SECOND_TEST: SECOND_TEST
 #          - dockerfile: Dockerfile.name
