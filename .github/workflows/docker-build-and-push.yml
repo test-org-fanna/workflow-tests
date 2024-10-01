@@ -49,8 +49,11 @@ jobs:
         run: echo "files_exists=${{ hashFiles('${{ env.FILE_LOCATION }}') }}" >> $GITHUB_OUTPUT
 
       # Changes the version to the generated tag from above iff the repository contains a 'package.json' file
-#      - name: NPM version change
-#        if: steps.exist-package-json.outputs.files_exists == 'true'
+      - name: NPM version change
+        if: steps.exist-package-json.outputs.files_exists == 'true'
+        env:
+          test: ${{ steps.exist-package-json.outputs.files_exists }}
+        run: echo 'hi'
 #        uses: BellCubeDev/update-package-version-by-release-tag@v2
 #        with:
 #          version: ${{ needs.generate-tag.outputs.tag }}
