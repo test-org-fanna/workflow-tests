@@ -53,26 +53,20 @@ jobs:
     #              FIRST_ENV=${{ secrets.FIRST_ENV }}
     #              SECOND_ENV=${{ secrets.SECOND_ENV }}
     steps:
-      # Sets the docker image tag according to the file system structure of Dockerhub
+      # Sets the docker image tag according to the file system structure of Dockerhub with versioning
       # Examples:
-      # - standard Dockerfile: thehubusername/repositoryfoobar-main:v1.0.1.beta.3
-      # - with name (i.e. Dockerfile.foobar): thehubusername/repositoryfoobar-foobar:v1.0.1.beta.3
+      # - standard Dockerfile: thehubusername/repositoryfoobar:v1.0.1.beta.3
+      # - with name (i.e. Dockerfile.foobar): thehubusername/repositoryfoobar-helloworld:v1.0.1.beta.3
       # - Repowered example: repowered/platform-django:v1.0.1.beta.3
       - name: test ${{ matrix.dockerfile }}
-#        env:
-#          DOCKER_FILE: ${{ matrix.dockerfile }}
-        run: DOCKER_FILE=test && DOCKER_NAME=${${${${DOCKER_FILE}#Dockerfile}#(*.)}:-main} && echo $DOCKER_NAME >> GITHUB_ENV
+        env:
+          hub_repo: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}
+          docker_name: echo ${{ matrix.dockerfile }} | 's/Dockerfile\|Dockerfile.//'
+          tag: ${{ needs.generate-tag.outputs.tag }}
+        run: echo IMAGE_TAG=${{ env.hub_repo }}-${{ env.docker_name }}:${{ env.tag }} >> GITHUB_ENV
 
-#      - name: Set Docker image tag
-#        env:
-#          hub_repo: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}
-#          # Retrieves the Docker image name using shell parameter expansion. No name means "main"
-#          docker_name: ${${${${{ matrix.dockerfile }}#Dockerfile}#(*.)}:-main}
-#          tag: ${{ needs.generate-tag.outputs.tag }}
-#        run: echo IMAGE_TAG=${{ env.hub_repo }}-${{ env.docker_name }}:${{ env.tag }} >> GITHUB_ENV
-#
-#      - name: test ${env.IMAGE_TAG}
-#        run: echo 'I did it'
+      - name: test ${env.IMAGE_TAG}
+        run: echo 'I did it'
 
 
       #  Log in to the private Repowered docker hub space
