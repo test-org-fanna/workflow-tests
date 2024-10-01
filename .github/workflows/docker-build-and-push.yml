@@ -6,7 +6,6 @@ on:
   push:
     branches:
       - dev
-      - pre-release/**
       - release/**
       - hotfix/**
       - main
