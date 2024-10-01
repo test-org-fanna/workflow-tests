@@ -58,29 +58,15 @@ jobs:
       # - standard Dockerfile: thehubusername/repositoryfoobar:v1.0.1.beta.3
       # - with name (i.e. Dockerfile.foobar): thehubusername/repositoryfoobar-helloworld:v1.0.1.beta.3
       # - Repowered example: repowered/platform-django:v1.0.1.beta.3
-#      - name: test ${{ matrix.dockerfile }}
-#        env:
-#          hub_repo: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}
-#          tag: ${{ needs.generate-tag.outputs.tag }}
-#        run: |
-#          DOCKERFILE=${{ matrix.dockerfile }}
-#          DOCKERFILE_NAME=$(echo $DOCKERFILE | sed 's/Dockerfile\|Dockerfile.//')
-#          echo IMAGE_TAG=${{ env.hub_repo }}-${DOCKERFILE_NAME}:${{ env.tag }} >> GITHUB_ENV
-
-      - name: dockerfile name
+      - name: Set docker image tag for '${{ matrix.dockerfile }}'
+        env:
+          hub_repo: ${{ vars.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}
+          tag: ${{ needs.generate-tag.outputs.tag }}
         run: |
           DOCKERFILE=${{ matrix.dockerfile }}
-          DOCKERFILE_NAME=$(echo $DOCKERFILE | sed 's/Dockerfile\|Dockerfile.//') 
-          echo DOCKERFILE_NAME=${DOCKERFILE_NAME} >> GITHUB_ENV
-
-      - name: test it ${{ env.DOCKERFILE_NAME }}
-        run: echo ${{ env.DOCKERFILE_NAME }}
-
-      - name: test it ${DOCKERFILE_NAME}
-        run: echo ${DOCKERFILE_NAME}
-
-      - name: test it $DOCKERFILE_NAME
-        run: echo $DOCKERFILE_NAME
+          DOCKERFILE_NAME=$(echo $DOCKERFILE | sed 's/Dockerfile\|Dockerfile.//')
+          echo IMAGE_TAG=${{ env.hub_repo }}-${DOCKERFILE_NAME}:${{ env.tag }} >> GITHUB_ENV
+          echo "$IMAGE_TAG"
 
       #  Log in to the private Repowered docker hub space
 #      - name: Login to Docker Hub
