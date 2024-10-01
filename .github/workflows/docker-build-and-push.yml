@@ -60,7 +60,7 @@ jobs:
       - name: output dockerfile with secrets
         env:
           FILE=${{ matrix.dockerfile }}
-        run: echo ${{ vars[matrix.args] }}
+        run: echo ${{ vars[matrix.file_secrets] }}
       # Sets the docker image tag according to the file system structure of Dockerhub with versioning
       # Examples:
       # - standard Dockerfile: thehubusername/repositoryfoobar:v1.0.1.beta.3
