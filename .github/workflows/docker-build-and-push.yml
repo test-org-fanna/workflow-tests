@@ -61,9 +61,11 @@ jobs:
 #      - name: test ${{ matrix.dockerfile }}
 #        env:
 #          hub_repo: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}
-#          docker_name: echo ${{ matrix.dockerfile }} | sed -i 's/Dockerfile\|Dockerfile.//'
 #          tag: ${{ needs.generate-tag.outputs.tag }}
-#        run: echo IMAGE_TAG=${{ env.hub_repo }}-${{ env.docker_name }}:${{ env.tag }} >> GITHUB_ENV
+#        run: |
+#          DOCKERFILE=${{ matrix.dockerfile }}
+#          DOCKERFILE_NAME=$(echo $DOCKERFILE | sed 's/Dockerfile\|Dockerfile.//')
+#          echo IMAGE_TAG=${{ env.hub_repo }}-${DOCKERFILE_NAME}:${{ env.tag }} >> GITHUB_ENV
 
       - name: dockerfile name
         run: |
@@ -71,13 +73,13 @@ jobs:
           DOCKERFILE_NAME=$(echo $DOCKERFILE | sed 's/Dockerfile\|Dockerfile.//') 
           echo DOCKERFILE_NAME=${DOCKERFILE_NAME} >> GITHUB_ENV
 
-      - name: test it 1
+      - name: test it ${{ env.DOCKERFILE_NAME }}
         run: echo ${{ env.DOCKERFILE_NAME }}
 
-      - name: test it 2
-        run: echo ${DOCKERFILE_NAME} $DOCKERFILE_NAME
+      - name: test it ${DOCKERFILE_NAME}
+        run: echo ${DOCKERFILE_NAME}
 
-      - name: test it 3
+      - name: test it $DOCKERFILE_NAME
         run: echo $DOCKERFILE_NAME
 
       #  Log in to the private Repowered docker hub space
