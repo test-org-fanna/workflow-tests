@@ -82,6 +82,9 @@ jobs:
           DOCKERFILE_NAME=$(echo $DOCKERFILE | sed 's/Dockerfile./-/;s/Dockerfile//')
           echo "IMAGE_TAG=${{ env.hub_repo }}${DOCKERFILE_NAME}:${{ needs.generate-tag.outputs.tag }}" >> $GITHUB_ENV
 
+      - name: Check Dockerfiles
+        run: ls ./
+
       #  Log in to the desired docker hub space
       #      - name: Login to Docker Hub
       #        uses: docker/login-action@v3
@@ -90,6 +93,7 @@ jobs:
       #          password: ${ { secrets.DOCKER_HUB_ACCESS_TOKEN } }
 
       # Build the Dockerfile(s) with the image tag in the correct format and push to the hub
+      #  It uses a pinned version for the base image
       - name: Build ${{ matrix.dockerfile }} and push with tag
         uses: docker/build-push-action@v6
         env:
@@ -97,7 +101,9 @@ jobs:
               FIRST_ENV=${{ secrets[matrix.first] }}
               SECOND_ENV=${{ secrets[matrix.second] }}"
         with:
-          context: .
+          context: "{{defaultContext}}:./"
+          build-contexts: |
+            alpine=python:3.11.10-alpine
           file: ${{ matrix.dockerfile }}
           push: ${{ github.event_name == 'pull_request' }} #TEMPORARILY so no push
           tags: ${{ env.IMAGE_TAG }}
