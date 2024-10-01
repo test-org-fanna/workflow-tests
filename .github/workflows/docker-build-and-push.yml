@@ -49,9 +49,9 @@ jobs:
         # Add secrets (if any) in a secure way to a specific Dockerfile using the structure below:
         include:
           - dockerfile: Dockerfile
-            file_secrets: |
-              "FIRST_ENV='${{ vars.FIRST_ENV }}'"
-              "SECOND_ENV='${{ vars.SECOND_ENV }}'"
+            file_secrets: "|
+              FIRST_ENV='${{ vars.FIRST_ENV }}'
+              SECOND_ENV='${{ vars.SECOND_ENV }}'"
 #          - dockerfile: Dockerfile.name
 #            file_secrets: '|
 #              "THIRD_ENV=${{ secrets.THIRD_ENV }}"
