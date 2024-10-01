@@ -62,7 +62,7 @@ jobs:
           hub_repo: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}
         run: |
           DOCKERFILE=${{ matrix.dockerfile }}
-          DOCKERFILE_NAME=$(echo $DOCKERFILE | sed 's/Dockerfile./-/;s/Dockerfile//')
+          DOCKERFILE_NAME=$(echo $DOCKERFILE | sed 's/Dockerfile./\//;s/Dockerfile//')
           echo "IMAGE_TAG=${{ env.hub_repo }}${DOCKERFILE_NAME}:${{ needs.generate-tag.outputs.tag }}" >> $GITHUB_ENV
 
       #  Log in to the desired docker hub space
