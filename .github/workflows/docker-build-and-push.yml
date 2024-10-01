@@ -83,7 +83,7 @@ jobs:
           echo "IMAGE_TAG=${{ env.hub_repo }}${DOCKERFILE_NAME}:${{ needs.generate-tag.outputs.tag }}" >> $GITHUB_ENV
 
       - name: Check Dockerfiles
-        run: ls ./
+        run: ls ./ | echo
 
       #  Log in to the desired docker hub space
       #      - name: Login to Docker Hub
@@ -102,8 +102,8 @@ jobs:
               SECOND_ENV=${{ secrets[matrix.second] }}"
         with:
           context: "{{defaultContext}}:./"
-          build-contexts: |
-            alpine=python:3.11.10-alpine
+#          build-contexts: |
+#            alpine=python:3.11.10-alpine
           file: ${{ matrix.dockerfile }}
           push: ${{ github.event_name == 'pull_request' }} #TEMPORARILY so no push
           tags: ${{ env.IMAGE_TAG }}
