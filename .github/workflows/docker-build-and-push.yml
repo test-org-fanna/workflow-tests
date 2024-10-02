@@ -50,6 +50,10 @@ jobs:
         uses: andstor/file-existence-action@v3
         with:
             files: "package.json"
+      - name: File exists
+        if: steps.exist-package-json.outputs.files_exists == 'true'
+        # Only runs if all the files exists
+        run: echo All files exists!
 #        env:
 #          test: ${{ env.FILE_PATH }}
 #          test2: ${{ github.event.repository.name }}/package.json
