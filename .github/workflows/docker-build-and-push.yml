@@ -44,33 +44,26 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
       # Checks whether a 'package.json' file exists in the repository
-      - name: Check file existence
+      - name: Check if package.json exists
         id: exist-package-json
         run: |
-          echo "file_exists=${{ hashFiles('package.json') != '' }}" >> $GITHUB_OUTPUT
-#        uses: andstor/file-existence-action@v3
-#        with:
-#            files: "package.json"
-      - name: File exists
-        if: steps.exist-package-json.outputs.file_exists == 'true'
-        # Only runs if all the files exists
-        run: echo All files exists!
-
+          echo "exists=${{ hashFiles('package.json') != '' }}" >> $GITHUB_OUTPUT
 
       # Changes the version to the generated tag from above iff the repository contains a 'package.json' file
-#      - name: NPM version change
-#        if: steps.exist-package-json.outputs.files_exists1 == 'true'
-#        env:
-#          test: ${{ steps.exist-package-json.outputs.files_exists1 }}
-#        run: echo 'hi'
-#        uses: BellCubeDev/update-package-version-by-release-tag@v2
-#        with:
-#          version: ${{ needs.generate-tag.outputs.tag }}
-#          keep-v: true
-#          ignore-semver-check: "true" # does not include pre-releases in SemVer checking
-#          package-json-path: ${{ env.FILE_LOCATION }}
-#          encoding: "utf8"
+      - name: NPM version change
+        if: steps.exist-package-json.outputs.exists == 'true'
+        env:
+          test: ${{ steps.exist-package-json.outputs.exists }}
+        run: echo 'hi'
+        uses: BellCubeDev/update-package-version-by-release-tag@v2
+        with:
+          version: ${{ needs.generate-tag.outputs.tag }}
+          keep-v: true
+          ignore-semver-check: "true" # does not include pre-releases in SemVer checking
+          package-json-path: "package.json"
+          encoding: "utf8"
 
 #  build-and-push:
 #    runs-on: ubuntu-latest
