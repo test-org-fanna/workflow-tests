@@ -36,23 +36,23 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
           PRERELEASE: true
-          DRY-RUN: true
+          DRY_RUN: true
 
   npm-version-change:
     runs-on: ubuntu-latest
     needs: generate-tag
     env:
-      FILE_LOCATION: ${{ github.event.repository.name }}/package.json
+      FILE_PATH: ${{ vars.PACKAGE_JSON_PATH || "package.json" } #from the root of the repository
     steps:
       # Checks whether a 'package.json' file exists in the root of the repository
       - name: Check if 'package.json' exists
         id: exist-package-json
         env:
-          test: ${{ env.FILE_LOCATION }}
+          test: ${{ env.FILE_PATH }}
           test2: ${{ github.event.repository.name }}/package.json
           test3: "*/package.json"
         run: |
-          echo "files_exists1=${{ hashFiles(env.FILE_LOCATION) }}" >> $GITHUB_OUTPUT
+          echo "files_exists1=${{ hashFiles(env.FILE_PATH) }}" >> $GITHUB_OUTPUT
           echo "files_exists2=${{ hashFiles(env.test) }}" >> $GITHUB_OUTPUT
           echo "files_exists3=${{ hashFiles(env.test2) }}" >> $GITHUB_OUTPUT
           echo "files_exists4=${{ hashFiles(env.test3) }}" >> $GITHUB_OUTPUT
