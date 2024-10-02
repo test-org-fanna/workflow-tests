@@ -52,8 +52,8 @@ jobs:
           test2: ${{ github.event.repository.name }}/package.json
           test3: "*/package.json"
         run: |
-          echo "files_exists1=${{ hashFiles(${{ env.FILE_LOCATION }}) }}" >> $GITHUB_OUTPUT
-          echo "files_exists2=${{ hashFiles(${{ env.test }}) }}" >> $GITHUB_OUTPUT
+          echo "files_exists1=${{ hashFiles('${{ env.FILE_LOCATION }})' }}" >> $GITHUB_OUTPUT
+          echo "files_exists2=${{ hashFiles('${{ env.test }})' }}" >> $GITHUB_OUTPUT
           echo "files_exists3=${{ hashFiles(${{ env.test2 }}) }}" >> $GITHUB_OUTPUT
           echo "files_exists4=${{ hashFiles(${{ env.test3 }}) }}" >> $GITHUB_OUTPUT
 
