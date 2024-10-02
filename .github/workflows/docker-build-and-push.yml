@@ -46,17 +46,19 @@ jobs:
         uses: actions/checkout@v4
 
       # Checks whether a 'package.json' file exists in the repository
-      - name: Check if package.json exists
+      - name: Check file existence
         id: exist-package-json
         run: |
-          echo "exists=${{ hashFiles('package.json') != '' }}" >> $GITHUB_OUTPUT
+          echo "file_exists=${{ hashFiles('package.json') != '' }}" >> $GITHUB_OUTPUT
+
+      - name: File exists
+        if: steps.exist-package-json.outputs.file_exists == 'true'
+        # Only runs if all the files exists
+        run: echo All files exists!
 
       # Changes the version to the generated tag from above iff the repository contains a 'package.json' file
       - name: NPM version change
-        if: steps.exist-package-json.outputs.exists == 'true'
-        env:
-          test: ${{ steps.exist-package-json.outputs.exists }}
-        run: echo 'hi'
+        if: steps.exist-package-json.outputs.file_exists == 'true'
         uses: BellCubeDev/update-package-version-by-release-tag@v2
         with:
           version: ${{ needs.generate-tag.outputs.tag }}
