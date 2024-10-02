@@ -51,11 +51,14 @@ jobs:
           test: ${{ env.FILE_PATH }}
           test2: ${{ github.event.repository.name }}/package.json
           test3: "*/package.json"
+          test4: "**/package.json"
         run: |
           echo "files_exists1=${{ hashFiles(env.FILE_PATH) }}" >> $GITHUB_OUTPUT
           echo "files_exists2=${{ hashFiles(env.test) }}" >> $GITHUB_OUTPUT
           echo "files_exists3=${{ hashFiles(env.test2) }}" >> $GITHUB_OUTPUT
           echo "files_exists4=${{ hashFiles(env.test3) }}" >> $GITHUB_OUTPUT
+          echo "files_exists5=${{ hashFiles(env.test4) }}" >> $GITHUB_OUTPUT
+          echo "files_exists6=${{ hashFiles('package.json') }}" >> $GITHUB_OUTPUT
 
       # Changes the version to the generated tag from above iff the repository contains a 'package.json' file
 #      - name: NPM version change
