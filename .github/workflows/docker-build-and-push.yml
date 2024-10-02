@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: generate-tag
     env:
-      FILE_PATH: ${{ vars.PACKAGE_JSON_PATH || "package.json" } #from the root of the repository
+      FILE_PATH: ${{ vars.PACKAGE_JSON_PATH || "package.json" }} #from the root of the repository
     steps:
       # Checks whether a 'package.json' file exists in the root of the repository
       - name: Check if 'package.json' exists
