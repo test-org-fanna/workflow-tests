@@ -5,26 +5,26 @@ on:
   push: #temp
 
 jobs:
-  tag:
-    permissions:
-      contents: write
-    uses: test-org-fanna/.github/.github/workflows/generate-github-tag.yml@main
-
-  docker: #repeat this if there are multiple file names #TODO: (regex?) check on filename
-    uses: test-org-fanna/.github/.github/workflows/docker-build-and-push.yml@main
-    needs: tag
-    with:
-      tag: "test" #TODO: output of tag job above
-      dockerfile_name: Dockerfile
-      docker_hub_username: ${{ vars.DOCKER_HUB_USERNAME }}
-    secrets:
-      docker_hub_access_token: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-      docker_secret_1: ${{ secrets.FIRST_ENV }}
-      docker_secret_2: ${{ secrets.SECOND_ENV }}
+#  tag:
+#    permissions:
+#      contents: write
+#    uses: test-org-fanna/.github/.github/workflows/generate-github-tag.yml@main
+#
+#  docker: #repeat this if there are multiple file names #TODO: (regex?) check on filename
+#    uses: test-org-fanna/.github/.github/workflows/docker-build-and-push.yml@main
+#    needs: tag
+#    with:
+#      tag: "test" #TODO: output of tag job above
+#      dockerfile_name: Dockerfile
+#      docker_hub_username: ${{ vars.DOCKER_HUB_USERNAME }}
+#    secrets:
+#      docker_hub_access_token: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+#      docker_secret_1: ${{ secrets.FIRST_ENV }}
+#      docker_secret_2: ${{ secrets.SECOND_ENV }}
 
   deploy:
     uses: test-org-fanna/.github/.github/workflows/deploy-docker-compose.yml@main
-    needs: docker
+#    needs: docker
     with:
       host: "fannadev.nl"
       docker_hub_username: ${{ vars.DOCKER_HUB_USERNAME }}
