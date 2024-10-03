@@ -5,10 +5,10 @@ on:
 
 jobs:
   tag:
-    uses: test-org-fanna/.github/workflows/generate-tag.yml@main
+    uses: test-org-fanna/.github/.github/workflows/generate-tag.yml@main
 
   docker: #repeat this if there are multiple file names #TODO: regex check on filename
-    uses: test-org-fanna/.github/workflows/docker-build-and-push.yml@main
+    uses: test-org-fanna/.github/.github/workflows/docker-build-and-push.yml@main
     with:
       tag: "test" #TODO: output of tag job above
       dockerfile_name: Dockerfile
