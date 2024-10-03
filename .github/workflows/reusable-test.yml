@@ -22,12 +22,14 @@ jobs:
 #      docker_secret_1: ${{ secrets.FIRST_ENV }}
 #      docker_secret_2: ${{ secrets.SECOND_ENV }}
 
-  deploy:
+  deploy: #TODO: (regex?) check on valid dir
     uses: test-org-fanna/.github/.github/workflows/deploy-docker-compose.yml@main
 #    needs: docker
     with:
       host: "fannadev.nl"
-#      docker-compose_remote_dir: "werk-test" #TODO: (regex?) check on valid dir
+      server_username: gitlab-deploy
+      docker-compose_remote_dir: werk-test
+      docker-compose_local_file_path: nested-test/docker-compose-nested.yml
     secrets:
       key: ${{ secrets.FANNADEV_PRIVATE_KEY }}
 
