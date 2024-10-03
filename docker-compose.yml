@@ -1,0 +1,5 @@
+#Just a test compose
+
+services:
+  test-image:
+    image: fannarepowered/workflow-tests:v0.1.0-beta.0
