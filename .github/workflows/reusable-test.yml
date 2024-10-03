@@ -27,7 +27,7 @@ jobs:
 #    needs: docker
     with:
       host: "fannadev.nl"
-      docker-compose_remote_file_path: "werk-test/docker-compose.yml"
+#      docker-compose_remote_dir: "werk-test"
     secrets:
       key: ${{ secrets.FANNADEV_PRIVATE_KEY }}
 
