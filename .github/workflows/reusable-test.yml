@@ -15,8 +15,8 @@ jobs:
     with:
       tag: "test" #TODO: output of tag job above
       dockerfile_name: Dockerfile
-    secrets:
       docker_hub_username: ${{ secrets.DOCKER_HUB_USERNAME }}
+    secrets:
       docker_hub_token: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       docker_secret_1: ${{ secrets.FIRST_ENV }}
       docker_secret_2: ${{ secrets.SECOND_ENV }}
