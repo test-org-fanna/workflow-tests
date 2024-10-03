@@ -26,10 +26,10 @@ jobs:
     uses: test-org-fanna/.github/.github/workflows/deploy-docker-compose.yml@main
 #    needs: docker
     with:
-      host: "fannadev.nl"
+      host: fannadev.nl
       server_username: gitlab-deploy
       docker-compose_remote_dir: werk-test
-      docker-compose_local_file_path: nested-test/docker-compose-nested.yml
+      docker-compose_file_path: nested-test/docker-compose-nested.yml
     secrets:
       key: ${{ secrets.FANNADEV_PRIVATE_KEY }}
 
