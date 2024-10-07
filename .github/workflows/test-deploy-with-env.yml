@@ -12,7 +12,6 @@ on:
 jobs:
   get-environment-secrets:
     name: Retrieve the secrets and variables set within a GitHub environment needed for the deploy steps
-    id: get-environment-secrets
     environment: prod
     runs-on: ubuntu-latest
     outputs:
