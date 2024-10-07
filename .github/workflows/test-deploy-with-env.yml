@@ -21,8 +21,8 @@ jobs:
       - name: Output variable and secrets
         id: output-vars-secrets
         run: |
-          echo "host=${{ vars.HOST }}" >> GITHUB_OUTPUT
-          echo "key=${{ secrets.KEYKEYKEY }}" >> GITHUB_OUTPUT
+          echo "host=${{ vars.HOST }}" >> $GITHUB_OUTPUT
+          echo "key=${{ secrets.KEYKEYKEY }}" >> $GITHUB_OUTPUT
 
   do-output:
     name: Output!!
