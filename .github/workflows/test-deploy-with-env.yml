@@ -22,7 +22,7 @@ jobs:
         id: output-vars-secrets
         run: |
           echo "host=${{ vars.HOST }}" >> $GITHUB_OUTPUT
-#          echo "key=${{ secrets.KEYKEYKEY }}" >> $GITHUB_OUTPUT
+          echo "key=${{ secrets.KEYKEYKEY }}" >> $GITHUB_OUTPUT
 
   do-output:
     name: Output!!
@@ -31,7 +31,7 @@ jobs:
     steps:
       - run: |
           echo 'Host is: ${{ needs.get-environment-secrets.outputs.host }}'
-#          echo 'Key should be ***: ${{ needs.get-environment-secrets.outputs.key }}'
+          echo 'Key should be ***: ${{ needs.get-environment-secrets.outputs.key }}'
 
 #  scp-docker-compose:
 #    name: Secure copy docker-compose to ${{ needs.get-environment-secrets.outputs.host }}
