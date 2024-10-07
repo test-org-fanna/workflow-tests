@@ -30,9 +30,9 @@ jobs:
       # docker_secret_3:
 
   deploy-dev:
+    uses: test-org-fanna/.github/.github/workflows/deploy-docker-compose.yml@main
     if: endsWith( github.ref, 'dev')
     environment: dev
-    uses: test-org-fanna/.github/.github/workflows/deploy-docker-compose.yml@main
     needs: docker
     with:
       host: ${{ vars.HOST }}
@@ -43,9 +43,9 @@ jobs:
       key: ${{ secrets.SSH_PRIVATE_KEY }}
 
   deploy-prod:
+    uses: test-org-fanna/.github/.github/workflows/deploy-docker-compose.yml@main
     if: endsWith( github.ref, 'main')
     environment: prod
-    uses: test-org-fanna/.github/.github/workflows/deploy-docker-compose.yml@main
     needs: docker
     with:
       host: ${{ vars.HOST }}
