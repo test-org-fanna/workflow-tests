@@ -26,7 +26,7 @@ jobs:
           echo "key=${{ secrets.KEYKEYKEY }}" >> GITHUB_OUTPUT
 
   do-output:
-    name: Secure copy docker-compose to server
+    name: Output!!
     needs: get-environment-secrets
     runs-on: ubuntu-latest
     steps:
@@ -37,7 +37,7 @@ jobs:
           echo ${{ needs.get-environment-secrets.outputs.key }}
 
   scp-docker-compose:
-    name: Secure copy docker-compose to server
+    name: Secure copy docker-compose to ${{ needs.get-environment-secrets.outputs.host }}
     needs: get-environment-secrets
     runs-on: ubuntu-latest
     steps:
