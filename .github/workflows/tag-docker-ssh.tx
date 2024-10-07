@@ -29,28 +29,18 @@ jobs:
       # docker_secret_2:
       # docker_secret_3:
 
-  deploy-dev:
-    uses: test-org-fanna/.github/.github/workflows/deploy-docker-compose.yml@main
-    if: endsWith( github.ref, 'dev')
-    environment: dev
-    needs: docker
-    with:
-      host: ${{ vars.HOST }}
-      # server_username: Optional, defaults to 'root'
-      # docker-compose_remote_dir: Optional, defaults to '/root'
-      # docker-compose_file_path: Optional, defaults to 'docker-compose.yml'
-    secrets:
-      key: ${{ secrets.SSH_PRIVATE_KEY }}
+  environment:
+    uses: test-org-fanna/.github/.github/workflows/determine-environment.yml@main
 
-  deploy-prod:
+
+
+  deploy:
     uses: test-org-fanna/.github/.github/workflows/deploy-docker-compose.yml@main
-    if: endsWith( github.ref, 'main')
-    environment: prod
-    needs: docker
+    needs: [docker, environment]
     with:
-      host: ${{ vars.HOST }}
+      host: ${{ needs.environment.outputs.host }}
       # server_username: Optional, defaults to 'root'
       # docker-compose_remote_dir: Optional, defaults to '/root'
       # docker-compose_file_path: Optional, defaults to 'docker-compose.yml'
     secrets:
-      key: ${{ secrets.SSH_PRIVATE_KEY }}
+      key: ${{ needs.environment.outputs.key }}
