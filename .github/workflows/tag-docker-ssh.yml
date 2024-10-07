@@ -25,7 +25,7 @@ jobs:
     secrets:
       docker_hub_access_token: ${{ vars.DOCKER_HUB_ACCESS_TOKEN }}
       # Optional (max. 3 secrets)
-      # docker_secret_1:
+      docker_secret_1: ${{FIRST_ENV}}
       # docker_secret_2:
       # docker_secret_3:
 
