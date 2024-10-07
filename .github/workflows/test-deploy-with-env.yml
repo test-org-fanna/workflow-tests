@@ -25,6 +25,17 @@ jobs:
           echo "host=${{ vars.HOST }}" >> GITHUB_OUTPUT
           echo "key=${{ secrets.KEYKEYKEY }}" >> GITHUB_OUTPUT
 
+  do-output:
+    name: Secure copy docker-compose to server
+    needs: get-environment-secrets
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo 'Host is:'
+          echo ${{ needs.get-environment-secrets.outputs.host }}
+          echo 'Key should be ***:'
+          echo ${{ needs.get-environment-secrets.outputs.key }}
+
   scp-docker-compose:
     name: Secure copy docker-compose to server
     needs: get-environment-secrets
