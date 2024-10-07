@@ -30,37 +30,37 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo 'Host is: ${{ needs.get-environment-secrets.outputs.key }}'
+          echo 'Host is: ${{ needs.get-environment-secrets.outputs.host }}'
 #          echo 'Key should be ***: ${{ needs.get-environment-secrets.outputs.key }}'
 
-  scp-docker-compose:
-    name: Secure copy docker-compose to ${{ needs.get-environment-secrets.outputs.host }}
-    needs: get-environment-secrets
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Copy docker-compose file via SCP
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ needs.get-environment-secrets.outputs.host }}
-          username: root
-          key: ${{ needs.get-environment-secrets.outputs.key }}
-          source: docker-compose.yml
-          target: /root
-
-  deploy-docker-compose:
-    name: Deploy docker-compose via SSH
-    needs: [scp-docker-compose, get-environment-secrets]
-    runs-on: ubuntu-latest
-    steps:
-      - name: SSH deployment with docker-compose
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ needs.get-environment-secrets.outputs.host }}
-          username: root
-          key: ${{ needs.get-environment-secrets.outputs.key }}
-          script: |
-            docker system prune --all --force
-            DOCKER_COMPOSE_PATH=/root/docker-compose.yml
-            docker-compose -f $DOCKER_COMPOSE_PATH pull 
-            docker-compose -f $DOCKER_COMPOSE_PATH up -d --force-recreate
+#  scp-docker-compose:
+#    name: Secure copy docker-compose to ${{ needs.get-environment-secrets.outputs.host }}
+#    needs: get-environment-secrets
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v4
+#      - name: Copy docker-compose file via SCP
+#        uses: appleboy/scp-action@v0.1.7
+#        with:
+#          host: ${{ needs.get-environment-secrets.outputs.host }}
+#          username: root
+#          key: ${{ needs.get-environment-secrets.outputs.key }}
+#          source: docker-compose.yml
+#          target: /root
+#
+#  deploy-docker-compose:
+#    name: Deploy docker-compose via SSH
+#    needs: [scp-docker-compose, get-environment-secrets]
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: SSH deployment with docker-compose
+#        uses: appleboy/ssh-action@v1.0.3
+#        with:
+#          host: ${{ needs.get-environment-secrets.outputs.host }}
+#          username: root
+#          key: ${{ needs.get-environment-secrets.outputs.key }}
+#          script: |
+#            docker system prune --all --force
+#            DOCKER_COMPOSE_PATH=/root/docker-compose.yml
+#            docker-compose -f $DOCKER_COMPOSE_PATH pull
+#            docker-compose -f $DOCKER_COMPOSE_PATH up -d --force-recreate
