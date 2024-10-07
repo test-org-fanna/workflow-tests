@@ -17,10 +17,12 @@ jobs:
     outputs:
       host: ${{ steps.output-vars-secrets.outputs.host }}
       key: ${{ steps.output-vars-secrets.outputs.key }}
-
     steps:
       - name: Output variable and secrets
         id: output-vars-secrets
+        outputs:
+          host:
+          key:
         run: |
           echo "host=${{ vars.HOST }}" >> GITHUB_OUTPUT
           echo "key=${{ secrets.KEYKEYKEY }}" >> GITHUB_OUTPUT
@@ -31,10 +33,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo 'Host is:'
-          echo ${{ needs.get-environment-secrets.outputs.host }}
-          echo 'Key should be ***:'
-          echo ${{ needs.get-environment-secrets.outputs.key }}
+          echo 'Host is: ${{ job.get-environment-secrets.outputs.key }}'
+          echo 'Key should be ***: ${{ job.get-environment-secrets.outputs.key }}'
 
   scp-docker-compose:
     name: Secure copy docker-compose to ${{ needs.get-environment-secrets.outputs.host }}
