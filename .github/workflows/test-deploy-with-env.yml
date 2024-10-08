@@ -10,5 +10,14 @@ on:
 #      - hotfix/**
 
 jobs:
+  environment:
+    uses: test-org-fanna/.github/.github/workflows/determine-environment.yml@main
+
   deploy:
+    needs: environment
+    environment: ${{ needs.environment.outputs.environment }}
     uses: test-org-fanna/.github/.github/workflows/deploy-docker-compose.yml@main
+    with:
+      host: ${{ vars.HOST }}
+    secrets:
+      key: ${{ secrets.SSH_PRIVATE_KEY }}
