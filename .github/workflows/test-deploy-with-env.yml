@@ -10,46 +10,33 @@ on:
 #      - hotfix/**
 
 jobs:
-  get-environment-secrets:
-    name: Retrieve the secrets and variables set within a GitHub environment needed for the deploy steps
+  scp-docker-compose:
+    name: Secure copy docker-compose to ${{ vars.HOST }}
     environment: prod
     runs-on: ubuntu-latest
-    outputs:
-      host: ${{ steps.output-vars-secrets.outputs.host }}
-      key: ${{ steps.output-vars-secrets.outputs.key }}
-    steps:
-      - name: Output variable and secrets
-        id: output-vars-secrets
-        run: |
-          echo "host=${{ vars.HOST }}" >> $GITHUB_OUTPUT
-          echo "key=${{ secrets.SSH_PRIVATE_KEY }}" >> $GITHUB_OUTPUT
-
-  scp-docker-compose:
-    name: Secure copy docker-compose to ${{ needs.get-environment-secrets.outputs.host }}
-    needs: get-environment-secrets
-    runs-on: ubuntu-latest
+    secrets:
+      key: ${{ secrets.SSH_PRIVATE_KEY }}
     steps:
       - uses: actions/checkout@v4
-      - name: Copy docker-compose file via SCP
+      - name: Copy docker-compose file via SCPst
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ needs.get-environment-secrets.outputs.host }}
+          host: ${{ vars.HOST }}
           username: root
-          key: ${{ needs.get-environment-secrets.outputs.key }}
           source: docker-compose.yml
           target: /root
 
   deploy-docker-compose:
     name: Deploy docker-compose via SSH
-    needs: [scp-docker-compose, get-environment-secrets]
+    needs: scp-docker-compose
     runs-on: ubuntu-latest
+    secrets:
+      key: ${{ secrets.SSH_PRIVATE_KEY }}
     steps:
       - name: SSH deployment with docker-compose
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ needs.get-environment-secrets.outputs.host }}
-          username: root
-          key: ${{ needs.get-environment-secrets.outputs.key }}
+          host: ${{ vars.HOST }}
           script: |
             docker system prune --all --force
             DOCKER_COMPOSE_PATH=/root/docker-compose.yml
