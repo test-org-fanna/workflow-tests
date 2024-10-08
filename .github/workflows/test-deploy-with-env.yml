@@ -18,3 +18,4 @@ jobs:
     uses: test-org-fanna/.github/.github/workflows/deploy-docker-compose.yml@main
     with:
       environment: ${{ needs.environment.outputs.environment }}
+    secrets: inherit
