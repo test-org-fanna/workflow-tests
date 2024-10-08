@@ -15,6 +15,7 @@ jobs:
 
   deploy:
     needs: environment
+    runs-on: ubuntu-latest
     environment: ${{ needs.environment.outputs.environment }}
     uses: test-org-fanna/.github/.github/workflows/deploy-docker-compose.yml@main
     with:
