@@ -23,12 +23,16 @@ jobs:
           else
             echo "env_name=dev" >> $GITHUB_ENV
           fi
-      - name: Check if required variables are configured in environment
-        if: ${{ vars.HOST == '' }}
-        run: echo "Variable 'HOST' does not exist in environment '${{ env.env_name }}'" && exit 1
-      - name: Check if required secrets are configured in environment
-        if: ${{ vars.SSH_PRIVATE_KEY == '' }}
-        run: echo "Variable 'SSH_PRIVATE_KEY' does not exist in environment '${{ env.env_name }}'" && exit 1
+      - name: Check if required variables/secrets are configured in environment
+        run: |
+          if [ ${{ vars.HOST == '' }}]; then
+            echo "Variable 'HOST' does not exist in environment '${{ env.env_name }}'" 
+            exit 1
+          fi
+          if  [ ${{ vars.SSH_PRIVATE_KEY == '' }}]; then
+            echo "Variable 'HOST' does not exist in environment '${{ env.env_name }}'" 
+            exit 1
+          fi
 
   scp-docker-compose:
     name: Secure copy docker-compose from ${{ env.env_name }} to ${{ vars.host }}
