@@ -10,15 +10,30 @@ on:
 #      - hotfix/**
 
 jobs:
-  scp-docker-compose:
-    name: Secure copy docker-compose to ${{ vars.HOST }}
-    environment: prod
+  determine-environment:
+    name: env
     runs-on: ubuntu-latest
-    secrets:
-      key: ${{ secrets.SSH_PRIVATE_KEY }}
+    outputs:
+      env_name: ${{ steps.determine-environment.outputs.env_name }}
+    steps:
+      - name: Some check on branch
+        id: determine-environment
+        run: |
+          echo "Running on branch ${{ github.ref }}"
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "env_name=prod" >> $GITHUB_OUTPUT
+          else
+            echo "env_name=dev" >> $GITHUB_OUTPUT
+          fi
+
+  scp-docker-compose:
+    name: Secure copy docker-compose from ${{ needs.determine-environment.outputs.env_name }} to ${{ vars.host }}
+    needs: determine-environment
+    environment: ${{ needs.determine-environment.outputs.env_name }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Copy docker-compose file via SCPst
+      - name: Copy docker-compose file via SCP
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ vars.HOST }}
@@ -28,15 +43,15 @@ jobs:
 
   deploy-docker-compose:
     name: Deploy docker-compose via SSH
-    needs: scp-docker-compose
+    needs: [scp-docker-compose, determine-environment]
+    environment: ${{ needs.determine-environment.outputs.env_name }}
     runs-on: ubuntu-latest
-    secrets:
-      key: ${{ secrets.SSH_PRIVATE_KEY }}
     steps:
       - name: SSH deployment with docker-compose
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ vars.HOST }}
+          username: root
           script: |
             docker system prune --all --force
             DOCKER_COMPOSE_PATH=/root/docker-compose.yml
