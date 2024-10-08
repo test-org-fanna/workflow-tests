@@ -38,6 +38,7 @@ jobs:
         with:
           host: ${{ vars.HOST }}
           username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: docker-compose.yml
           target: /root
 
@@ -52,6 +53,7 @@ jobs:
         with:
           host: ${{ vars.HOST }}
           username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             docker system prune --all --force
             DOCKER_COMPOSE_PATH=/root/docker-compose.yml
