@@ -10,12 +10,12 @@ on:
 #      - hotfix/**
 
 jobs:
-  determine-environment:
-    name: env
+  determine-check-environment:
+    name: Determine and check environment
     runs-on: ubuntu-latest
     steps:
-      - name: Some check on branch
-        id: determine-environment
+      - name: Retrieve environment
+        id: retrieve-environment
         run: |
           echo "Running on branch ${{ github.ref }}"
           if [ "${{ github.ref }}" = "refs/heads/main" ]; then
@@ -26,13 +26,13 @@ jobs:
       - name: Check if required variables/secrets are configured in environment
         run: |
           if [ ${{ vars.HOST == '' }} || ${{ secrets.SSH_PRIVATE_KEY == '' }} ]; then
-            echo "::error::Variable 'HOST'/secret 'SSH_PRIVATE_KEY' does not exist in environment '${{ steps.determine-environment.outputs.env_name }}'" 
+            echo "::error::Variable 'HOST'/secret 'SSH_PRIVATE_KEY' does not exist in environment '${{ steps.retrieve-environment.outputs.env_name }}'" 
             exit 1
           fi
 
   scp-docker-compose:
     name: Secure copy docker-compose to ${{ vars.host }}
-    needs: determine-environment
+    needs: determine-check-environment
     environment: ${{ needs.determine-environment.outputs.env_name }}
     runs-on: ubuntu-latest
     steps:
@@ -48,7 +48,7 @@ jobs:
 
   deploy-docker-compose:
     name: Deploy docker-compose via SSH to ${{ vars.host }}
-    needs: [scp-docker-compose, determine-environment]
+    needs: [ scp-docker-compose, determine-check-environment ]
     environment: ${{ needs.determine-environment.env_name }}
     runs-on: ubuntu-latest
     steps:
