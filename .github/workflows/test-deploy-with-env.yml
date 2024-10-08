@@ -10,55 +10,5 @@ on:
 #      - hotfix/**
 
 jobs:
-  determine-check-environment:
-    name: Determine and check environment
-    runs-on: ubuntu-latest
-    steps:
-      - name: Retrieve environment
-        id: retrieve-environment
-        run: |
-          echo "Running on branch ${{ github.ref }}"
-          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
-            echo "env_name=prod" >> $GITHUB_OUTPUT
-          else
-            echo "env_name=dev" >> $GITHUB_OUTPUT
-          fi
-      - name: Check if required variables/secrets are configured in environment
-        run: |
-          if [ ${{ vars.HOST == '' }} || ${{ secrets.SSH_PRIVATE_KEY == '' }} ]; then
-            echo "::error::Variable 'HOST' and/or secret 'SSH_PRIVATE_KEY' does not exist in environment '${{ steps.retrieve-environment.outputs.env_name }}'"
-          fi
-
-  scp-docker-compose:
-    name: Secure copy docker-compose to ${{ vars.host }}
-    needs: determine-check-environment
-    environment: ${{ needs.determine-environment.outputs.env_name }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Copy docker-compose file via SCP
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ vars.HOST }}
-          username: root
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          source: docker-compose.yml
-          target: /root
-
-  deploy-docker-compose:
-    name: Deploy docker-compose via SSH to ${{ vars.host }}
-    needs: [ scp-docker-compose, determine-check-environment ]
-    environment: ${{ needs.determine-environment.env_name }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: SSH deployment with docker-compose
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ vars.HOST }}
-          username: root
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            docker system prune --all --force
-            DOCKER_COMPOSE_PATH=/root/docker-compose.yml
-            docker-compose -f $DOCKER_COMPOSE_PATH pull
-            docker-compose -f $DOCKER_COMPOSE_PATH up -d --force-recreate
+  deploy:
+    uses: test-org-fanna/.github/.github/workflows/deploy-docker-compose.yml@main
