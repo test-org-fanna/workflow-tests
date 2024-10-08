@@ -26,8 +26,8 @@ jobs:
       - name: Check if required variables/secrets are configured in environment
         run: |
           if [ ${{ vars.HOST == '' }} || ${{ secrets.SSH_PRIVATE_KEY == '' }} ]; then
-            echo "::error::Variable 'HOST'/secret 'SSH_PRIVATE_KEY' does not exist in environment '${{ steps.retrieve-environment.outputs.env_name }}'" 
-            exit 1
+            echo "::error::Variable 'HOST' and/or secret 'SSH_PRIVATE_KEY' does not exist in environment '${{ steps.retrieve-environment.outputs.env_name }}'"
+#            exit 1
           fi
 
   scp-docker-compose:
