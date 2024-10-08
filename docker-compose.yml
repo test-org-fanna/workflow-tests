@@ -2,4 +2,4 @@
 
 services:
   test-image:
-    image: fannarepowered/workflow-tests:v0.1.0
+    image: fannarepowered/workflow-tests:${TAG}
