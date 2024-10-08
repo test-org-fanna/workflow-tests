@@ -19,25 +19,25 @@ jobs:
         run: |
           echo "Running on branch ${{ github.ref }}"
           if [ "${{ github.ref }}" = "refs/heads/main" ]; then
-            echo "env_name=prod" >> $GITHUB_ENV
+            echo "env_name=prod" >> $GITHUB_OUTPUT
           else
-            echo "env_name=dev" >> $GITHUB_ENV
+            echo "env_name=dev" >> $GITHUB_OUTPUT
           fi
       - name: Check if required variables/secrets are configured in environment
         run: |
           if [ ${{ vars.HOST == '' }}]; then
-            echo "Variable 'HOST' does not exist in environment '${{ env.env_name }}'" 
+            echo "Variable 'HOST' does not exist in environment '${{ steps.determine-environment.outputs.env_name }}'" 
             exit 1
           fi
           if  [ ${{ vars.SSH_PRIVATE_KEY == '' }}]; then
-            echo "Variable 'HOST' does not exist in environment '${{ env.env_name }}'" 
+            echo "Variable 'HOST' does not exist in environment '${{ steps.determine-environment.outputs.env_name }}'" 
             exit 1
           fi
 
   scp-docker-compose:
     name: Secure copy docker-compose to ${{ vars.host }}
     needs: determine-environment
-    environment: ${{ env.env_name }}
+    environment: ${{ needs.determine-environment.outputs.env_name }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -53,7 +53,7 @@ jobs:
   deploy-docker-compose:
     name: Deploy docker-compose via SSH to ${{ vars.host }}
     needs: [scp-docker-compose, determine-environment]
-    environment: ${{ env.env_name }}
+    environment: ${{ needs.determine-environment.env_name }}
     runs-on: ubuntu-latest
     steps:
       - name: SSH deployment with docker-compose
