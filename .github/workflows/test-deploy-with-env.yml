@@ -14,10 +14,11 @@ jobs:
     uses: test-org-fanna/.github/.github/workflows/determine-environment.yml@main
 
   deploy:
-    uses: test-org-fanna/.github/.github/workflows/deploy-docker-compose.yml@main
     needs: environment
     environment: ${{ needs.environment.outputs.environment }}
-    with:
-      host: ${{ vars.HOST }}
-    secrets:
-      key: ${{ secrets.SSH_PRIVATE_KEY }}
+    steps:
+      - uses: test-org-fanna/.github/.github/workflows/deploy-docker-compose.yml@main
+        with:
+          host: ${{ vars.HOST }}
+        secrets:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
