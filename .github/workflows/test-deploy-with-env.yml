@@ -37,7 +37,7 @@ jobs:
   scp-docker-compose:
     name: Secure copy docker-compose from ${{ env.env_name }} to ${{ vars.host }}
     needs: determine-environment
-    environment: ${{ needs.determine-environment.env.env_name }}
+    environment: ${{ env.env_name }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
