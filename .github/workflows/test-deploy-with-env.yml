@@ -15,10 +15,11 @@ jobs:
 
   deploy:
     needs: environment
-    runs-on: ubuntu-latest
     environment: ${{ needs.environment.outputs.environment }}
-    uses: test-org-fanna/.github/.github/workflows/deploy-docker-compose.yml@main
-    with:
-      host: ${{ vars.HOST }}
-    secrets:
-      key: ${{ secrets.SSH_PRIVATE_KEY }}
+    steps:
+      run: echo '${{ vars.HOST }}'
+#    uses: test-org-fanna/.github/.github/workflows/deploy-docker-compose.yml@main
+#    with:
+#      host: ${{ vars.HOST }}
+#    secrets:
+#      key: ${{ secrets.SSH_PRIVATE_KEY }}
