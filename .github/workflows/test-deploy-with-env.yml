@@ -17,7 +17,7 @@ jobs:
     needs: environment
     environment: ${{ needs.environment.outputs.environment }}
     steps:
-      run: echo '${{ vars.HOST }}'
+      - run: echo '${{ vars.HOST }}'
 #    uses: test-org-fanna/.github/.github/workflows/deploy-docker-compose.yml@main
 #    with:
 #      host: ${{ vars.HOST }}
