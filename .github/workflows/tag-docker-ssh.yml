@@ -3,10 +3,10 @@ name: GitHub Tag, Docker publish build, SSH Deploy
 on:
   workflow_dispatch:
   push:
-    branches:
-      - dev
-      - release/**
-      - hotfix/**
+#    branches:
+#      - dev
+#      - release/**
+#      - hotfix/**
 
 jobs:
   tag:
