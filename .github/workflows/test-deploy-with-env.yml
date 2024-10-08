@@ -12,13 +12,14 @@ on:
 jobs:
   environment:
     uses: test-org-fanna/.github/.github/workflows/determine-environment.yml@main
+#    outputs:
+#      environment: ${{ steps.retrieve-environment.outputs.env_name }}
 
   deploy:
     needs: environment
+    uses: test-org-fanna/.github/.github/workflows/deploy-docker-compose.yml@main
     environment: ${{ needs.environment.outputs.environment }}
-    steps:
-      - uses: test-org-fanna/.github/.github/workflows/deploy-docker-compose.yml@main
-        with:
-          host: ${{ vars.HOST }}
-        secrets:
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+    with:
+      host: ${{ vars.HOST }}
+    secrets:
+      key: ${{ secrets.SSH_PRIVATE_KEY }}
