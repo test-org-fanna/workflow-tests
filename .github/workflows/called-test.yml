@@ -20,4 +20,4 @@ jobs:
       - name: Test
         run: |
           echo "Name is: ${{ matrix.name }}"
-          echo "Tag is: ${{ matrix.tag }}"
+          echo "Tag is: ${{ inputs.tag }}"
