@@ -3,18 +3,21 @@ name: json matrix list test
 on:
   workflow_call:
     inputs:
-      json-list-matrix:
+      names:
         type: string # A JSON string
         required: true
-        description: A JSON string containing a list of deployment information objects; [{tag, name}]
+      tag:
+        type: string # A JSON string
+        required: true
 
 jobs:
   test-json-matrix:
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{ fromJSON(inputs.json-list-matrix) }}
+      matrix:
+        name: ${{ fromJSON(inputs.names) }}
     steps:
       - name: Test
         run: |
-          echo "Tag is: ${{ matrix.tag }}"
           echo "Name is: ${{ matrix.name }}"
+          echo "Tag is: ${{ matrix.tag }}"

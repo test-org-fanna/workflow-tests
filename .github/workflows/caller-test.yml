@@ -1,13 +1,12 @@
 name: json test
 
 on:
-  workflow_dispatch:
   push:
 
 jobs:
   test-matrix:
     uses: test-org-fanna/workflow-tests/.github/workflows/called-test.yml@feature/1
     with:
-      json-list-matrix: "[{\"tag\": \"1t\",\"name\": \"1n\" }, {\"tag\": \"2t\",\"name\": \"2n\" }, {\"tag\": \"3t\",\"name\": \"3n\" }]"
+      names: "['fanna', 'moet', 'roken']"
 
 
