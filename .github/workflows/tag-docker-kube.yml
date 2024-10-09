@@ -71,5 +71,5 @@ jobs:
     uses: test-org-fanna/.github/.github/workflows/kube-deploy-verify.yml@main
     needs: [setup-doctl, docker-single-deployment]
     with:
-      container_names: "['Z-workflow-test']"
+      container_names: "['Z-workflow-test-ingle']"
       docker_image_tag: ${{ needs.docker-single-deployment.outputs.image_tag }}
