@@ -1,0 +1,20 @@
+name: json matrix list test
+
+on:
+  workflow_call:
+    inputs:
+      json-list-matrix:
+        type: string # A JSON string
+        required: true
+        description: A JSON string containing a list of deployment information objects; [{tag, name}]
+
+jobs:
+  test-json-matrix:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJSON(inputs.json-list-matrix) }}
+    steps:
+      - name: Test
+        run: |
+          echo "Tag is: ${{ matrix.tag }}"
+          echo "Name is: ${{ matrix.name }}"
