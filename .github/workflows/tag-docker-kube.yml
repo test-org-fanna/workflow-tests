@@ -53,23 +53,20 @@ jobs:
   github-environment:
     uses: test-org-fanna/.github/.github/workflows/determine-environment.yml@main
 
-  setup-doctl:
-    uses: test-org-fanna/.github/.github/workflows/setup-doctl-kube.yml@main
-    needs: github-environment
-    with:
-      environment: ${{ needs.github-environment.outputs.environment }}
-    secrets: inherit
-
   deploy-verify-A-B-C:
     uses: test-org-fanna/.github/.github/workflows/kube-deploy-verify.yml@main
-    needs: [setup-doctl, docker-multi-deployment]
+    needs: [github-environment, docker-multi-deployment]
     with:
       container_names: "['A-workflow-test', 'B-workflow-test', 'C-workflow-test']"
       docker_image_tag: ${{ needs.docker-multi-deployment.outputs.image_tag }}
+      environment: ${{ needs.github-environment.outputs.environment }}
+    secrets: inherit
 
   deploy-verify-Z:
     uses: test-org-fanna/.github/.github/workflows/kube-deploy-verify.yml@main
-    needs: [setup-doctl, docker-single-deployment]
+    needs: [github-environment, docker-single-deployment]
     with:
       container_names: "['Z-workflow-test-single']"
       docker_image_tag: ${{ needs.docker-single-deployment.outputs.image_tag }}
+      environment: ${{ needs.github-environment.outputs.environment }}
+    secrets: inherit
