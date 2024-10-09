@@ -5,8 +5,8 @@ on:
   push:
 #    branches:
 #      - dev
-#      - hotfix/**
 #      - release/**
+#      - hotfix/**
 
 jobs:
   tag:
@@ -55,7 +55,7 @@ jobs:
 
   deploy-verify-A-B-C:
     uses: test-org-fanna/.github/.github/workflows/kube-deploy-verify.yml@main
-    needs: [github-environment, docker-multi-deployment]
+    needs: [ github-environment, docker-multi-deployment ]
     with:
       container_names: "['A-workflow-test', 'B-workflow-test', 'C-workflow-test']"
       docker_image_tag: ${{ needs.docker-multi-deployment.outputs.image_tag }}
@@ -64,7 +64,7 @@ jobs:
 
   deploy-verify-Z:
     uses: test-org-fanna/.github/.github/workflows/kube-deploy-verify.yml@main
-    needs: [github-environment, docker-single-deployment]
+    needs: [ github-environment, docker-single-deployment ]
     with:
       container_names: "['Z-workflow-test-single']"
       docker_image_tag: ${{ needs.docker-single-deployment.outputs.image_tag }}
