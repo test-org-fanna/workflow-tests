@@ -62,14 +62,14 @@ jobs:
 
   deploy-verify-A-B-C:
     uses: test-org-fanna/.github/.github/workflows/kube-deploy-verify.yml@main
-    needs: docker-multi-deployment
+    needs: [setup-doctl, docker-multi-deployment]
     with:
       container_names: "['A', 'B', 'C']"
       docker_image_tag: ${{ needs.docker-multi-deployment.outputs.image_tag }}
 
   deploy-verify-Z:
     uses: test-org-fanna/.github/.github/workflows/kube-deploy-verify.yml@main
-    needs: docker-single-deployment
+    needs: [setup-doctl, docker-single-deployment]
     with:
       container_names: "['Z']"
       docker_image_tag: ${{ needs.docker-single-deployment.outputs.image_tag }}
