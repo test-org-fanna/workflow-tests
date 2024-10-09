@@ -55,7 +55,7 @@ jobs:
 
   setup-doctl:
     uses: test-org-fanna/.github/.github/workflows/setup-doctl-kube.yml@main
-    needs: [github-environment, docker-multi-deployment, docker-single-deployment]
+    needs: github-environment
     with:
       environment: ${{ needs.github-environment.outputs.environment }}
     secrets: inherit
