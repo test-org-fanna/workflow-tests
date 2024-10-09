@@ -5,8 +5,8 @@ on:
   push:
 #    branches:
 #      - dev
-#      - release/**
 #      - hotfix/**
+#      - release/**
 
 jobs:
   tag:
