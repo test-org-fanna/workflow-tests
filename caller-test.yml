@@ -1,0 +1,13 @@
+name: json test
+
+on:
+  push:
+
+jobs:
+  test-matrix:
+    uses: test-org-fanna/workflow-tests/.github/workflows/called-test.yml@feature/1
+    with:
+      names: "['fanna', 'moet', 'roken']"
+      tag: lucky-strike
+
+
