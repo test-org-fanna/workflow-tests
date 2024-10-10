@@ -39,7 +39,7 @@ jobs:
 #          RELEASE_BRANCHES: main, dev
 #          DEFAULT_BRANCH: dev
           DEFAULT_BUMP: none
-#          PRERELEASE: true
+          PRERELEASE: true
           VERBOSE: true
 
       - name: Get pushed version
