@@ -27,6 +27,7 @@ jobs:
       - name: Checkout ${{ github.repository }}
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
           fetch-depth: '0'
 
       # Automatically bump and tag with the latest SemVer formatted version.
@@ -38,7 +39,7 @@ jobs:
           WITH_V: true
 #          RELEASE_BRANCHES: main, dev
 #          DEFAULT_BRANCH: dev
-#          DEFAULT_BUMP: none
+          DEFAULT_BUMP: none
           PRERELEASE: true
 
       - name: Get pushed version
