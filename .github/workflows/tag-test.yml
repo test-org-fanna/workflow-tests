@@ -13,6 +13,8 @@ on:
       - qa
       - main
 
+#test
+
 jobs:
   generate-tag:
     runs-on: ubuntu-latest
