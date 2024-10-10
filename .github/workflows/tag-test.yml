@@ -43,7 +43,7 @@ jobs:
 
       - name: Get pushed version
         id: pushed-tag
-        run: echo "pushed-tag=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
+        run: echo "pushed-tag=$(git describe --tags `git rev-list --tags --max-count=1`)" >> $GITHUB_OUTPUT
 
       - name: Check pushed version
         if: ${{ steps.pushed-tag.outputs.pushed-tag != steps.github-tag.outputs.tag }}
