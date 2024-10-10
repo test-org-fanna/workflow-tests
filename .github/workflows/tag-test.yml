@@ -40,3 +40,11 @@ jobs:
 #          DEFAULT_BRANCH: dev
           DEFAULT_BUMP: none
           PRERELEASE: true
+
+      - name: Get pushed version
+        id: pushed-tag
+        run: echo "pushed-tag=${GITHUB_REF#refs/*/}" >> $GITHUB_OUTPUT
+
+      - name: Check pushed version
+        if: ${{ steps.pushed-tag.outputs.pushed-tag != steps.github-tag.outputs.tag }}
+        run: echo "Incorrect tag" && exit 1
