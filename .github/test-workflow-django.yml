@@ -1,0 +1,150 @@
+name: Run Django Unit Test with Coverage, Check the Migration, Run Sonar and Linting Quality Checks
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  test:
+    name: Django Tests With Postgres and Coverage for python version ${{ matrix.python.version }}
+    strategy:
+      matrix:
+        python-version: [ "3.11.2" ]
+      runs-on: ubuntu-latest
+      container: python:${{ matrix.python-version }}-alpine
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: github_actions
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432/tcp # assign a random free host port
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python ${{ matrix.python-version }}
+        id: setup-python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: "x64"
+
+      - name: Load cached Poetry installation
+        id: cached-poetry
+        uses: actions/cache@v4
+        with:
+          path: ~/.local
+          key: poetry-0
+
+      - name: Install Fresh Poetry
+        if: steps.cached-poetry.outputs.cache-hit != 'true'
+        uses: snok/install-poetry@v1
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          installer-parallel: true
+          installation-arguments: poetry config repositories.repowered ${{ secrets.PRIVATE_PYPI_URL}} \
+            poetry config http-basic.repowered ${{ secrets.PRIVATE_PYPI_USER }} ${{ secrets.PRIVATE_PYPI_PASSWORD}}
+
+      - name: Configure Cached Poetry # Configuration options are not re-applied on cache hits
+        if: steps.cached-poetry.outputs.cache-hit == 'true'
+        run: |
+          poetry config virtualenvs.in-project true
+          poetry config repositories.repowered ${{ secrets.PRIVATE_PYPI_URL}}
+          poetry config http-basic.repowered ${{ secrets.PRIVATE_PYPI_USER }} ${{ secrets.PRIVATE_PYPI_PASSWORD}}
+
+      - name: Load Cached Virtual Environment
+        id: cached-dependencies
+        uses: actions/cache@v4
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Install Fresh Dependencies
+        if: steps.cached-dependencies.outputs.cache-hit != 'true'
+        run: poetry install --no-interaction --no-root --no-ansi
+
+      - name: Check Django Migrations
+        run: |
+          poetry run python manage.py makemigrations --dry-run --check --no-input
+        env:
+          SQL_ENGINE: django.db.backends.postgresql
+          SQL_DATABASE: github_actions
+          SQL_USER: postgres
+          SQL_PASSWORD: postgres
+          SQL_HOST: localhost
+          SQL_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
+
+      - name: Run tests with coverage
+        run: poetry run pytest --cov-config=.coveragerc --cov-report=xml --cov=. --no-testmon --durations=5
+        env:
+          CI: true
+          SQL_ENGINE: django.db.backends.postgresql
+          SQL_DATABASE: github_actions
+          SQL_USER: postgres
+          SQL_PASSWORD: postgres
+          SQL_HOST: localhost
+          SQL_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
+
+      - name: Archive test coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage.xml
+          path: coverage.xml
+          if-no-files-found: 'error'
+
+  quality-control-sonar:
+    name: Quality checks via SonarCloud with coverage report
+    needs: test
+    steps:
+      - name: Download coverage artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage.xml
+
+      - name: SonarCloud analysis
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  quality-control-lint:
+    name: Quality checks with black flake8 isort
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          architecture: "x64"
+
+      - name: Load Pip Cache (when it exists)
+        uses: actions/cache@v4
+        id: cached-pip
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip
+          restore-keys: ${{ runner.os }}-pip
+
+      - name: Install Fresh Linters
+        if: steps.cached-pip.outputs.cache-hit != 'true'
+        run: python -m pip install black flake8 isort
+
+      - name: Run Linters
+      - run: |
+          flake8 .
+          black . --check
+          isort .
