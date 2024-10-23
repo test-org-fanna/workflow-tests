@@ -52,7 +52,7 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: true
           installer-parallel: true
-          installation-arguments: poetry config repositories.repowered ${{ secrets.PRIVATE_PYPI_URL}}
+          installation-arguments: config repositories.repowered ${{ secrets.PRIVATE_PYPI_URL}}
 #          poetry http-basic.repowered ${{ secrets.PRIVATE_PYPI_USER }} ${{ secrets.PRIVATE_PYPI_PASSWORD}}
 
 #      - name: Configure Cached Poetry # Configuration options are not re-applied on cache hits
