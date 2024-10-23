@@ -38,7 +38,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: ls on repo
-        run: ls
+        run: ls -alh ~/.local
 
       - name: Load cached Poetry installation
         id: cached-poetry
