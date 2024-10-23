@@ -31,22 +31,22 @@ jobs:
 #          - 5432/tcp # assign a random free host port
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
       - name: ls on cache
         run: ls -alhR /var/cache
 
-#      - name: Load cached apk libs
-#        id: cached-apk
-#        uses: actions/cache@v4
-#        with:
-#          path: /var/cache/apk
-#          key: cache-0
+      - name: Load cached apk libs
+        id: cached-apk
+        uses: actions/cache@v4
+        with:
+          path: /var/cache/apk
+          key: cache-0
 
-#      - name: Install fresh bash (poetry) and zstd + tar (cache)
-#        if: steps.cached-apk.outputs.cache-hit != 'true'
-#        run: apk update && apk add bash && apk add zstd && apk add tar
+      - name: Install fresh bash (poetry) and zstd + tar (cache)
+        if: steps.cached-apk.outputs.cache-hit != 'true'
+        run: apk update && apk add bash && apk add zstd && apk add tar
+
+      - name: should have it in cache
+        run: ls -alhR /var/cache
 #
 #      - name: Load cached Poetry installation
 #        id: cached-poetry
@@ -79,6 +79,9 @@ jobs:
 #          path: .venv
 #          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python_version }}-${{ hashFiles('**/poetry.lock') }}
 #
+#      - name: Checkout repository
+#        uses: actions/checkout@v4
+
 #      - name: Install Fresh Dependencies
 #        if: steps.cached-dependencies.outputs.cache-hit != 'true'
 #        run: poetry install --no-interaction --no-root --no-ansi
