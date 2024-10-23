@@ -11,8 +11,8 @@ jobs:
       matrix:
         python-version: [ "3.11.2" ]
         poetry-version: ['1.8.4']
-      runs-on: ubuntu-latest
-      container: python:${{ matrix.python-version }}-alpine
+    runs-on: ubuntu-latest
+    container: python:${{ matrix.python-version }}-alpine
 
     services:
       postgres:
