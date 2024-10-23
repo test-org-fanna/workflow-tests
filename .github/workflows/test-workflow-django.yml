@@ -123,6 +123,10 @@ jobs:
 
   quality-control-lint:
     name: Quality checks with black flake8 isort
+    strategy:
+      matrix:
+        python-version: [ "3.11.2" ]
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
