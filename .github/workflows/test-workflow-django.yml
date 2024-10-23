@@ -6,7 +6,7 @@ on:
 
 jobs:
   test:
-    name: Django Tests With Postgres and Coverage for python version ${{ matrix.python.version }}
+    name: Django Tests With Postgres and Coverage
     strategy:
       matrix:
         python_version: [ "3.11.2" ]
@@ -31,11 +31,11 @@ jobs:
 #          - 5432/tcp # assign a random free host port
 
     steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v4
-
-      - name: Add bash for poetry
+      - name: Add bash for poetry and zstd for cache
         run: apk update && apk add bash && apk add zstd
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: ls on repo
         run: ls
