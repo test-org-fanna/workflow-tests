@@ -35,7 +35,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: ls on cache
-        run: ls -alh /var/cache
+        run: ls -alhR /var/cache
 
 #      - name: Load cached apk libs
 #        id: cached-apk
