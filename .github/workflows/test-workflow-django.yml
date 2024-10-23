@@ -31,6 +31,9 @@ jobs:
 #          - 5432/tcp # assign a random free host port
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: ls on cache
         run: ls -alhR /var/cache
 
