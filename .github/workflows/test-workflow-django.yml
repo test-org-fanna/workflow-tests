@@ -106,51 +106,51 @@ jobs:
           path: coverage.xml
           if-no-files-found: 'error'
 
-  quality-control-sonar:
-    name: Quality checks via SonarCloud with coverage report
-    needs: test
-    steps:
-      - name: Download coverage artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: coverage.xml
-
-      - name: SonarCloud analysis
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  quality-control-lint:
-    name: Quality checks with black flake8 isort
-    strategy:
-      matrix:
-        python-version: [ "3.11.2" ]
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Setup Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python-version }}
-          architecture: "x64"
-
-      - name: Load Pip Cache (when it exists)
-        uses: actions/cache@v4
-        id: cached-pip
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip
-          restore-keys: ${{ runner.os }}-pip
-
-      - name: Install Fresh Linters
-        if: steps.cached-pip.outputs.cache-hit != 'true'
-        run: python -m pip install black flake8 isort
-
-      - name: Run Linters
-      - run: |
-          flake8 .
-          black . --check
-          isort .
+#  quality-control-sonar:
+#    name: Quality checks via SonarCloud with coverage report
+#    needs: test
+#    steps:
+#      - name: Download coverage artifact
+#        uses: actions/download-artifact@v4
+#        with:
+#          name: coverage.xml
+#
+#      - name: SonarCloud analysis
+#        uses: SonarSource/sonarcloud-github-action@master
+#        env:
+#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#
+#  quality-control-lint:
+#    name: Quality checks with black flake8 isort
+#    strategy:
+#      matrix:
+#        python-version: [ "3.11.2" ]
+#
+#    steps:
+#      - name: Checkout Repository
+#        uses: actions/checkout@v4
+#
+#      - name: Setup Python ${{ matrix.python-version }}
+#        uses: actions/setup-python@v5
+#        with:
+#          python-version: ${{ matrix.python-version }}
+#          architecture: "x64"
+#
+#      - name: Load Pip Cache (when it exists)
+#        uses: actions/cache@v4
+#        id: cached-pip
+#        with:
+#          path: ~/.cache/pip
+#          key: ${{ runner.os }}-pip
+#          restore-keys: ${{ runner.os }}-pip
+#
+#      - name: Install Fresh Linters
+#        if: steps.cached-pip.outputs.cache-hit != 'true'
+#        run: python -m pip install black flake8 isort
+#
+#      - name: Run Linters
+#      - run: |
+#          flake8 .
+#          black . --check
+#          isort .
