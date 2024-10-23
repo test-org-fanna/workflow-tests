@@ -33,6 +33,9 @@ jobs:
     steps:
 #      - name: Checkout repository
 #        uses: actions/checkout@v4
+
+      - name: Add bash for poetry
+        run: apk update && apk add bash
 #
 #      - name: Load cached Poetry installation
 #        id: cached-poetry
