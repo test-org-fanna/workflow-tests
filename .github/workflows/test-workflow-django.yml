@@ -38,9 +38,9 @@ jobs:
           path: /var/cache/apk
           key: cache-0
 
-      - name: Install fresh bash (poetry) and zstd (cache)
+      - name: Install fresh bash (poetry) and zstd + tar (cache)
         if: steps.cached-apk.outputs.cache-hit != 'true'
-        run: apk update && apk add bash && apk add zstd
+        run: apk update && apk add bash && apk add zstd && apk add tar
 
       - name: Checkout repository
         uses: actions/checkout@v4
