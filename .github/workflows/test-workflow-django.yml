@@ -31,7 +31,15 @@ jobs:
 #          - 5432/tcp # assign a random free host port
 
     steps:
-      - name: Add bash for poetry and zstd for cache
+      - name: Load cached apk libs
+        id: cached-apk
+        uses: actions/cache@v4
+        with:
+          path: /var/cache/apk
+          key: cache-0
+
+      - name: Install fresh bash (poetry) and zstd (cache)
+        if: steps.cached-apk.outputs.cache-hit != 'true'
         run: apk update && apk add bash && apk add zstd
 
       - name: Checkout repository
