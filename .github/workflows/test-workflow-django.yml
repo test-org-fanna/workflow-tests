@@ -36,16 +36,16 @@ jobs:
 
       - name: Add bash for poetry
         run: apk update && apk add bash
-#
-#      - name: Load cached Poetry installation
-#        id: cached-poetry
-#        uses: actions/cache@v4
-#        with:
-#          path: ~/.local
-#          key: poetry-0
+
+      - name: Load cached Poetry installation
+        id: cached-poetry
+        uses: actions/cache@v4
+        with:
+          path: ~/.local
+          key: poetry-0
 
       - name: Install Fresh Poetry V${{ matrix.poetry_version }}
-#        if: steps.cached-poetry.outputs.cache-hit != 'true'
+        if: steps.cached-poetry.outputs.cache-hit != 'true'
         uses: snok/install-poetry@v1
         with:
           version: ${{ matrix.poetry_version }}
@@ -55,12 +55,13 @@ jobs:
           installation-arguments: config repositories.repowered ${{ secrets.PRIVATE_PYPI_URL}}
 #          poetry http-basic.repowered ${{ secrets.PRIVATE_PYPI_USER }} ${{ secrets.PRIVATE_PYPI_PASSWORD}}
 
-#      - name: Configure Cached Poetry # Configuration options are not re-applied on cache hits
-#        if: steps.cached-poetry.outputs.cache-hit == 'true'
-#        run: |
-#          poetry config virtualenvs.in-project true
-#          poetry config repositories.repowered ${{ secrets.PRIVATE_PYPI_URL}}
-#          poetry config http-basic.repowered ${{ secrets.PRIVATE_PYPI_USER }} ${{ secrets.PRIVATE_PYPI_PASSWORD}}
+      - name: Configure Poetry # Configuration options are not re-applied on cache hits
+        run: |
+          if [ ${{ steps.cached-poetry.outputs.cache-hit == 'true' }} ] ; then
+            poetry config virtualenvs.in-project true ;
+          fi
+          poetry config repositories.repowered ${{ secrets.PRIVATE_PYPI_URL}}
+          poetry config http-basic.repowered ${{ secrets.PRIVATE_PYPI_USER }} ${{ secrets.PRIVATE_PYPI_PASSWORD}}
 #
 #      - name: Load Cached Virtual Environment
 #        id: cached-dependencies
