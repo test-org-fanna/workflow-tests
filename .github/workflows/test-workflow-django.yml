@@ -41,7 +41,7 @@ jobs:
         id: cached-poetry
         uses: actions/cache@v4
         with:
-          path: ~/.local/bin/poetry
+          path: ${{github.workspace}}/.local/bin/poetry
           key: poetry-0
 
       - name: Install Fresh Poetry V${{ matrix.poetry_version }}
