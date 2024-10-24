@@ -37,19 +37,15 @@ jobs:
       - name: Install needed apk packages
         run: apk update && apk add bash && apk add zstd && apk add tar
 
-      - name: Load cached Poetry installation
-        id: cached-poetry
+      - name: Load cached installation
+        id: cached
         uses: actions/cache@v4
         with:
-          # Excluding only works if you have all patterns on the same "level"
-          # https://github.com/actions/toolkit/issues/713
-          path: |
-            /github/home/.local/*/*/*
-            !/github/home/.local/venv/lib/python.*
-          key: poetry-${{ matrix.poetry_version }}
+          path: /github/home/.local/
+          key: poetry-${{ matrix.poetry_version }}-${{ matrix.python_version }}
 
       - name: Install Fresh Poetry V${{ matrix.poetry_version }}
-        if: steps.cached-poetry.outputs.cache-hit != 'true'
+        if: steps.cached.outputs.cache-hit != 'true'
         uses: snok/install-poetry@v1
         with:
           version: ${{ matrix.poetry_version }}
@@ -64,8 +60,8 @@ jobs:
       - name: ls on complete cache dr
         run: ls -alhR /github/home/.local/
 
-#      - name: Check poetry full path
-#        run: /github/home/.local/venv/bin/poetry --version
+      - name: Check poetry full path
+        run: /github/home/.local/bin/poetry --version
 
       - name: Check poetry symlink
         run: poetry --version
