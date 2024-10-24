@@ -38,6 +38,7 @@ jobs:
         run: ls -alhR /var/cache
 
       - name: Set up Python
+        if: always()
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python_version }}
