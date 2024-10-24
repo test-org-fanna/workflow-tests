@@ -57,8 +57,7 @@ jobs:
         run: ls -alR /github/home/.local/
 
       - name: Check poetry
-        run: which poetry
-      - run: poetry --version
+        run: which /github/home/.local/bin/poetry
 #
 #      - name: Configure Poetry # Config options are not re-applied on cache hitsg
 #        run: |
