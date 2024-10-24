@@ -28,7 +28,7 @@ jobs:
 #          --health-timeout 5s
 #          --health-retries 5
 #        ports:
-#          - 5432/tcp # assign a random free host port
+#          - 5432/tcp # assign a random free host portx
 
     steps:
       - name: Checkout repository
