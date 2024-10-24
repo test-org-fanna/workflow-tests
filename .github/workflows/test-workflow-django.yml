@@ -34,36 +34,24 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Load cached apk libs
-        id: cached-apk
-        uses: actions/cache@v4
-        with:
-          path: ${{ github.workspace }}
-          key: apk-cache-0
-          restore-keys: |
-            apk-cache-
-            apk-
-
-      - name: Install fresh bash (poetry) and zstd + tar (cache)
-        if: steps.cached-apk.outputs.cache-hit != 'true'
+      - name: Install needed apk packages
         run: apk update && apk add bash && apk add zstd && apk add tar
 
-#
-#      - name: Load cached Poetry installation
-#        id: cached-poetry
-#        uses: actions/cache@v4
-#        with:
-#          path: /var/cache/poetry
-#          key: poetry-0
-#
-#      - name: Install Fresh Poetry V${{ matrix.poetry_version }}
-#        if: steps.cached-poetry.outputs.cache-hit != 'true'
-#        uses: snok/install-poetry@v1
-#        with:
-#          version: ${{ matrix.poetry_version }}
-#          virtualenvs-create: true
-#          virtualenvs-in-project: true
-#          installer-parallel: true
+      - name: Load cached Poetry installation
+        id: cached-poetry
+        uses: actions/cache@v4
+        with:
+          path: /var/cache/poetry
+          key: poetry-0
+
+      - name: Install Fresh Poetry V${{ matrix.poetry_version }}
+        if: steps.cached-poetry.outputs.cache-hit != 'true'
+        uses: snok/install-poetry@v1
+        with:
+          version: ${{ matrix.poetry_version }}
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          installer-parallel: true
 #
 #      - name: Configure Poetry # Config options are not re-applied on cache hits
 #        run: |
