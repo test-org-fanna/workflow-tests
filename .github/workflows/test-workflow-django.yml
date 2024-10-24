@@ -38,7 +38,7 @@ jobs:
         id: cached-apk
         uses: actions/cache@v4
         with:
-          path: ${{ github.workspace }}/etc/apk/cache
+          path: ${{ github.workspace }}
           key: ${{ runner.os }}-cache-0
 
       - name: Install fresh bash (poetry) and zstd + tar (cache)
