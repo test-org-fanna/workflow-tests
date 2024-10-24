@@ -53,15 +53,15 @@ jobs:
           virtualenvs-in-project: true
           installer-parallel: true
 
-#      - name: Create symlink
-#        if: ${{ steps.cached-poetry.outputs.cache-hit }} != 'true'
-#        run: ln -s /github/home/.local/venv/bin/poetry poetry
-
       - name: ls on complete cache dr
         run: ls -alhR /github/home/.local/
 
       - name: Check poetry full path
         run: /github/home/.local/bin/poetry --version
+
+      - name: Create symlink
+#        if: ${{ steps.cached.outputs.cache-hit }} != 'true'
+        run: ln -s /github/home/.local/bin/poetry poetry
 
       - name: Check poetry symlink
         run: poetry --version
