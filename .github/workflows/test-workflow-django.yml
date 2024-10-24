@@ -62,7 +62,7 @@ jobs:
 #        run: ln -s /github/home/.local/venv/bin/poetry poetry
 
       - name: ls on complete cache dr
-        run: ls -alR /github/home/.local/
+        run: ls -alhR /github/home/.local/
 
 #      - name: Check poetry full path
 #        run: /github/home/.local/venv/bin/poetry --version
