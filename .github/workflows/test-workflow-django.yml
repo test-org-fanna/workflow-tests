@@ -42,7 +42,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.local
-          key: poetry-${{ matrix.poetry_version }}
+          key: poetry-${{ matrix.poetry_version }}-345
 
       - name: Install Fresh Poetry V${{ matrix.poetry_version }}
         if: steps.cached-poetry.outputs.cache-hit != 'true'
