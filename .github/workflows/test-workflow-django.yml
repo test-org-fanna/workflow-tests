@@ -34,31 +34,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Restore cache
-        id: cache
+      - name: Load cached apk libs
+        id: cached-apk
         uses: actions/cache@v4
         with:
-          path: ./cache-dir  # Directory on the host machine
-          key: ${{ runner.os }}-cache-${{ hashFiles('requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-cache-
-
-#      - name: Load cached apk libs
-#        id: cached-apk
-#        uses: actions/cache@v4
-#        with:
-#          path: /var/cache/apk
-#          key: cache-0
+          path: ${{ github.workspace }}/etc/apk/cache
+          key: ${{ runner.os }}-cache-0
 
       - name: Install fresh bash (poetry) and zstd + tar (cache)
-        if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.cached-apk.outputs.cache-hit != 'true'
         run: apk update && apk add bash && apk add zstd && apk add tar
-        volumes:
-          - ./cache-dir:/mnt/cache  # Mount host cache directory inside the container
 
-
-      - name: should have it in cache
-        run: ls -alh /mnt/cache
 #
 #      - name: Load cached Poetry installation
 #        id: cached-poetry
