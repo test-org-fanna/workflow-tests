@@ -59,8 +59,10 @@ jobs:
       - name: Check poetry full path
         run: /github/home/.local/bin/poetry --version
 
+      - name: Add cache to PATH
+        run: echo "/github/home/.local/bin" >> $GITHUB_PATH
+
       - name: Create symlink
-#        if: ${{ steps.cached.outputs.cache-hit }} != 'true'
         run: ln -s /github/home/.local/bin/poetry poetry
 
       - name: Check poetry symlink
