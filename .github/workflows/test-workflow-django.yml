@@ -41,7 +41,7 @@ jobs:
         id: cached-poetry
         uses: actions/cache@v4
         with:
-          path: /github/home/.local/venv
+          path: /github/home/.local/venv/bin
           key: poetry-${{ matrix.poetry_version }}
 
       - name: Install Fresh Poetry V${{ matrix.poetry_version }}
@@ -58,7 +58,7 @@ jobs:
 #        run: ln -s /github/home/.local/venv/bin/poetry poetry
 
       - name: ls on cache dr
-        run: ls -alR /github/home/.local/bin
+        run: ls -alR /github/home/.local/venv/bin
 
       - name: Check poetry full path
         run: /github/home/.local/venv/bin/poetry --version
