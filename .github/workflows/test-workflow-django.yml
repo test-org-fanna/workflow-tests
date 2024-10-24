@@ -12,7 +12,7 @@ jobs:
         python_version: [ "3.11.2" ]
         poetry_version: ['1.8.4']
     runs-on: ubuntu-latest
-    container: python:${{ matrix.python_version }}-alpine
+#    container: python:${{ matrix.python_version }}-alpine
 
 #    services:
 #      postgres:
@@ -36,6 +36,12 @@ jobs:
 
       - name: ls on cache
         run: ls -alhR /var/cache
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python_version }}
+
 
       - name: Load cached apk libs
         id: cached-apk
