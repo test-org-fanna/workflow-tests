@@ -39,7 +39,10 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ github.workspace }}
-          key: ${{ runner.os }}-cache-0
+          key: apk-cache-0
+          restore-keys: |
+            apk-cache-
+            apk-
 
       - name: Install fresh bash (poetry) and zstd + tar (cache)
         if: steps.cached-apk.outputs.cache-hit != 'true'
