@@ -66,7 +66,7 @@ jobs:
 #        run: apk update && apk add bash && apk add zstd && apk add tar
 
       - name: should have it in cache
-        run: ls -alh /var/cache/apt
+        run: ls -alh /var/cache/apt/archives
 #
 #      - name: Load cached Poetry installation
 #        id: cached-poetry
