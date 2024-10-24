@@ -1,0 +1,38 @@
+ARG PYTHON_IMAGE
+FROM ${PYTHON_IMAGE:-python:3.11.2-alpine}
+
+WORKDIR /usr/src/dummy
+
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+
+# install psycopg2 dependencies and enable caching
+RUN --mount=type=cache,target=/var/cache/apk \
+    apk update && apk add --no-cache \
+    g++ gcc libffi-dev musl-dev nmap postgresql python3-dev supervisor
+
+# install poetry and copy lock + toml file
+ARG POETRY_VERSION
+RUN --mount=type=cache,target=/var/cache/pip \
+    pip install "poetry==${POETRY_VERSION:-1.8.4}"
+COPY poetry.lock pyproject.toml ./
+
+ # Mount secrets for private Repowered package repository and install packages
+RUN --mount=type=secret,id=url \
+    --mount=type=secret,id=user \
+    --mount=type=secret,id=password \
+    poetry config repositories.repowered $(cat /run/secrets/url) && \
+    poetry config http-basic.repowered $(cat /run/secrets/user) $(cat /run/secrets/password) && \
+    poetry install --no-interaction --no-ansi --no-root
+
+COPY . .
+
+CMD ["poetry", "run", "python", "manage.py", "runserver"]
+
+# Build with:
+#           docker build -t django-test \
+#               -f Dockerfile.django-test \
+#               --build-arg PYTHON_IMAGE=python:3.11.2-alpine \
+#               --build-arg POETRY_VERSION=1.8.4 \
+#               --secret id=url,env=PRIVATE_PYPI_URL \
+#               --secret id=user,env=PRIVATE_PYPI_USER \
+#               --secret id=password,env=PRIVATE_PYPI_PASSWORD .

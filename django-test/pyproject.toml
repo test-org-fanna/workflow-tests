@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "django-test"
+version = "0.1.0"
+description = "Just a simple app to run the workflow with"
+authors = ["fanna <fanna.lautenbach@repowered.nl>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+Django = "4.2.2"
+
+[tool.poetry.group.A.dependencies]
+alan = {version = "^0.1.16", source = "repowered"}
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.2.1"
+pytest-cov = "^4.1.0"
+pytest-testmon = "^2.0.13"
+
+[[tool.poetry.source]]
+name = "repowered"
+url = "http://packages.repowered.nl/simple"
+priority = 'explicit'
+
+[[tool.poetry.source]]
+name = "PyPI"
+priority = "primary"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
