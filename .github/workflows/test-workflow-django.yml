@@ -41,9 +41,11 @@ jobs:
         id: cached-poetry
         uses: actions/cache@v4
         with:
+          # Excluding only works if you have all patterns on the same "level"
+          # https://github.com/actions/toolkit/issues/713
           path: |
-            /github/home/.local/venv/bin
-            /github/home/.local/bin
+            /github/home/.local/*/*/*
+            !/github/home/.local/venv/lib/python.*
           key: poetry-${{ matrix.poetry_version }}
 
       - name: Install Fresh Poetry V${{ matrix.poetry_version }}
