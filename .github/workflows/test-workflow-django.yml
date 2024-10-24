@@ -56,8 +56,9 @@ jobs:
       - name: ls on cache dir
         run: ls -alR /github/home/.local/
 
-      - name: Check poetry run
-        run: pwd && which poetry && poetry --version
+      - name: Check poetry
+        run: which poetry
+      - run: poetry --version
 #
 #      - name: Configure Poetry # Config options are not re-applied on cache hits
 #        run: |
