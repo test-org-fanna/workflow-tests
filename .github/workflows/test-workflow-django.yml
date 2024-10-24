@@ -42,7 +42,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: /github/home/.local
-          key: poetry-${{ matrix.poetry_version }}-345
+          key: poetry-${{ matrix.poetry_version }}
 
       - name: Install Fresh Poetry V${{ matrix.poetry_version }}
         if: steps.cached-poetry.outputs.cache-hit != 'true'
@@ -54,10 +54,11 @@ jobs:
           installer-parallel: true
 
       - name: ls on cache dir
-        run: ls -alR /github/home/.local/
+        if: ${{ steps.cached-poetry.outputs.cache-hit }} == 'true'
+        run: ln -s /github/home/.local/bin/poetry poetry
 
       - name: Check poetry
-        run: /github/home/.local/bin/poetry --version
+        run: poetry --version
 #
 #      - name: Configure Poetry # Config options are not re-applied on cache hitsg
 #        run: |
