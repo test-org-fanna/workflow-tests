@@ -43,17 +43,28 @@ jobs:
         with:
           python-version: ${{ matrix.python_version }}
 
-
-      - name: Load cached apk libs
-        id: cached-apk
+      - name: Load cached apt libs
+        id: cached-apt
         uses: actions/cache@v4
         with:
-          path: /var/cache/apk
-          key: cache-0
+          path: /var/cache/apt
+          key: apt-0
 
-      - name: Install fresh bash (poetry) and zstd + tar (cache)
-        if: steps.cached-apk.outputs.cache-hit != 'true'
-        run: apk update && apk add bash && apk add zstd && apk add tar
+      - name: Install stupid cowsay
+        if: steps.cached-apt.outputs.cache-hit != 'true'
+        run: sudo apt-get install cowsay
+
+
+#      - name: Load cached apk libs
+#        id: cached-apk
+#        uses: actions/cache@v4
+#        with:
+#          path: /var/cache/apk
+#          key: cache-0
+#
+#      - name: Install fresh bash (poetry) and zstd + tar (cache)
+#        if: steps.cached-apk.outputs.cache-hit != 'true'
+#        run: apk update && apk add bash && apk add zstd && apk add tar
 
       - name: should have it in cache
         run: ls -alhR /var/cache
