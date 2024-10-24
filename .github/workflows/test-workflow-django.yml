@@ -53,6 +53,9 @@ jobs:
           virtualenvs-in-project: true
           installer-parallel: true
 
+      - name: ls on cache dir
+        run: ls -alR /github/home/.local/
+
       - name: Check poetry run
         run: poetry --version
 #
