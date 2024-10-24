@@ -60,7 +60,7 @@ jobs:
         run: which poetry
       - run: poetry --version
 #
-#      - name: Configure Poetry # Config options are not re-applied on cache hits
+#      - name: Configure Poetry # Config options are not re-applied on cache hitsg
 #        run: |
 #          if [ ${{ steps.cached-poetry.outputs.cache-hit == 'true' }} ] ; then
 #            poetry config virtualenvs.in-project true ;
