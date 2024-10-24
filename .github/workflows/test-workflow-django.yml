@@ -60,8 +60,8 @@ jobs:
       - name: ls on cache dr
         run: ls -alR /github/home/.local/venv/bin
 
-      - name: Check poetry full path
-        run: /github/home/.local/venv/bin/poetry --version
+#      - name: Check poetry full path
+#        run: /github/home/.local/venv/bin/poetry --version
 
       - name: Check poetry symlink
         run: poetry --version
