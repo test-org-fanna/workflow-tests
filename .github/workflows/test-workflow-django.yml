@@ -42,8 +42,6 @@ jobs:
           key: ${{ runner.os }}-cache-${{ hashFiles('requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-cache-
-        volumes:
-          - ./cache-dir:/mnt/cache  # Mount host cache directory inside the container
 
 #      - name: Load cached apk libs
 #        id: cached-apk
@@ -55,6 +53,8 @@ jobs:
       - name: Install fresh bash (poetry) and zstd + tar (cache)
         if: steps.cache.outputs.cache-hit != 'true'
         run: apk update && apk add bash && apk add zstd && apk add tar
+        volumes:
+          - ./cache-dir:/mnt/cache  # Mount host cache directory inside the container
 
 
       - name: should have it in cache
