@@ -49,6 +49,7 @@ jobs:
         run: echo "/github/home/.local/bin" >> $GITHUB_PATH
 
       - name: check poetry django
+        working-directory: django-test #INPUTs
         run: poetry show django
 
       - name: Install Fresh Poetry V${{ matrix.poetry_version }}
