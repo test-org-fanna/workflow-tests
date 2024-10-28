@@ -76,7 +76,7 @@ jobs:
           if [ poetry run python manage.py makemigrations --check ] ; then
             echo "::error::The migration check failed" ;
           fi
-        env:
+#        env:
 #          SQL_ENGINE: django.db.backends.postgresql
 #          SQL_DATABASE: github_actions
 #          SQL_USER: postgres
