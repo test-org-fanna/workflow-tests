@@ -76,6 +76,13 @@ jobs:
       - name: DO IT
         working-directory: django-test
         run: poetry run python manage.py makemigrations --dry-run
+        env:
+          ENGINE: django.db.backends.postgresql #INPUT/SECRETS/VARS
+          POSTGRES_DB: testdb
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
 
       - name: Check Django Migrations
         working-directory: django-test #INPUT
