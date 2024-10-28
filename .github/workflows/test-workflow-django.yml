@@ -76,24 +76,20 @@ jobs:
       - name: Check Django Migrations
         working-directory: django-test #INPUT
         if: true #INPUT
-        run: MIGRATION_MSG=$(poetry run python manage.py makemigrations --dry-run 2>&1 )
-
-
-
-
-#          if [[ "$MIGRATION_MSG" != 'No changes detected' ]]; then
-#            echo "<h2>:no_entry_sign: Migration check failed </h2>
-#                    <h3>The following migration(s) should be created:</h3>
-#                    <br/> $MIGRATION_MSG" >> $GITHUB_STEP_SUMMARY
-#            exit 1
-#          fi
-#        env:
-#          ENGINE: django.db.backends.postgresql #INPUT/SECRETS/VARS
-#          POSTGRES_DB: testdb
-#          POSTGRES_USER: postgres
-#          POSTGRES_PASSWORD: postgres
-#          POSTGRES_HOST: localhost
-#          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
+        run: |
+          MIGRATION_MSG=$(poetry run python manage.py makemigrations --dry-run 2>&1 )
+          if [[ "$MIGRATION_MSG" != 'No changes detected' ]]; then
+            echo "<h2>:no_entry_sign: Migration check failed </h2>
+                    <h3>The following migration(s) should be created:</h3>
+                    <br/> $MIGRATION_MSG" >> $GITHUB_STEP_SUMMARY
+          fi
+        env:
+          ENGINE: django.db.backends.postgresql #INPUT/SECRETS/VARS
+          POSTGRES_DB: testdb
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
 
       - name: Run tests with coverage
         run: poetry run pytest --cov-config=.coveragerc --cov-report=xml --cov=. --durations=5
