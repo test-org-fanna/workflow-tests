@@ -15,9 +15,8 @@ jobs:
     container: python:${{ matrix.python_version }}-alpine
 
     services:
-      if: true #INPUT
       postgres:
-        image: postgres
+        image: ${{ (true) && 'postgres' || '' }}  #INPUT
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
