@@ -25,6 +25,11 @@ DJANGO_SETTINGS_MODULE = "dummy.settings"
 python_files = ["test_*.py", "*_test.py", "tests.py"]
 
 [[tool.poetry.source]]
+name = "repowered"
+url = "http://packages.repowered.nl/simple"
+priority = 'explicit'
+
+[[tool.poetry.source]]
 name = "PyPI"
 priority = "primary"
 
