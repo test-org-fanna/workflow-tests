@@ -71,7 +71,7 @@ jobs:
 
       - name: Check Django Migrations
         run: |
-          poetry run python manage.py makemigrations --dry-run --check --no-input
+          poetry --directory=django-test/ run python manage.py makemigrations --dry-run --check --no-input
         env:
           SQL_ENGINE: django.db.backends.postgresql
           SQL_DATABASE: github_actions
