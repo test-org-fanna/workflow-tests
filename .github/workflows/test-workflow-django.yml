@@ -85,12 +85,12 @@ jobs:
             exit 1
           fi
         env:
-          SQL_ENGINE: django.db.backends.postgresql #INPUT/SECRETS/VARS
-          SQL_DATABASE: github_actions
-          SQL_USER: postgres
-          SQL_PASSWORD: postgres
-          SQL_HOST: localhost
-          SQL_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
+          ENGINE: django.db.backends.postgresql #INPUT/SECRETS/VARS
+          POSTGRES_DB: github_actions
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
 #
 #      - name: Run tests with coverage
 #        run: poetry run pytest --cov-config=.coveragerc --cov-report=xml --cov=. --durations=5

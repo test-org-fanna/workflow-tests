@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'dummy.wsgi.application'
 
 DATABASES = {
     'default': {
-        "ENGINE": os.environ["SQL_ENGINE"],
+        "ENGINE": os.environ["ENGINE"],
         "NAME": os.environ["POSTGRES_DB"],
         "USER": os.environ["POSTGRES_USER"],
         "PASSWORD": os.environ["POSTGRES_PASSWORD"],
