@@ -73,7 +73,6 @@ jobs:
         working-directory: django-test #INPUTs
         if: true #INPUT
         run: |
-          poetry show django
           MIGRATION_MSG=`poetry run python manage.py makemigrations --dry-run`
           echo $MIGRATION_MSG
 #          if [[ ! -z $MIGRATION_MSG ]] ; then
