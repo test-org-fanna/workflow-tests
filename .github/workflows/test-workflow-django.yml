@@ -78,6 +78,7 @@ jobs:
         if: true #INPUT
         run: |
           INSTALL_MSG=$(poetry run python manage.py makemigrations --dry-run 2>&1)
+          echo "$INSTALL_MSG"
           if [[ "$INSTALL_MSG" != '' ]]; then
             echo "<h2>:no_entry_sign: Poetry install dry-run failed </h2>
                     <h3>You should probably run 'poetry lock' </h3>
