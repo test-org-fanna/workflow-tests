@@ -16,7 +16,7 @@ jobs:
 
     services:
       postgres:
-        image: ${{ (false) && 'postgres' || '' }}  #INPUT
+        image: ${{ (true) && 'postgres' || '' }}  #INPUT
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -73,16 +73,16 @@ jobs:
         if: true #INPUT
         working-directory: django-test #REMOVE
         run: |
-          if [ poetry run python manage.py makemigrations --dry-run --check --no-input ] ; then
+          if [ poetry run python manage.py makemigrations --check ] ; then
             echo "::error::The migration check failed" ;
           fi
         env:
-          SQL_ENGINE: django.db.backends.postgresql
-          SQL_DATABASE: github_actions
-          SQL_USER: postgres
-          SQL_PASSWORD: postgres
-          SQL_HOST: localhost
-          SQL_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
+#          SQL_ENGINE: django.db.backends.postgresql
+#          SQL_DATABASE: github_actions
+#          SQL_USER: postgres
+#          SQL_PASSWORD: postgres
+#          SQL_HOST: localhost
+#          SQL_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
 #
 #      - name: Run tests with coverage
 #        run: poetry run pytest --cov-config=.coveragerc --cov-report=xml --cov=. --no-testmon --durations=5
