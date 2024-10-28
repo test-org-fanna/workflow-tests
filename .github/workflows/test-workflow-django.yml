@@ -57,18 +57,17 @@ jobs:
           virtualenvs-in-project: true
           installer-parallel: true
 
-      - name: Configure Poetry # Config options are not re-applied on cache hits
-        run: |
-          if [ ${{ steps.cache.outputs.cache-hit == 'true' }} ] ; then
-            poetry config virtualenvs.in-project true ;
-          fi
-          poetry config repositories.repowered ${{ secrets.PRIVATE_PYPI_URL}}
-          poetry config http-basic.repowered ${{ secrets.PRIVATE_PYPI_USER }} ${{ secrets.PRIVATE_PYPI_PASSWORD}}
+#      - name: Configure Poetry # Config options are not re-applied on cache hits
+#        if: steps.cache.outputs.cache-hit == 'true'
+#        run: poetry config virtualenvs.in-project true
 
       - name: Install Fresh Dependencies
         working-directory: django-test #INPUT
         if: steps.cache.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-root --no-ansi
+        run: |
+          poetry config repositories.repowered ${{ secrets.PRIVATE_PYPI_URL}}
+          poetry config http-basic.repowered ${{ secrets.PRIVATE_PYPI_USER }} ${{ secrets.PRIVATE_PYPI_PASSWORD}}
+          poetry install --no-interaction --no-root --no-ansi
 
       - name: Check Django Migrations
         working-directory: django-test #INPUTs
