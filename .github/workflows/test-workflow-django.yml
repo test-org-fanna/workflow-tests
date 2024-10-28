@@ -60,7 +60,7 @@ jobs:
       - name: Check poetry symlink
         run: poetry --version
 
-      - name: Configure Poetry # Config options are not re-applied on cache hits
+      - name: Configure Poetry # Config options are not re-applied on cache hitsz
         run: |
           if [ ${{ steps.cache.outputs.cache-hit == 'true' }} ] ; then
             poetry config virtualenvs.in-project true ;
