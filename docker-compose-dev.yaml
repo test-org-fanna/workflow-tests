@@ -1,8 +1,0 @@
-# A test docker-compose file to check if docker-compose files with extended names and file extensions are included for SSH deploy
-
-services:
-  test-image:
-    image: fannarepowered/workflow-tests:${TAG}
-    labels:
-      - test=${HOST}
-      - domain-test=HOST('${EXTRA_DOMAIN}')

@@ -1,0 +1,11 @@
+# A test docker-compose file to check if docker-compose files with extended names and file extensions are included for SSH deploy
+# It also serves as the postgres setup for the django-test app
+
+services:
+  postgres:
+    container_name: postgres_testdb
+    image: postgres
+    ports:
+      - "5432:5432"
+    env_file:
+      - django-test/.env
