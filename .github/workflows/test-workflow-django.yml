@@ -71,10 +71,9 @@ jobs:
         run: poetry install --no-interaction --no-root --no-ansi #INPUT
 
       - name: Check Django Migrations
-#        working-directory: django-test #INPUT
+        working-directory: django-test #INPUT
         if: true #INPUT
         run: |
-          cd django-test
           poetry run python manage.py makemigrations --check
           if [ $? ] ; then
             MIGRATION_ERROR=$(poetry run python manage.py makemigrations --dry-run)
