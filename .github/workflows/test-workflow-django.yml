@@ -73,9 +73,10 @@ jobs:
         if: true #INPUT
         working-directory: django-test #REMOVE
         run: |
-          if [ poetry run python manage.py makemigrations --check ] ; then
-            echo "::error::The migration check failed" ;
-          fi
+          poetry run python manage.py makemigrations --check
+#          if
+#            echo "::error::The migration check failed" ;
+#          fi
 #        env:
 #          SQL_ENGINE: django.db.backends.postgresql
 #          SQL_DATABASE: github_actions
