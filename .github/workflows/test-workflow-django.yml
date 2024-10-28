@@ -60,7 +60,7 @@ jobs:
           INSTALL_MSG=$(poetry install --dry-run 2>&1 | tail -1)
           if [[ "$INSTALL_MSG" != '' ]]; then
             echo "<h2>:no_entry_sign: Poetry install dry-run failed </h2>
-                    <h3>You should probably run _poetry lock_. </h3>
+                    <h3>You should probably run 'poetry lock' </h3>
                     <br/> $INSTALL_MSG" >> $GITHUB_STEP_SUMMARY
             exit 1
           fi
@@ -84,13 +84,13 @@ jobs:
                     <br/> $MIGRATION_MSG" >> $GITHUB_STEP_SUMMARY
             exit 1
           fi
-#        env:
-#          SQL_ENGINE: django.db.backends.postgresql
-#          SQL_DATABASE: github_actions
-#          SQL_USER: postgres
-#          SQL_PASSWORD: postgres
-#          SQL_HOST: localhost
-#          SQL_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
+        env:
+          SQL_ENGINE: django.db.backends.postgresql #INPUT/SECRETS/VARS
+          SQL_DATABASE: github_actions
+          SQL_USER: postgres
+          SQL_PASSWORD: postgres
+          SQL_HOST: localhost
+          SQL_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
 #
 #      - name: Run tests with coverage
 #        run: poetry run pytest --cov-config=.coveragerc --cov-report=xml --cov=. --durations=5
