@@ -1,4 +1,4 @@
-# A test docker-compose file to check if a standard docker-compose file is included for SSH deploy
+# A test docker-compose file to check if docker-compose files with extended names and file extensions are included for SSH deploy
 
 services:
   test-image:

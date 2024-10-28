@@ -9,24 +9,20 @@ readme = "README.md"
 python = "^3.11"
 Django = "4.2.2"
 
-# To test the integration with groups and the private PyPI
-[tool.poetry.group.A.dependencies]
-alan = {version = "^0.1.16", source = "repowered"}
-
 [tool.poetry.dev-dependencies]
 pytest = "^7.2.1"
 pytest-django = "4.9.0"
 pytest-cov = "^4.1.0"
 pytest-testmon = "^2.0.13"
 
+# To test the integration with groups and the private PyPI
+[tool.poetry.group.A.dependencies]
+alan = {version = "^0.1.16", source = "repowered"}
+
+# Instead of the 'old way' using an 'ini' file
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "dummy.settings"
 python_files = ["test_*.py", "*_test.py", "tests.py"]
-
-[[tool.poetry.source]]
-name = "repowered"
-url = "http://packages.repowered.nl/simple"
-priority = 'explicit'
 
 [[tool.poetry.source]]
 name = "PyPI"
