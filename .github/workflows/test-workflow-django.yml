@@ -15,6 +15,7 @@ jobs:
     container: python:${{ matrix.python_version }}-alpine
 
     services:
+      if: true #INPUT
       postgres:
         image: postgres
         env:
@@ -70,10 +71,12 @@ jobs:
         run: poetry --directory=django-test/ install --no-interaction --no-root --no-ansi #INPUT
 
       - name: Check Django Migrations
-        working-directory: django-test
+        if: true #INPUT
+        working-directory: django-test #REMOVE
         run: |
-          poetry run python manage.py makemigrations --dry-run --check --no-input
-          echo "::error::Migration check failed"
+          if [ poetry run python manage.py makemigrations --dry-run --check --no-input ] ; then
+            echo "::error::The migration check failed" ;
+          fi
         env:
           SQL_ENGINE: django.db.backends.postgresql
           SQL_DATABASE: github_actions
