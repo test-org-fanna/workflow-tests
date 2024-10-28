@@ -66,13 +66,15 @@ jobs:
           poetry config http-basic.repowered ${{ secrets.PRIVATE_PYPI_USER }} ${{ secrets.PRIVATE_PYPI_PASSWORD}}
 
       - name: Install Fresh Dependencies
+        working-directory: django-test
         if: steps.cache.outputs.cache-hit != 'true'
-        run: poetry --directory=django-test/ install --no-interaction --no-root --no-ansi #INPUT
+        run: poetry install --no-interaction --no-root --no-ansi #INPUT
 
       - name: Check Django Migrations
+        working-directory: django-test
         if: true #INPUT
         run: |
-          poetry run python django-test/manage.py makemigrations --check
+          poetry run python manage.py makemigrations --check
 #          if
 #            echo "::error::The migration check failed" ;
 #          fi
