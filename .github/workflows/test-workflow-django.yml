@@ -71,7 +71,7 @@ jobs:
         run: poetry install --no-interaction --no-root --no-ansi #INPUT
 
       - name: Check Django Migrations
-        working-directory: django-test #INPUT
+        working-directory: django-test #INPUTs
         if: true #INPUT
         run: |
           MIGRATION_MSG=`poetry run python manage.py makemigrations --dry-run`
