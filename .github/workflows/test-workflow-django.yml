@@ -69,7 +69,7 @@ jobs:
 #          poetry config http-basic.repowered ${{ secrets.PRIVATE_PYPI_USER }} ${{ secrets.PRIVATE_PYPI_PASSWORD}}
 
       - name: ls on all
-        run: ls -alh
+        run: ls -alhR
 
       - name: Install Fresh Dependencies
 #        if: steps.cache.outputs.cache-hit != 'true'
