@@ -74,8 +74,8 @@ jobs:
         if: true #INPUT
         run: |
           MIGRATION_MSG=`poetry run python manage.py makemigrations --dry-run`
-          echo "$MIGRATION_MSG" >> $GITHUB_STEP_SUMMARY
           if [[ "$MIGRATION_MSG" != '' ]]; then
+            echo "<h1>:database: Migration check failed</h1> $MIGRATION_MSG" >> $GITHUB_STEP_SUMMARY
             echo "::error::The migrations check failed."
             exit 1
           fi
