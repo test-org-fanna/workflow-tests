@@ -74,8 +74,11 @@ jobs:
         working-directory: django-test #INPUT
         if: true #INPUT
         run: |
-          if [ poetry run python manage.py makemigrations --check ] ; then
+          MIGRATIONS_CHECK=poetry run python manage.py makemigrations --check
+          echo $MIGRATIONS_CHECK
+          if [ $MIGRATIONS_CHECK ] ; then
             MIGRATION_ERROR=poetry run python manage.py makemigrations --dry-run
+            echo $MIGRATION_ERROR
             echo "::error::The migrations check failed.\n $MIGRATION_ERROR" ;
           fi
 #        env:
@@ -106,6 +109,7 @@ jobs:
 
 #  quality-control-sonar:
 #    name: Quality checks via SonarCloud with coverage report
+#    continue-on-error: true
 #    needs: test
 #    steps:
 #      - name: Download coverage artifact
