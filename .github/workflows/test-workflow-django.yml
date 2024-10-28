@@ -48,10 +48,6 @@ jobs:
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "/github/home/.local/bin" >> $GITHUB_PATH
 
-      - name: check poetry django
-        working-directory: django-test #INPUTs
-        run: poetry show django
-
       - name: Install Fresh Poetry V${{ matrix.poetry_version }}
         if: steps.cache.outputs.cache-hit != 'true'
         uses: snok/install-poetry@v1
@@ -78,6 +74,7 @@ jobs:
         working-directory: django-test #INPUTs
         if: true #INPUT
         run: |
+          poetry show django
           MIGRATION_MSG=`poetry run python manage.py makemigrations --dry-run`
           echo $MIGRATION_MSG
 #          if [[ ! -z $MIGRATION_MSG ]] ; then
