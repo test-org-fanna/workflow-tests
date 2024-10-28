@@ -14,21 +14,21 @@ jobs:
     runs-on: ubuntu-latest
     container: python:${{ matrix.python_version }}-alpine
 
-#    services:
-#      postgres:
-#        image: postgres
-#        env:
-#          POSTGRES_USER: postgres
-#          POSTGRES_PASSWORD: postgres
-#          POSTGRES_DB: github_actions
-#        # Set health checks to wait until postgres has started
-#        options: >-
-#          --health-cmd pg_isready
-#          --health-interval 10s
-#          --health-timeout 5s
-#          --health-retries 5
-#        ports:
-#          - 5432/tcp # assign a random free host port
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: github_actions
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432/tcp # assign a random free host port
 
     steps:
       - name: Checkout repository
@@ -42,7 +42,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: /github/home/.local/
-          key: cache-${{ matrix.poetry_version }}-${{ matrix.python_version }}
+          key: cache-poetry-${{ matrix.poetry_version }}-python-${{ matrix.python_version }}
 
       - name: Add cache to PATH
         if: steps.cache.outputs.cache-hit == 'true'
@@ -57,10 +57,7 @@ jobs:
           virtualenvs-in-project: true
           installer-parallel: true
 
-      - name: Check poetry symlink
-        run: poetry --version
-
-      - name: Configure Poetry # Config options are not re-applied on cache hitsz
+      - name: Configure Poetry # Config options are not re-applied on cache hits
         run: |
           if [ ${{ steps.cache.outputs.cache-hit == 'true' }} ] ; then
             poetry config virtualenvs.in-project true ;
@@ -72,16 +69,16 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: poetry --directory=django-test/ install --no-interaction --no-root --no-ansi #INPUT
 
-#      - name: Check Django Migrations
-#        run: |
-#          poetry run python manage.py makemigrations --dry-run --check --no-input
-#        env:
-#          SQL_ENGINE: django.db.backends.postgresql
-#          SQL_DATABASE: github_actions
-#          SQL_USER: postgres
-#          SQL_PASSWORD: postgres
-#          SQL_HOST: localhost
-#          SQL_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
+      - name: Check Django Migrations
+        run: |
+          poetry run python manage.py makemigrations --dry-run --check --no-input
+        env:
+          SQL_ENGINE: django.db.backends.postgresql
+          SQL_DATABASE: github_actions
+          SQL_USER: postgres
+          SQL_PASSWORD: postgres
+          SQL_HOST: localhost
+          SQL_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
 #
 #      - name: Run tests with coverage
 #        run: poetry run pytest --cov-config=.coveragerc --cov-report=xml --cov=. --no-testmon --durations=5
