@@ -20,11 +20,11 @@ class PetRock(models.Model):
 
     # In Geology, rocks have classifications
     MOOD_CHOICES = [
-        ('IGNEOUS', 'igneous'),
+        ('IGNEOUS', 'Igneous'),
         ('SEDIMENTARY', 'Sedimentary'),
         ('METAMORPHIC', 'Metamorphic'),
     ]
-    classification = models.CharField(max_length=10, choices=MOOD_CHOICES, default='HAPPY')
+    classification = models.CharField(max_length=15, choices=MOOD_CHOICES, default='IGNEOUS')
 
     # Every pet rock deserves a custom resting spot
     resting_spot = models.CharField(max_length=255, default="A soft pillow")
