@@ -73,7 +73,7 @@ jobs:
 
       - name: Install Fresh Dependencies
 #        if: steps.cache.outputs.cache-hit != 'true'
-        run: poetry --project-file django-test/pyproject.toml install --no-interaction --no-root --no-ansi #INPUT
+        run: poetry --project-root django-test install --no-interaction --no-root --no-ansi #INPUT
 
 #      - name: Check Django Migrations
 #        run: |
