@@ -9,6 +9,7 @@ readme = "README.md"
 python = "^3.11"
 Django = "4.2.2"
 
+# To test the integration with groups and the private PyPI
 [tool.poetry.group.A.dependencies]
 alan = {version = "^0.1.16", source = "repowered"}
 
