@@ -72,7 +72,7 @@ jobs:
       - name: Install Fresh Dependencies
         working-directory: django-test #INPUT
         if: steps.cache.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-root --no-ansi #INPUT
+        run: poetry install --no-interaction --no-root --no-ansi
 
       - name: Check Django Migrations
         working-directory: django-test #INPUTs

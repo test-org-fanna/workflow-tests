@@ -15,8 +15,13 @@ alan = {version = "^0.1.16", source = "repowered"}
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.2.1"
+pytest-django = "4.9.0"
 pytest-cov = "^4.1.0"
 pytest-testmon = "^2.0.13"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "dummy.settings"
+python_files = ["test_*.py", "*_test.py", "tests.py"]
 
 [[tool.poetry.source]]
 name = "repowered"
