@@ -48,6 +48,9 @@ jobs:
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "/github/home/.local/bin" >> $GITHUB_PATH
 
+      - name: check poetry django
+        run: poetry show django
+
       - name: Install Fresh Poetry V${{ matrix.poetry_version }}
         if: steps.cache.outputs.cache-hit != 'true'
         uses: snok/install-poetry@v1
@@ -88,7 +91,7 @@ jobs:
 #          SQL_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
 #
 #      - name: Run tests with coverage
-#        run: poetry run pytest --cov-config=.coveragerc --cov-report=xml --cov=. --no-testmon --durations=5
+#        run: poetry run pytest --cov-config=.coveragerc --cov-report=xml --cov=. --durations=5
 #        env:
 #          CI: true
 #          SQL_ENGINE: django.db.backends.postgresql
