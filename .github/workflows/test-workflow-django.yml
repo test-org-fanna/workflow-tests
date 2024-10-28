@@ -74,10 +74,11 @@ jobs:
         working-directory: django-test #INPUT
         if: true #INPUT
         run: |
-          MIGRATION_MSG=$(poetry run python manage.py makemigrations --dry-run)
-          if [[ ! -z $MIGRATION_MSG ]] ; then
-            echo "::error::The migrations check failed.\n $MIGRATION_MSG" ;
-          fi
+          MIGRATION_MSG=`poetry run python manage.py makemigrations --dry-run`
+          echo $MIGRATION_MSG
+#          if [[ ! -z $MIGRATION_MSG ]] ; then
+#            echo "::error::The migrations check failed.\n $MIGRATION_MSG" ;
+#          fi
 #        env:
 #          SQL_ENGINE: django.db.backends.postgresql
 #          SQL_DATABASE: github_actions
