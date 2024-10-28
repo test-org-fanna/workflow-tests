@@ -77,6 +77,7 @@ jobs:
           echo "$MIGRATION_MSG" >> $GITHUB_STEP_SUMMARY
           if [[ "$MIGRATION_MSG" != '' ]]; then
             echo "::error::The migrations check failed."
+            exit 1
           fi
 #        env:
 #          SQL_ENGINE: django.db.backends.postgresql
