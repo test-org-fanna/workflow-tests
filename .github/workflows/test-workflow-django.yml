@@ -38,18 +38,18 @@ jobs:
         run: apk update && apk add bash && apk add zstd && apk add tar
 
       - name: Load cached installation
-        id: cached
+        id: cache
         uses: actions/cache@v4
         with:
           path: /github/home/.local/
-          key: poetry-${{ matrix.poetry_version }}-${{ matrix.python_version }}
+          key: cache-${{ matrix.poetry_version }}-${{ matrix.python_version }}
 
       - name: Add cache to PATH
-        if: steps.cached.outputs.cache-hit == 'true'
+        if: steps.cache.outputs.cache-hit == 'true'
         run: echo "/github/home/.local/bin" >> $GITHUB_PATH
 
       - name: Install Fresh Poetry V${{ matrix.poetry_version }}
-        if: steps.cached.outputs.cache-hit != 'true'
+        if: steps.cache.outputs.cache-hit != 'true'
         uses: snok/install-poetry@v1
         with:
           version: ${{ matrix.poetry_version }}
@@ -59,25 +59,18 @@ jobs:
 
       - name: Check poetry symlink
         run: poetry --version
-#
-#      - name: Configure Poetry # Config options are not re-applied on cache hits
-#        run: |
-#          if [ ${{ steps.cached-poetry.outputs.cache-hit == 'true' }} ] ; then
-#            poetry config virtualenvs.in-project true ;
-#          fi
-#          poetry config repositories.repowered ${{ secrets.PRIVATE_PYPI_URL}}
-#          poetry config http-basic.repowered ${{ secrets.PRIVATE_PYPI_USER }} ${{ secrets.PRIVATE_PYPI_PASSWORD}}
-#
-#      - name: Load Cached Virtual Environment
-#        id: cached-dependencies
-#        uses: actions/cache@v4
-#        with:
-#          path: .venv
-#          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python_version }}-${{ hashFiles('**/poetry.lock') }}
 
-#      - name: Install Fresh Dependencies
-#        if: steps.cached-dependencies.outputs.cache-hit != 'true'
-#        run: poetry install --no-interaction --no-root --no-ansi
+      - name: Configure Poetry # Config options are not re-applied on cache hits
+        run: |
+          if [ ${{ steps.cache.outputs.cache-hit == 'true' }} ] ; then
+            poetry config virtualenvs.in-project true ;
+          fi
+          poetry config repositories.repowered ${{ secrets.PRIVATE_PYPI_URL}}
+          poetry config http-basic.repowered ${{ secrets.PRIVATE_PYPI_USER }} ${{ secrets.PRIVATE_PYPI_PASSWORD}}
+
+      - name: Install Fresh Dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: poetry install --no-interaction --no-root --no-ansi
 
 #      - name: Check Django Migrations
 #        run: |
