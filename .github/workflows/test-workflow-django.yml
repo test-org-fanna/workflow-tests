@@ -71,9 +71,8 @@ jobs:
 
       - name: Check Django Migrations
         if: true #INPUT
-        working-directory: django-test #REMOVE
         run: |
-          poetry run python manage.py makemigrations --check
+          poetry run python django-test/manage.py makemigrations --check
 #          if
 #            echo "::error::The migration check failed" ;
 #          fi
