@@ -77,16 +77,23 @@ jobs:
         working-directory: django-test #INPUT
         if: true #INPUT
         run: |
-          MIGRATION_MSG=`poetry run python manage.py makemigrations --dry-run`
+          MAKE_MIGRATION_MSG=`poetry run python manage.py makemigrations --dry-run 2>&1 | head -1`
           if [[ "$MIGRATION_MSG" != 'No changes detected' ]]; then
-            echo "<h2>:no_entry_sign: Migration check failed </h2>
+            echo "<h2>:no_entry_sign: Make migration check failed </h2>
                     <h3>The following migration(s) should be created:</h3>
                     <br/> $MIGRATION_MSG" >> $GITHUB_STEP_SUMMARY
             exit 1
           fi
+#          DO_FAKE_MIGRATION_MSG=`poetry run python manage.py showmigrations --list | grep '\[\ \]' 2>&1`
+#          if [[ "DO_FAKE_MIGRATION_MSG" != 'Apply migration check failed' ]]; then
+#            echo "<h2>:no_entry_sign: Apply migrations check failed </h2>
+#                    <h3>The following migration(s) should be applied:</h3>
+#                    <br/> $MIGRATION_MSG" >> $GITHUB_STEP_SUMMARY
+#            exit 1
+#          fi
         env:
           ENGINE: django.db.backends.postgresql #INPUT/SECRETS/VARS
-          POSTGRES_DB: github_actions
+          POSTGRES_DB: testdb
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_HOST: localhost
