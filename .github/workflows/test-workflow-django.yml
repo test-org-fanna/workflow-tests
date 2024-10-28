@@ -20,7 +20,7 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: default
+          POSTGRES_DB: testdb
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
@@ -73,17 +73,6 @@ jobs:
           poetry config http-basic.repowered ${{ secrets.PRIVATE_PYPI_USER }} ${{ secrets.PRIVATE_PYPI_PASSWORD}}
           poetry install --no-interaction --no-root --no-ansi
 
-#      - name: DO IT
-#        working-directory: django-test
-#        run: poetry run python manage.py makemigrations --dry-run
-#        env:
-#          ENGINE: django.db.backends.postgresql #INPUT/SECRETS/VARS
-#          POSTGRES_DB: default
-#          POSTGRES_USER: postgres
-#          POSTGRES_PASSWORD: postgres
-#          POSTGRES_HOST: localhost
-#          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
-
       - name: Check Django Migrations
         working-directory: django-test #INPUT
         if: true #INPUT
@@ -91,7 +80,7 @@ jobs:
           MIGRATION_MSG=$(poetry run python manage.py makemigrations --dry-run 2>&1 )
           if [[ "$MIGRATION_MSG" != 'No changes detected' ]]; then
             echo "<h2>:no_entry_sign: Migration check failed </h2>
-                    <h3>The following migration(s) should be created:</h3>
+                    <h3>The message:</h3>
                     <br/> $MIGRATION_MSG" >> $GITHUB_STEP_SUMMARY
             exit 1
           fi
