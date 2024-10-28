@@ -73,16 +73,16 @@ jobs:
           poetry config http-basic.repowered ${{ secrets.PRIVATE_PYPI_USER }} ${{ secrets.PRIVATE_PYPI_PASSWORD}}
           poetry install --no-interaction --no-root --no-ansi
 
-      - name: DO IT
-        working-directory: django-test
-        run: poetry run python manage.py makemigrations --dry-run
-        env:
-          ENGINE: django.db.backends.postgresql #INPUT/SECRETS/VARS
-          POSTGRES_DB: default
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_HOST: localhost
-          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
+#      - name: DO IT
+#        working-directory: django-test
+#        run: poetry run python manage.py makemigrations --dry-run
+#        env:
+#          ENGINE: django.db.backends.postgresql #INPUT/SECRETS/VARS
+#          POSTGRES_DB: default
+#          POSTGRES_USER: postgres
+#          POSTGRES_PASSWORD: postgres
+#          POSTGRES_HOST: localhost
+#          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
 
       - name: Check Django Migrations
         working-directory: django-test #INPUT
@@ -93,6 +93,7 @@ jobs:
             echo "<h2>:no_entry_sign: Migration check failed </h2>
                     <h3>The following migration(s) should be created:</h3>
                     <br/> $MIGRATION_MSG" >> $GITHUB_STEP_SUMMARY
+            exit 1
           fi
         env:
           ENGINE: django.db.backends.postgresql #INPUT/SECRETS/VARS
