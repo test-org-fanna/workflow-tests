@@ -46,7 +46,7 @@ jobs:
 
       - name: Add cache to PATH
         if: steps.cache.outputs.cache-hit == 'true'
-        run: echo "/github/home/.local/bin" >> $GITHUB_PATH
+        run: echo "/github/home/.local" >> $GITHUB_PATH
 
       - name: Install Fresh Poetry V${{ matrix.poetry_version }}
         if: steps.cache.outputs.cache-hit != 'true'
@@ -75,8 +75,9 @@ jobs:
         run: |
           MIGRATION_MSG=`poetry run python manage.py makemigrations --dry-run`
           if [[ "$MIGRATION_MSG" != '' ]]; then
-            echo "<h1>:database: Migration check failed</h1> $MIGRATION_MSG" >> $GITHUB_STEP_SUMMARY
-            echo "::error::The migrations check failed."
+            echo "<h1>Migration check failed :x:</h1>
+                    <h2>The following migration has not been created:</h2>
+                    :x: $MIGRATION_MSG" >> $GITHUB_STEP_SUMMARY
             exit 1
           fi
 #        env:
