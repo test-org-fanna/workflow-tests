@@ -55,14 +55,7 @@ jobs:
       - name: Configure cached poetry
         if: steps.cache.outputs.cache-hit == 'true'
         working-directory: django-test #INPUT
-        run: |
-          poetry config virtualenvs.in-project true
-          echo "-----------------------"
-          poetry env info
-          echo "--------------------------"
-          poetry show -v
-          echo "-------------"
-          poetry show
+        run: poetry config virtualenvs.in-project true
 
       - name: Install fresh poetry V${{ matrix.poetry_version }}
         if: steps.cache.outputs.cache-hit != 'true'
@@ -86,7 +79,7 @@ jobs:
           fi
 
       - name: Configure fresh poetry and install dependencies
-        #        working-directory: django-test #INPUT
+        working-directory: django-test #INPUT
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
           poetry config repositories.repowered ${{ secrets.PRIVATE_PYPI_URL}}
@@ -100,6 +93,8 @@ jobs:
           poetry show -v
           poetry show
           poetry env info
+          poetry $(poetry env info --path)/bin/activate
+          poetry show
           poetry run python manage.py makemigrations --dry-run 
           MIGRATION_MSG=$(poetry run python manage.py makemigrations --dry-run 2>&1 )
           if [[ "$MIGRATION_MSG" != 'No changes detected' ]]; then
