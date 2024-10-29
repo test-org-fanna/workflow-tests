@@ -90,6 +90,8 @@ jobs:
         working-directory: django-test #INPUTs
         run: |
           poetry --version
+          poetry run python --help
+          ls -alh /github/home/.cache/pypoetry/virtualenvs
           poetry run python manage.py makemigrations --dry-run
 #          MIGRATION_MSG=$(poetry run python manage.py makemigrations --dry-run 2>&1 )
 #          if [[ "$MIGRATION_MSG" != 'No changes detected' ]]; then
