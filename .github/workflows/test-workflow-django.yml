@@ -75,23 +75,28 @@ jobs:
           poetry config --list
           poetry install --no-interaction --no-root --no-ansi
 
-#      - name: Check Django Migrations
-#        working-directory: django-test #INPUT
-#        run: |
-#          MIGRATION_MSG=$(poetry run python manage.py makemigrations --dry-run 2>&1 )
-#          if [[ "$MIGRATION_MSG" != 'No changes detected' ]]; then
-#            echo "<h2>:no_entry_sign: Migration check failed </h2>
-#                    <h3>The message:</h3>
-#                    <br/> $MIGRATION_MSG" >> $GITHUB_STEP_SUMMARY
-#            exit 3
-#          fi
-#        env:
-#          CI: true
-#          POSTGRES_DB: ${{ vars.POSTGRES_DB }}
-#          POSTGRES_USER: ${{ vars.POSTGRES_USER }}
-#          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-#          POSTGRES_HOST: ${{ vars.POSTGRES_HOST }}
-#          POSTGRES_PORT: 5432 # get randomly assigned published port
+      - name: test it
+        run: |
+          TEST_OUTPUT=$(poetry run pytest --durations=5 2>&1 )
+          echo "$TEST_OUTPUT"
+
+      - name: Check Django Migrations
+        working-directory: django-test #INPUT
+        run: |
+          MIGRATION_MSG=$(python manage.py makemigrations --dry-run 2>&1 )
+          if [[ "$MIGRATION_MSG" != 'No changes detected' ]]; then
+            echo "<h2>:no_entry_sign: Migration check failed </h2>
+                    <h3>The message:</h3>
+                    <br/> $MIGRATION_MSG" >> $GITHUB_STEP_SUMMARY
+            exit 3
+          fi
+        env:
+          CI: true
+          POSTGRES_DB: ${{ vars.POSTGRES_DB }}
+          POSTGRES_USER: ${{ vars.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_HOST: ${{ vars.POSTGRES_HOST }}
+          POSTGRES_PORT: 5432
 
 
       - name: Run tests with coverage
@@ -107,11 +112,12 @@ jobs:
           else
             echo "<h2>:x: Tests Failed </h2>
                     <h3>The message:</h3>
-                    <br/> $MIGRATION_MSG" >> $GITHUB_STEP_SUMMARY
+                    <br/> $TEST_OUTPUT" >> $GITHUB_STEP_SUMMARY
             exit 3
           fi
         env:
           CI: true
+          COLUMNS: 120 # For the test output
           POSTGRES_DB: ${{ vars.POSTGRES_DB }}
           POSTGRES_USER: ${{ vars.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
