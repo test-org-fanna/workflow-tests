@@ -77,7 +77,7 @@ jobs:
 
       - name: test it
         run: |
-          TEST_HI=$(poetry --version)
+          TEST_HI=$(poetry run pytest)
           echo "$TEST_HI"
           TEST_OUTPUT=$(poetry run pytest --durations=5 2>&1 )
 
