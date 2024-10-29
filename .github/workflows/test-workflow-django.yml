@@ -76,14 +76,13 @@ jobs:
           poetry install --no-interaction --no-root --no-ansi
 
       - name: test it
-        run: |
-          TEST_OUTPUT=$(poetry run pytest --durations=5 2>&1 )
-          echo "$TEST_OUTPUT"
+        run: TEST_OUTPUT=$(poetry run pytest --durations=5 2>&1 )
+#          echo "$TEST_OUTPUT"
 
       - name: Check Django Migrations
         working-directory: django-test #INPUT
         run: |
-          MIGRATION_MSG=$(python manage.py makemigrations --dry-run 2>&1 )
+          MIGRATION_MSG=$(poetry run python manage.py makemigrations --dry-run 2>&1 )
           if [[ "$MIGRATION_MSG" != 'No changes detected' ]]; then
             echo "<h2>:no_entry_sign: Migration check failed </h2>
                     <h3>The message:</h3>
