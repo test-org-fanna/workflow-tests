@@ -42,8 +42,8 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            .venv
-#            /github/home/.local
+            django-test/.venv
+            /github/home/.local
           key: cache-poetry-${{ matrix.poetry_version }}-python-${{ matrix.python_version }}
 
       - name: Add cache to path
