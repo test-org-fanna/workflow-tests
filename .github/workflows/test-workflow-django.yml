@@ -74,7 +74,6 @@ jobs:
           poetry install --no-interaction --no-root --no-ansi
 
       - name: Check Django Migrations
-        working-directory: django-test #INPUT
         if: true #INPUT
         run: poetry --version
         env:
