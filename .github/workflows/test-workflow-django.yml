@@ -79,6 +79,7 @@ jobs:
         working-directory: django-test #INPUT
         run: |
           poetry run pytest 2>&1 | tee /dev/stderr >test_report
+          cat test_report
           TEST_OUTPUT=$(cat test_report 2>&1 )
           HAS_FAILURES=$(echo "$TEST_OUTPUT" | grep 'failed' )
           if [ -f test_report ]; then
