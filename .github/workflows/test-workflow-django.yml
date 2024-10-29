@@ -43,7 +43,7 @@ jobs:
         with:
           path: |
             django-test/.venv
-            /github/home/.local/bin
+            /github/home/.local
           key: cache-poetry-${{ matrix.poetry_version }}-python-${{ matrix.python_version }}
 
       - name: Add cache to path
@@ -77,7 +77,6 @@ jobs:
 
       - name: Check Django Migrations
         working-directory: django-test #INPUT
-#        continue-on-error: true
         run: |
           poetry run python manage.py makemigrations --dry-run
           MIGRATION_MSG=$(poetry run python manage.py makemigrations --dry-run 2>&1 )
