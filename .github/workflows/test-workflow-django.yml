@@ -76,8 +76,10 @@ jobs:
           poetry install --no-interaction --no-root --no-ansi
 
       - name: test it
-        run: TEST_OUTPUT=`poetry run pytest --durations=5 2>&1`
-#          echo "$TEST_OUTPUT"
+        run: |
+          TEST_HI=$(poetry --version)
+          echo "$TEST_HI"
+          TEST_OUTPUT=$(poetry run pytest --durations=5 2>&1 )
 
       - name: Check Django Migrations
         working-directory: django-test #INPUT
