@@ -46,6 +46,7 @@ jobs:
 
       - name: Add poetry cache location to github path
         if: steps.cache.outputs.cache-hit == 'true'
+        working-directory: django-test
         run: |
           echo "/github/home/.local/bin" >> $GITHUB_PATH
           poetry config --list
