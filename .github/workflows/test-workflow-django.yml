@@ -44,20 +44,12 @@ jobs:
           path: /github/home/.local/
           key: cache-poetry-${{ matrix.poetry_version }}-python-${{ matrix.python_version }}
 
-      - name: Configure cached poetry
+      - name: Add cache to path
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
           echo "/github/home/.local/bin" >> $GITHUB_PATH
-          poetry config virtualenvs.in-project true
 
-#      - name: Add poetry cache location to github path
-#        if: steps.cache.outputs.cache-hit == 'true'
-#        working-directory: django-test
-#        run: |
-#          echo "/github/home/.local/bin/poetry" >> $GITHUB_PATH
-#          poetry config --list
-
-      - name: Install Fresh Poetry V${{ matrix.poetry_version }}
+      - name: Install fresh poetry V${{ matrix.poetry_version }}
         if: steps.cache.outputs.cache-hit != 'true'
         uses: snok/install-poetry@v1
         with:
@@ -78,7 +70,13 @@ jobs:
             exit 3
           fi
 
-      - name: Install dependencies
+      - name: Configure cached poetry
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: |
+          poetry config virtualenvs.in-project true
+          poetry config --list
+
+      - name: Configure fresh poetry and install dependencies
         working-directory: django-test #INPUT
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
