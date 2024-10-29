@@ -98,7 +98,7 @@ jobs:
           fi
         env:
           VENV: .venv/bin/activate
-#          CI: true
+          CI: true
           ENGINE: django.db.backends.postgresql #INPUT/SECRETS/VARS
           POSTGRES_DB: postgres
           POSTGRES_USER: postgres
