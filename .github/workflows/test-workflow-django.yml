@@ -89,10 +89,10 @@ jobs:
       - name: Check Django Migrations
         working-directory: django-test #INPUTs
         run: |
-          source $VENV
+          ls -R ~/.cache/pypoetry/virtualenvs/
           poetry --version
           poetry run python --help
-          ls -alhR /github/home/.cache/pypoetry/virtualenvs
+          ls /github/home/.cache/pypoetry/virtualenvs
           poetry run python manage.py makemigrations --dry-run
         env:
           VENV: .venv/bin/activate
