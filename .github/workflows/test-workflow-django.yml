@@ -75,28 +75,29 @@ jobs:
           poetry config --list
           poetry install --no-interaction --no-root --no-ansi
 
-#      - name: Check Django Migrations
-#        working-directory: django-test #INPUT
-#        run: |
-#          MIGRATION_MSG=$(poetry run python manage.py makemigrations --dry-run 2>&1 )
-#          if [[ "$MIGRATION_MSG" != 'No changes detected' ]]; then
-#            echo "<h2>:no_entry_sign: Migration check failed </h2>"
-#            echo "<h3>The message:</h3>"
-#            echo "$MIGRATION_MSG" >> $GITHUB_STEP_SUMMARY
-#            exit 3
-#          fi
-#        env:
-#          CI: true
-#          POSTGRES_DB: ${{ vars.POSTGRES_DB }}
-#          POSTGRES_USER: ${{ vars.POSTGRES_USER }}
-#          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-#          POSTGRES_HOST: ${{ vars.POSTGRES_HOST }}
-#          POSTGRES_PORT: 5432
+      - name: Check Django Migrations
+        continue-on-error: true
+        working-directory: django-test #INPUT
+        run: |
+          MIGRATION_MSG=$(poetry run python manage.py makemigrations --dry-run 2>&1 )
+          if [[ "$MIGRATION_MSG" != 'No changes detected' ]]; then
+            echo "<h2>:no_entry_sign: Migration check failed </h2>" >> $GITHUB_STEP_SUMMARY
+            echo "<h3>The message:</h3>" >> $GITHUB_STEP_SUMMARY
+            echo "$MIGRATION_MSG" >> $GITHUB_STEP_SUMMARY
+            exit 3
+          fi
+        env:
+          CI: true
+          POSTGRES_DB: ${{ vars.POSTGRES_DB }}
+          POSTGRES_USER: ${{ vars.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_HOST: ${{ vars.POSTGRES_HOST }}
+          POSTGRES_PORT: 5432
 
       - name: Run tests with coverage
         working-directory: django-test #INPUT
         run: |
-          poetry run pytest --cov-config=.coveragerc --cov-report=xml --cov=. --durations=5 --numprocesses=2 2>&1 | tee /dev/stderr >test_report
+          poetry run pytest --durations=5 --numprocesses=2 2>&1 | tee /dev/stderr >test_report
           echo "---------------------------"
           cat test_report
           HAS_FAILURES=$(cat test_report | grep 'failed' )
