@@ -55,7 +55,7 @@ jobs:
       - name: Configure cached poetry
         if: steps.cache.outputs.cache-hit == 'true'
         run: |
-          poetry config virtualenvs.in-project true
+          poetry config --directory=django-test virtualenvs.in-project true
           poetry env info
           poetry show -v
           poetry show
