@@ -86,9 +86,9 @@ jobs:
       - name: Check Django Migrations
         working-directory: django-test #INPUTs
         run: |
-          ls -alh .venv
+          ls -alhR .venv
           poetry run python --help
-          ls -alh .venv
+          ls -alhR .venv
 #          poetry run python manage.py makemigrations --dry-run
 #          MIGRATION_MSG=$(poetry run python manage.py makemigrations --dry-run 2>&1 )
 #          if [[ "$MIGRATION_MSG" != 'No changes detected' ]]; then
