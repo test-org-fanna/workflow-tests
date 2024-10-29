@@ -41,7 +41,7 @@ jobs:
         id: cache
         uses: actions/cache@v4
         with:
-          path: /github/home/.local/
+          path: .
           key: cache-poetry-${{ matrix.poetry_version }}-python-${{ matrix.python_version }}
 
       - name: Add cache to path
