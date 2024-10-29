@@ -81,7 +81,7 @@ jobs:
           poetry run pytest 2>&1 | tee /dev/stderr >test_report
           if [ -f test_report ]; then
             echo "<details><summary>Failed Test Report</summary>
-                    <br/> cat test_report <br/> </details>" >> $GITHUB_STEP_SUMMARY
+                    <br/> "$(cat test_report)" <br/> </details>" >> $GITHUB_STEP_SUMMARY
           fi
         env:
           POSTGRES_DB: ${{ vars.POSTGRES_DB }}
