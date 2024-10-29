@@ -51,7 +51,7 @@ jobs:
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "/github/home/.local/bin" >> $GITHUB_PATH
 
-      - name: Install fresh poetry V${{ matrix.poetry_version }}
+      - name: Install Poetry V${{ matrix.poetry_version }}
         if: steps.cache.outputs.cache-hit != 'true'
         uses: snok/install-poetry@v1
         with:
@@ -60,7 +60,7 @@ jobs:
           virtualenvs-in-project: true
           installer-parallel: true
 
-      - name: Poetry; check install, configure and install dependencies
+      - name: Poetry; configure and (check) package install
         working-directory: django-test #INPUT
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
