@@ -43,7 +43,7 @@ jobs:
         with:
           path: |
             .venv
-            /github/home/.local
+#            /github/home/.local
           key: cache-poetry-${{ matrix.poetry_version }}-python-${{ matrix.python_version }}
 
       - name: Add cache to path
@@ -54,13 +54,13 @@ jobs:
 #          echo "/github/home/.local/share/pypoetry/venv/bin/poetry" >> $GITHUB_PATH
 
        # Configuration options are not re-applied
-      - name: Configure cached poetry
-        if: steps.cache.outputs.cache-hit == 'true'
-        working-directory: django-test #INPUT
-        run: poetry config virtualenvs.in-project true
+#      - name: Configure cached poetry
+#        if: steps.cache.outputs.cache-hit == 'true'
+#        working-directory: django-test #INPUT
+#        run: poetry config virtualenvs.in-project true
 
       - name: Install fresh poetry V${{ matrix.poetry_version }}
-        if: steps.cache.outputs.cache-hit != 'true'
+#        if: steps.cache.outputs.cache-hit != 'true'
         uses: snok/install-poetry@v1
         with:
           version: ${{ matrix.poetry_version }}
@@ -81,6 +81,7 @@ jobs:
           fi
           poetry config repositories.repowered ${{ secrets.PRIVATE_PYPI_URL}}
           poetry config http-basic.repowered ${{ secrets.PRIVATE_PYPI_USER }} ${{ secrets.PRIVATE_PYPI_PASSWORD}}
+          poetry config --list
           poetry install --no-interaction --no-root --no-ansi
 
       - name: Check Django Migrations
@@ -88,7 +89,7 @@ jobs:
         run: |
           poetry config --list
           poetry run python --help
-          ls -alhR .venv
+          ls -alhR .venv/bin
 #          poetry run python manage.py makemigrations --dry-run
 #          MIGRATION_MSG=$(poetry run python manage.py makemigrations --dry-run 2>&1 )
 #          if [[ "$MIGRATION_MSG" != 'No changes detected' ]]; then
