@@ -79,16 +79,24 @@ jobs:
         working-directory: django-test #INPUT
         run: |
           poetry run pytest 2>&1 | tee /dev/stderr >test_report
+          echo "------------"
           cat test_report
-          TEST_OUTPUT=$(cat test_report 2>&1 )
-          HAS_FAILURES=$(echo "$TEST_OUTPUT" | grep 'failed' )
+          echo "------------"
+          HAS_FAILURES=$(cat test_report | grep 'failed' )
           if [ -f test_report ]; then
               if [ "$HAS_FAILURES" == '' ]; then
-                echo "<details><summary>:white_check_mark: Succeeded Test(s)</summary>
-                        <br/> "$TEST_OUTPUT" <br/> </details>" >> $GITHUB_STEP_SUMMARY
+                echo "<details><summary>:white_check_mark: Tests Succeeded</summary>" >> $GITHUB_STEP_SUMMARY
+                echo "" >> $GITHUB_STEP_SUMMARY
+                cat test_report >> $GITHUB_STEP_SUMMARY
+                echo "" >> $GITHUB_STEP_SUMMARY
+                echo "</details>" >> $GITHUB_STEP_SUMMARY
               else
-                echo "<details><summary>:x: Failed Test(s)</summary>
-                        <br/> "$TEST_OUTPUT" <br/> </details>" >> $GITHUB_STEP_SUMMARY
+                echo "<details><summary>:x: Tests Failed</summary>" >> $GITHUB_STEP_SUMMARY
+                echo "" >> $GITHUB_STEP_SUMMARY
+                cat test_report >> $GITHUB_STEP_SUMMARY
+                echo "" >> $GITHUB_STEP_SUMMARY
+                echo "</details>" >> $GITHUB_STEP_SUMMARY
+                exit 3
               fi
           fi
         env:
