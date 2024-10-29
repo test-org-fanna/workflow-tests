@@ -51,11 +51,10 @@ jobs:
           echo "/github/home/.local/bin/poetry" >> $GITHUB_PATH
           echo "/github/home/.local/share/pypoetry/venv/bin/poetry" >> $GITHUB_PATH
 
+      # Configuration options are not re-applied
       - name: Configure cached poetry
         if: steps.cache.outputs.cache-hit == 'true'
-        run: |
-          poetry config virtualenvs.in-project true
-          poetry config --list
+        run: poetry config virtualenvs.in-project true
 
       - name: Install fresh poetry V${{ matrix.poetry_version }}
         if: steps.cache.outputs.cache-hit != 'true'
@@ -79,7 +78,7 @@ jobs:
           fi
 
       - name: Configure fresh poetry and install dependencies
-        working-directory: django-test #INPUT
+#        working-directory: django-test #INPUT
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
           poetry config repositories.repowered ${{ secrets.PRIVATE_PYPI_URL}}
