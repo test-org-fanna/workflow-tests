@@ -88,6 +88,7 @@ jobs:
       - name: Check Django Migrations
         working-directory: django-test #INPUT
         run: |
+          poetry $(poetry env info --path)/bin/activate
           ls -l $(poetry env info --path)/bin
           poetry config --list
           poetry show
