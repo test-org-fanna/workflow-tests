@@ -60,7 +60,7 @@ jobs:
 #        run: poetry config virtualenvs.in-project true
 
       - name: Install fresh poetry V${{ matrix.poetry_version }}
-#        if: steps.cache.outputs.cache-hit != 'true'
+        if: steps.cache.outputs.cache-hit != 'true'
         uses: snok/install-poetry@v1
         with:
           version: ${{ matrix.poetry_version }}
@@ -87,10 +87,7 @@ jobs:
       - name: Check Django Migrations
         working-directory: django-test #INPUT
         run: |
-          poetry config --list
-          poetry run python --help
-          ls -alhR .venv/bin
-#          poetry run python manage.py makemigrations --dry-run
+          poetry run python manage.py makemigrations --dry-run
 #          MIGRATION_MSG=$(poetry run python manage.py makemigrations --dry-run 2>&1 )
 #          if [[ "$MIGRATION_MSG" != 'No changes detected' ]]; then
 #            echo "<h2>:no_entry_sign: Migration check failed </h2>
