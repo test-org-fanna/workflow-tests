@@ -93,7 +93,7 @@ jobs:
           poetry show -v
           poetry show
           poetry env info
-          poetry $(poetry env info --path)/bin/activate
+          poetry shell
           poetry show
           poetry run python manage.py makemigrations --dry-run 
           MIGRATION_MSG=$(poetry run python manage.py makemigrations --dry-run 2>&1 )
