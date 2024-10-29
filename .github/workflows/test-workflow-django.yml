@@ -84,7 +84,7 @@ jobs:
           poetry install --no-interaction --no-root --no-ansi
 
       - name: Check Django Migrations
-        working-directory: django-test #INPUT
+#        working-directory: django-test #INPUT
         run: |
           /github/home/.local/bin/poetry config --list
           poetry show
@@ -96,7 +96,7 @@ jobs:
             exit 3
           fi
         env:
-          VENV: .venv/bin/activate
+#          VENV: .venv/bin/activate
           CI: true
           ENGINE: django.db.backends.postgresql #INPUT/SECRETS/VARS
           POSTGRES_DB: postgres
