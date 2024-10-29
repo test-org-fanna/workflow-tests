@@ -37,7 +37,7 @@ jobs:
       - name: Install needed apk packages
         run: apk update && apk add bash && apk add zstd && apk add tar
 
-      - name: Load cached installation
+      - name: Load cache
         id: cache
         uses: actions/cache@v4
         with:
@@ -82,7 +82,16 @@ jobs:
 
       - name: Check Django Migrations
         working-directory: django-test #INPUT
-        run: poetry config --list && poetry show && poetry run python manage.py makemigrations --dry-run
+        run: |
+          poetry config --list
+          poetry show
+          MIGRATION_MSG=$(poetry run python manage.py makemigrations --dry-run 2>&1 )
+          if [[ "$MIGRATION_MSG" != 'No changes detected' ]]; then
+            echo "<h2>:no_entry_sign: Migration check failed </h2>
+                    <h3>The message:</h3>
+                    <br/> $MIGRATION_MSG" >> $GITHUB_STEP_SUMMARY
+            exit 3
+          fi
         env:
           CI: true
           ENGINE: django.db.backends.postgresql #INPUT/SECRETS/VARS
