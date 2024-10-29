@@ -76,6 +76,7 @@ jobs:
           poetry install --no-interaction --no-root --no-ansi
 
       - name: test it
+        working-directory: django-test #INPUT
         run: |
           TEST_HI=$(poetry run pytest)
           echo "$TEST_HI"
