@@ -44,6 +44,10 @@ jobs:
           path: /github/home/.local/
           key: cache-poetry-${{ matrix.poetry_version }}-python-${{ matrix.python_version }}
 
+      - name: Add cache to PATH
+        if: steps.cache.outputs.cache-hit == 'true'
+        run: echo "/github/home/.local" >> $GITHUB_PATH
+
       - name: Install Fresh Poetry V${{ matrix.poetry_version }}
         if: steps.cache.outputs.cache-hit != 'true'
         uses: snok/install-poetry@v1
@@ -76,8 +80,6 @@ jobs:
       - name: Check Django Migrations
         if: true #INPUT
         run: poetry --version
-        env:
-          VENV: .venv/bin/activate
 
       - name: Check Django Migrations
         working-directory: django-test #INPUT
