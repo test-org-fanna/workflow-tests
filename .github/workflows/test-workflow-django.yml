@@ -83,13 +83,11 @@ jobs:
 
       - name: Check Django Migrations
         working-directory: django-test #INPUTs
-        continue-on-error: true
         run: |
+          ls -alh .venv
           poetry run python --help
-          ls /github/home/.cache/pypoetry/virtualenvs
+          ls -alh .venv
           poetry run python manage.py makemigrations --dry-run
-        env:
-          VENV: .venv/bin/activate
 #          MIGRATION_MSG=$(poetry run python manage.py makemigrations --dry-run 2>&1 )
 #          if [[ "$MIGRATION_MSG" != 'No changes detected' ]]; then
 #            echo "<h2>:no_entry_sign: Migration check failed </h2>
