@@ -89,8 +89,9 @@ jobs:
       - name: Check Django Migrations
         working-directory: django-test #INPUT
         run: |
-          /github/home/.local/bin/poetry config --list
+          poetry config --list
           poetry show
+          poetry run python manage.py makemigrations --dry-run 
           MIGRATION_MSG=$(poetry run python manage.py makemigrations --dry-run 2>&1 )
           if [[ "$MIGRATION_MSG" != 'No changes detected' ]]; then
             echo "<h2>:no_entry_sign: Migration check failed </h2>
