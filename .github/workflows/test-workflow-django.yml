@@ -54,7 +54,11 @@ jobs:
       # Configuration options are not re-applied
       - name: Configure cached poetry
         if: steps.cache.outputs.cache-hit == 'true'
-        run: poetry config virtualenvs.in-project true
+        run: |
+          poetry config virtualenvs.in-project true
+          poetry show -v
+          poetry show
+          poetry env info
 
       - name: Install fresh poetry V${{ matrix.poetry_version }}
         if: steps.cache.outputs.cache-hit != 'true'
@@ -88,10 +92,10 @@ jobs:
       - name: Check Django Migrations
         working-directory: django-test #INPUT
         run: |
-          poetry shell
-          ls -l $(poetry env info --path)/bin
           poetry config --list
+          poetry show -v
           poetry show
+          poetry env info
           poetry run python manage.py makemigrations --dry-run 
           MIGRATION_MSG=$(poetry run python manage.py makemigrations --dry-run 2>&1 )
           if [[ "$MIGRATION_MSG" != 'No changes detected' ]]; then
