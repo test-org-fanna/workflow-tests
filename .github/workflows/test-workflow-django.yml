@@ -98,6 +98,7 @@ jobs:
         working-directory: django-test #INPUT
 #          MIGRATION_MSG=$(poetry run pytest --cov-config=.coveragerc --cov-report=xml --cov=. --durations=5 2>&1 )
         run: |
+          poetry run pytest --durations=5
           TEST_OUTPUT=$(poetry run pytest --durations=5 2>&1 )
           HAS_FAILURES=$(echo "$TEST_OUTPUT" | grep 'failed' )
           if [[ "$HAS_FAILURES" != '' ]]; then
