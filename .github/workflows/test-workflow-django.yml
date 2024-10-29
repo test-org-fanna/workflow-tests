@@ -16,7 +16,7 @@ jobs:
 
     services:
       postgres:
-        image: ${{ (true) && 'postgres' || '' }}  #INPUT
+        image: ${{ (true) && 'postgres:17-alpine' || '' }}  #INPUT
         env:
           POSTGRES_DB: ${{ vars.POSTGRES_DB }}
           POSTGRES_USER: ${{ vars.POSTGRES_USER }}
