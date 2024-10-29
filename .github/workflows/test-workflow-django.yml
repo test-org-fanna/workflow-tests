@@ -57,8 +57,11 @@ jobs:
         working-directory: django-test #INPUT
         run: |
           poetry config virtualenvs.in-project true
+          echo "-----------------------"
           poetry env info
+          echo "--------------------------"
           poetry show -v
+          echo "-------------"
           poetry show
 
       - name: Install fresh poetry V${{ matrix.poetry_version }}
