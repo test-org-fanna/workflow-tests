@@ -14,21 +14,21 @@ jobs:
     runs-on: ubuntu-latest
     container: python:${{ matrix.python_version }}-alpine
 
-    #    services:
-    #      postgres:
-    #        image: ${{ (true) && 'postgres' || '' }}  #INPUT
-    #        env:
-    #          POSTGRES_USER: postgres
-    #          POSTGRES_PASSWORD: postgres
-    #          POSTGRES_DB: postgres
-    #        # Set health checks to wait until postgres has started
-    #        options: >-
-    #          --health-cmd pg_isready
-    #          --health-interval 10s
-    #          --health-timeout 5s
-    #          --health-retries 5
-    #        ports:
-    #          - 5432/tcp # assign a random free host port
+    services:
+      postgres:
+        image: ${{ (true) && 'postgres' || '' }}  #INPUT
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432/tcp # assign a random free host port
 
     steps:
       - name: Checkout repository
@@ -77,8 +77,9 @@ jobs:
 
       - name: Check Django Migrations
         working-directory: django-test #INPUT
-        continue-on-error: true
+#        continue-on-error: true
         run: |
+          poetry run python manage.py makemigrations --dry-run
           MIGRATION_MSG=$(poetry run python manage.py makemigrations --dry-run 2>&1 )
           if [[ "$MIGRATION_MSG" != 'No changes detected' ]]; then
             echo "<h2>:no_entry_sign: Migration check failed </h2>
@@ -96,17 +97,19 @@ jobs:
           POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
 
 
-#      - name: Run tests with coverage
-#        working-directory: django-test #INPUT
-#        run: poetry run pytest --cov-config=.coveragerc --cov-report=xml --cov=. --durations=5
-#        env:
-#          CI: true
-#          SQL_ENGINE: django.db.backends.postgresql
-#          SQL_DATABASE: github_actions
-#          SQL_USER: postgres
-#          SQL_PASSWORD: postgres
-#          SQL_HOST: localhost
-#          SQL_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
+      - name: Run tests with coverage
+        working-directory: django-test #INPUT
+#        continue-on-error: true
+        run: poetry run pytest --cov-config=.coveragerc --cov-report=xml --cov=. --durations=5
+        env:
+          CI: true
+          ENGINE: django.db.backends.postgresql #INPUT/SECRETS/VARS
+          POSTGRES_DB: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
+
 #
 #      - name: Archive test coverage report
 #        uses: actions/upload-artifact@v4
