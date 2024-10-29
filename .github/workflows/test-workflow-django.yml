@@ -79,7 +79,7 @@ jobs:
 
       - name: Check Django Migrations
         working-directory: django-test #INPUT
-        run: poetry run python manage.py makemigrations --dry-run
+        run: poetry show && poetry run python manage.py makemigrations --dry-run
 
       - name: Check Django Migrations
         working-directory: django-test #INPUT
