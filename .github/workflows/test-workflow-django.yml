@@ -48,7 +48,7 @@ jobs:
         if: steps.cache.outputs.cache-hit == 'true'
         working-directory: django-test
         run: |
-          echo "/github/home/.local/bin" >> $GITHUB_PATH
+          echo "/github/home/.local" >> $GITHUB_PATH
           poetry config --list
 
       - name: Install Fresh Poetry V${{ matrix.poetry_version }}
