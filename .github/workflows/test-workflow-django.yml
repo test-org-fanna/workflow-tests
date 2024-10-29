@@ -94,6 +94,7 @@ jobs:
             exit 3
           fi
         env:
+          VENV: .venv/bin/activate
 #          CI: true
           ENGINE: django.db.backends.postgresql #INPUT/SECRETS/VARS
           POSTGRES_DB: postgres
