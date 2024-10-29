@@ -75,37 +75,6 @@ jobs:
           poetry config --list
           poetry install --no-interaction --no-root --no-ansi
 
-      - name: test it
-        working-directory: django-test #INPUT
-        run: |
-          poetry run pytest 2>&1 | tee /dev/stderr >test_report
-          echo "------------"
-          cat test_report
-          echo "------------"
-          HAS_FAILURES=$(cat test_report | grep 'failed' )
-          if [ -f test_report ]; then
-              if [ "$HAS_FAILURES" == '' ]; then
-                echo "<details><summary>:white_check_mark: Tests Succeeded</summary>" >> $GITHUB_STEP_SUMMARY
-                echo "" >> $GITHUB_STEP_SUMMARY
-                cat test_report >> $GITHUB_STEP_SUMMARY
-                echo "" >> $GITHUB_STEP_SUMMARY
-                echo "</details>" >> $GITHUB_STEP_SUMMARY
-              else
-                echo "<details><summary>:x: Tests Failed</summary>" >> $GITHUB_STEP_SUMMARY
-                echo "" >> $GITHUB_STEP_SUMMARY
-                cat test_report >> $GITHUB_STEP_SUMMARY
-                echo "" >> $GITHUB_STEP_SUMMARY
-                echo "</details>" >> $GITHUB_STEP_SUMMARY
-                exit 3
-              fi
-          fi
-        env:
-          POSTGRES_DB: ${{ vars.POSTGRES_DB }}
-          POSTGRES_USER: ${{ vars.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_HOST: ${{ vars.POSTGRES_HOST }}
-          POSTGRES_PORT: 5432
-
 #      - name: Check Django Migrations
 #        working-directory: django-test #INPUT
 #        run: |
@@ -154,13 +123,12 @@ jobs:
           POSTGRES_HOST: ${{ vars.POSTGRES_HOST }}
           POSTGRES_PORT: 5432
 
-#
-#      - name: Archive test coverage report
-#        uses: actions/upload-artifact@v4
-#        with:
-#          name: coverage.xml
-#          path: coverage.xml
-#          if-no-files-found: 'error'
+      - name: Archive test coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage.xml
+          path: coverage.xml
+          if-no-files-found: 'error'
 
 #  quality-control-sonar:
 #    name: Quality checks via SonarCloud with coverage report
