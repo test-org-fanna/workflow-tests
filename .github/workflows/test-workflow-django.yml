@@ -88,6 +88,7 @@ jobs:
       - name: Check Django Migrations
         working-directory: django-test #INPUT
         run: |
+          ls -alh /github/home/.cache/pypoetry/virtualenvs
           poetry config --list
           poetry show
           poetry run python manage.py makemigrations --dry-run 
