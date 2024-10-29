@@ -44,7 +44,7 @@ jobs:
           path: /github/home/.local/
           key: cache-poetry-${{ matrix.poetry_version }}-python-${{ matrix.python_version }}
 
-      - name: Add cache to PATH
+      - name: Add poetry cache location to github path
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "/github/home/.local/bin" >> $GITHUB_PATH
 
@@ -76,20 +76,6 @@ jobs:
           poetry config repositories.repowered ${{ secrets.PRIVATE_PYPI_URL}}
           poetry config http-basic.repowered ${{ secrets.PRIVATE_PYPI_USER }} ${{ secrets.PRIVATE_PYPI_PASSWORD}}
           poetry install --no-interaction --no-root --no-ansi
-
-      - name: Check Django Migrations
-        if: true #INPUT
-        run: poetry --version
-
-      - name: Check Django Migrations
-        working-directory: django-test #INPUT
-        if: true #INPUT
-        run: poetry --version
-
-      - name: Check Django Migrations
-        working-directory: django-test #INPUT
-        if: true #INPUT
-        run: poetry python manage.py makemigrations --dry-run 2>&1
 
       - name: Check Django Migrations
         working-directory: django-test #INPUT
