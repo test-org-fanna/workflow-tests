@@ -69,7 +69,7 @@ jobs:
             echo "<h2>:no_entry_sign: Poetry install dry-run failed </h2>
                     <h3>You should probably run 'poetry lock' </h3>
                     <br/> $INSTALL_MSG" >> $GITHUB_STEP_SUMMARY
-            exit 2
+            exit 3
           fi
 
       - name: Install dependencies
@@ -83,6 +83,15 @@ jobs:
       - name: Check Django Migrations
         working-directory: django-test #INPUT
         run: poetry config --list && poetry show && poetry run python manage.py makemigrations --dry-run
+        env:
+          CI: true
+          ENGINE: django.db.backends.postgresql #INPUT/SECRETS/VARS
+          POSTGRES_DB: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
+
 #
 #      - name: Check Django Migrations
 #        working-directory: django-test #INPUT
@@ -93,16 +102,8 @@ jobs:
 #            echo "<h2>:no_entry_sign: Migration check failed </h2>
 #                    <h3>The message:</h3>
 #                    <br/> $MIGRATION_MSG" >> $GITHUB_STEP_SUMMARY
-#            exit 2
+#            exit 3
 #          fi
-#        env:
-#          CI: true
-#          ENGINE: django.db.backends.postgresql #INPUT/SECRETS/VARS
-#          POSTGRES_DB: postgres
-#          POSTGRES_USER: postgres
-#          POSTGRES_PASSWORD: postgres
-#          POSTGRES_HOST: localhost
-#          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
 #
 #      - name: Run tests with coverage
 #        working-directory: django-test #INPUT
