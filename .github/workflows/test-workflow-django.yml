@@ -82,6 +82,12 @@ jobs:
           TEST_HI=$(poetry run pytest)
           echo "$TEST_HI"
           TEST_OUTPUT=$(poetry run pytest --durations=5 2>&1 )
+        env:
+          POSTGRES_DB: ${{ vars.POSTGRES_DB }}
+          POSTGRES_USER: ${{ vars.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_HOST: ${{ vars.POSTGRES_HOST }}
+          POSTGRES_PORT: 5432
 
       - name: Check Django Migrations
         working-directory: django-test #INPUT
