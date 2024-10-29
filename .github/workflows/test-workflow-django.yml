@@ -85,8 +85,6 @@ jobs:
         working-directory: django-test #INPUTs
         continue-on-error: true
         run: |
-          ls -R ~/.cache/pypoetry/virtualenvs/
-          poetry --version
           poetry run python --help
           ls /github/home/.cache/pypoetry/virtualenvs
           poetry run python manage.py makemigrations --dry-run
