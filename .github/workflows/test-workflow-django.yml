@@ -79,7 +79,7 @@ jobs:
           fi
 
       - name: Configure fresh poetry and install dependencies
-#        working-directory: django-test #INPUT
+        working-directory: django-test #INPUT
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
           poetry config repositories.repowered ${{ secrets.PRIVATE_PYPI_URL}}
