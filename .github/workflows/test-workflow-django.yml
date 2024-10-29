@@ -79,10 +79,10 @@ jobs:
         working-directory: django-test #INPUT
         run: |
           poetry run pytest 2>&1 | tee /dev/stderr >test_report
-#          if [ -f "$REPORT_FILE" ]; then
-#            echo "<details><summary>Failed Test Report</summary>
-#                    <br/> cat "$REPORT_FILE" <br/> </details>" >> $GITHUB_STEP_SUMMARY
-#          fi
+          if [ -f test_report ]; then
+            echo "<details><summary>Failed Test Report</summary>
+                    <br/> cat test_report <br/> </details>" >> $GITHUB_STEP_SUMMARY
+          fi
         env:
           POSTGRES_DB: ${{ vars.POSTGRES_DB }}
           POSTGRES_USER: ${{ vars.POSTGRES_USER }}
@@ -119,7 +119,7 @@ jobs:
         working-directory: django-test #INPUT
         #          MIGRATION_MSG=$(poetry run pytest --cov-config=.coveragerc --cov-report=xml --cov=. --durations=5 2>&1 )
         run: |
-          poetry run pytest --durations=5
+          poetry run pytest --durations=5 --numprocesses=2
           TEST_OUTPUT=$(poetry run pytest --durations=5 2>&1 )
           HAS_FAILURES=$(echo "$TEST_OUTPUT" | grep 'failed' )
           if [[ "$HAS_FAILURES" != '' ]]; then
