@@ -77,7 +77,6 @@ jobs:
 
       - name: Check Django Migrations
         working-directory: django-test #INPUT
-        continue-on-error: true
         run: |
           poetry run python manage.py makemigrations --dry-run
           MIGRATION_MSG=$(poetry run python manage.py makemigrations --dry-run 2>&1 )
@@ -93,13 +92,11 @@ jobs:
           POSTGRES_USER: ${{ vars.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_HOST: ${{ vars.POSTGRES_HOST }}
-#          POSTGRES_PORT: 5432
           POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
 
 
       - name: Run tests with coverage
         working-directory: django-test #INPUT
-        continue-on-error: true
         run: poetry run pytest --cov-config=.coveragerc --cov-report=xml --cov=. --durations=5
         env:
           CI: true
