@@ -54,8 +54,9 @@ jobs:
       # Configuration options are not re-applied
       - name: Configure cached poetry
         if: steps.cache.outputs.cache-hit == 'true'
+        working-directory: django-test #INPUT
         run: |
-          poetry config --directory=django-test virtualenvs.in-project true
+          poetry config virtualenvs.in-project true
           poetry env info
           poetry show -v
           poetry show
