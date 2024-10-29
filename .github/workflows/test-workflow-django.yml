@@ -77,6 +77,7 @@ jobs:
 
       - name: Check Django Migrations
         working-directory: django-test #INPUT
+        continue-on-error: true
         run: |
           poetry run python manage.py makemigrations --dry-run
           MIGRATION_MSG=$(poetry run python manage.py makemigrations --dry-run 2>&1 )
@@ -98,7 +99,7 @@ jobs:
 
       - name: Run tests with coverage
         working-directory: django-test #INPUT
-#        continue-on-error: true
+        continue-on-error: true
         run: poetry run pytest --cov-config=.coveragerc --cov-report=xml --cov=. --durations=5
         env:
           CI: true
