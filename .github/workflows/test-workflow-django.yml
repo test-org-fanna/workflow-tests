@@ -89,6 +89,7 @@ jobs:
       - name: Check Django Migrations
         working-directory: django-test #INPUTs
         run: |
+          source $VENV
           poetry --version
           poetry run python --help
           ls -alhR /github/home/.cache/pypoetry/virtualenvs
