@@ -44,7 +44,7 @@ jobs:
           path: |
             django-test/.venv
             /github/home/.local
-          key: cache-poetry-${{ matrix.poetry_version }}-python-${{ matrix.python_version }}
+          key: cache-poetry-${{ matrix.poetry_version }}-python-${{ matrix.python_version }}--${{ hashFiles('**/poetry.lock') }}
 
       - name: Add cache to path
         if: steps.cache.outputs.cache-hit == 'true'
