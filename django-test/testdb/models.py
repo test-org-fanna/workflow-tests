@@ -21,12 +21,12 @@ class PetRock(models.Model):
     # ------- To enable the migration check test, uncomment the classification section below ------
 
     # In Geology, rocks have classifications
-    CLASSIFICATION_CHOICES = [
-        ('IGNEOUS', 'Igneous'),
-        ('SEDIMENTARY', 'Sedimentary'),
-        ('METAMORPHIC', 'Metamorphic'),
-    ]
-    classification = models.CharField(max_length=15, choices=CLASSIFICATION_CHOICES, default='IGNEOUS')
+    # CLASSIFICATION_CHOICES = [
+    #     ('IGNEOUS', 'Igneous'),
+    #     ('SEDIMENTARY', 'Sedimentary'),
+    #     ('METAMORPHIC', 'Metamorphic'),
+    # ]
+    # classification = models.CharField(max_length=15, choices=CLASSIFICATION_CHOICES, default='IGNEOUS')
 
     # Every pet rock deserves a custom resting spot
     resting_spot = models.CharField(max_length=255, default="A soft pillow")
