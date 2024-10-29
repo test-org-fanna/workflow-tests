@@ -97,6 +97,7 @@ jobs:
         working-directory: django-test #INPUT
         run: |
           poetry run pytest --cov-config=.coveragerc --cov-report=xml --cov=. --durations=5 --numprocesses=2 2>&1 | tee /dev/stderr >test_report
+          cat test_report
           HAS_FAILURES=$(cat test_report | grep 'failed' )
           if [ -f test_report ]; then
               if [ "$HAS_FAILURES" == '' ]; then
@@ -116,7 +117,6 @@ jobs:
           fi
         env:
           CI: true
-          COLUMNS: 120 # For the test output
           POSTGRES_DB: ${{ vars.POSTGRES_DB }}
           POSTGRES_USER: ${{ vars.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
