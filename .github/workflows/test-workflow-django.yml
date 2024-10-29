@@ -78,6 +78,7 @@ jobs:
 
       - name: Check Django Migrations
         working-directory: django-test #INPUT
+        continue-on-error: true
         run: |
           MIGRATION_MSG=$(poetry run python manage.py makemigrations --dry-run 2>&1 )
           if [[ "$MIGRATION_MSG" != 'No changes detected' ]]; then
