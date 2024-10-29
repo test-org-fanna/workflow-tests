@@ -46,7 +46,9 @@ jobs:
 
       - name: Configure cached poetry
         if: steps.cache.outputs.cache-hit == 'true'
-        run: poetry config virtualenvs.in-project true
+        run: |
+          echo "/github/home/.local/bin" >> $GITHUB_PATH
+          poetry config virtualenvs.in-project true
 
 #      - name: Add poetry cache location to github path
 #        if: steps.cache.outputs.cache-hit == 'true'
