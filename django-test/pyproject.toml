@@ -15,6 +15,7 @@ pytest = "^7.2.1"
 pytest-django = "4.9.0"
 pytest-cov = "^4.1.0"
 pytest-testmon = "^2.0.13"
+pytest-xdist = "^3.6.1"
 pytest-pretty = "1.2.0"
 
 # To test the integration with groups and the private PyPI
