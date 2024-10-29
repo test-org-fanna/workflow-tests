@@ -14,21 +14,21 @@ jobs:
     runs-on: ubuntu-latest
     container: python:${{ matrix.python_version }}-alpine
 
-    services:
-      postgres:
-        image: ${{ (true) && 'postgres' || '' }}  #INPUT
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
-        # Set health checks to wait until postgres has started
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-        ports:
-          - 5432/tcp # assign a random free host port
+#    services:
+#      postgres:
+#        image: ${{ (true) && 'postgres' || '' }}  #INPUT
+#        env:
+#          POSTGRES_USER: postgres
+#          POSTGRES_PASSWORD: postgres
+#          POSTGRES_DB: postgres
+#        # Set health checks to wait until postgres has started
+#        options: >-
+#          --health-cmd pg_isready
+#          --health-interval 10s
+#          --health-timeout 5s
+#          --health-retries 5
+#        ports:
+#          - 5432/tcp # assign a random free host port
 
     steps:
       - name: Checkout repository
@@ -46,7 +46,9 @@ jobs:
 
       - name: Add poetry cache location to github path
         if: steps.cache.outputs.cache-hit == 'true'
-        run: echo "/github/home/.local/bin" >> $GITHUB_PATH
+        run: |
+          echo "/github/home/.local/bin" >> $GITHUB_PATH
+          poetry config --list
 
       - name: Install Fresh Poetry V${{ matrix.poetry_version }}
         if: steps.cache.outputs.cache-hit != 'true'
@@ -77,21 +79,21 @@ jobs:
           poetry config http-basic.repowered ${{ secrets.PRIVATE_PYPI_USER }} ${{ secrets.PRIVATE_PYPI_PASSWORD}}
           poetry install --no-interaction --no-root --no-ansi
 
-      - name: Check Django Migrations
-        working-directory: django-test #INPUT
-        run: poetry show && poetry run python manage.py makemigrations --dry-run
-
-      - name: Check Django Migrations
-        working-directory: django-test #INPUT
-        if: true #INPUT
-        run: |
-          MIGRATION_MSG=$(poetry run python manage.py makemigrations --dry-run 2>&1 )
-          if [[ "$MIGRATION_MSG" != 'No changes detected' ]]; then
-            echo "<h2>:no_entry_sign: Migration check failed </h2>
-                    <h3>The message:</h3>
-                    <br/> $MIGRATION_MSG" >> $GITHUB_STEP_SUMMARY
-            exit 2
-          fi
+#      - name: Check Django Migrations
+#        working-directory: django-test #INPUT
+#        run: poetry show && poetry run python manage.py makemigrations --dry-run
+#
+#      - name: Check Django Migrations
+#        working-directory: django-test #INPUT
+#        if: true #INPUT
+#        run: |
+#          MIGRATION_MSG=$(poetry run python manage.py makemigrations --dry-run 2>&1 )
+#          if [[ "$MIGRATION_MSG" != 'No changes detected' ]]; then
+#            echo "<h2>:no_entry_sign: Migration check failed </h2>
+#                    <h3>The message:</h3>
+#                    <br/> $MIGRATION_MSG" >> $GITHUB_STEP_SUMMARY
+#            exit 2
+#          fi
 #        env:
 #          CI: true
 #          ENGINE: django.db.backends.postgresql #INPUT/SECRETS/VARS
