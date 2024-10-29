@@ -84,14 +84,14 @@ jobs:
                     <br/> $MIGRATION_MSG" >> $GITHUB_STEP_SUMMARY
             exit 1
           fi
-        env:
-          CI: true
-          ENGINE: django.db.backends.postgresql #INPUT/SECRETS/VARS
-          POSTGRES_DB: postgres
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_HOST: localhost
-          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
+#        env:
+#          CI: true
+#          ENGINE: django.db.backends.postgresql #INPUT/SECRETS/VARS
+#          POSTGRES_DB: postgres
+#          POSTGRES_USER: postgres
+#          POSTGRES_PASSWORD: postgres
+#          POSTGRES_HOST: localhost
+#          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
 #
 #      - name: Run tests with coverage
 #        working-directory: django-test #INPUT
