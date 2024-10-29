@@ -78,6 +78,7 @@ jobs:
       - name: test it
         working-directory: django-test #INPUT
         run: |
+          poetry run pytest
           TEST_HI=$(poetry run pytest)
           echo "$TEST_HI"
           TEST_OUTPUT=$(poetry run pytest --durations=5 2>&1 )
