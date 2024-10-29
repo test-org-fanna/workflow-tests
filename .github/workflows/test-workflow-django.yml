@@ -43,7 +43,8 @@ jobs:
         with:
           path: |
             django-test/.venv
-            /github/home/.local
+            /github/home/.local/bin/poetry
+            /github/home/.local/share/pypoetry/venv/bin/poetry
           key: cache-poetry-${{ matrix.poetry_version }}-python-${{ matrix.python_version }}
 
       - name: Add cache to path
