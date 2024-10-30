@@ -95,12 +95,12 @@ jobs:
 
       - name: Run tests with coverage
         working-directory: django-test #INPUT
-        # Bash command explanations:
+        # Bash commands explanations:
         # 2>&1: redirect stderr to stdout
         # tee /dev/stderr >test_report: Copy standard input to 'test_report' and to stdout
         # { grep 'failed' || true; }: makes sure that grep does not exit with code 1 when no failures are found
         run: |
-          poetry run pytest --durations=5 --numprocesses=2 2>&1 | tee /dev/stderr >test_report
+          poetry run pytest --cov-config=.coveragerc --cov-report=xml --cov=. --durations=5 --numprocesses=2 2>&1 | tee /dev/stderr >test_report
           HAS_FAILURES=$(cat test_report | { grep 'failed' || true; } 2>&1 )
           if [ -f test_report ]; then
               if [ "$HAS_FAILURES" == '' ]; then
@@ -120,7 +120,7 @@ jobs:
           fi
         env:
           CI: true
-          COLUMNS: 500
+          COLUMNS: 50
           SQL_DATABASE: ${{ vars.POSTGRES_DB }}
           SQL_USER: ${{ vars.POSTGRES_USER }}
           SQL_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
