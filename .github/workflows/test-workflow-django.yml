@@ -64,7 +64,7 @@ jobs:
           installer-parallel: true
 
       - name: Check pyproject.toml
-        working-directory: django-test #INPUT
+        working-directory: django-test #INPUTs
         run: |
           INSTALL_MSG=$(poetry install --dry-run 2>&1 | tail -1)
           if [[ "$INSTALL_MSG" != '' ]]; then
