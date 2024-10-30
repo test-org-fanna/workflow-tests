@@ -114,7 +114,7 @@ jobs:
         run: |
           poetry run pytest -v \
             --testmon --durations=5 --numprocesses=2 \
-            --md-report --md-report-flavor gfm --md-report-exclude-outcomes passed skipped xpassed ----md-report-output test_report.md \
+            --md-report --md-report-flavor gfm --md-report-exclude-outcomes passed skipped xpassed --md-report-output test_report.md \
             --cov-config=.coveragerc --cov-report=xml --cov=.
           HAS_FAILURES=$(cat test_report.md | { grep 'failed' || true; } 2>&1 )
         #            2>&1 | tee /dev/stderr >test_report.md
