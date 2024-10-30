@@ -16,6 +16,7 @@ pytest-django = "4.9.0"
 pytest-cov = "^4.1.0"
 pytest-testmon = "^2.0.13"
 pytest-xdist = "^3.6.1"
+pytest-md-report = "0.6.2"
 
 # To test the integration with groups and the private PyPI
 [tool.poetry.group.A.dependencies]

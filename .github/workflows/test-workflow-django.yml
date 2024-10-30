@@ -59,9 +59,8 @@ jobs:
           virtualenvs-in-project: true
           installer-parallel: true
 
-      - name: Poetry; configure and (check) package install
+      - name: Check poetry
         working-directory: django-test #INPUT
-        if: steps.cache.outputs.cache-hit != 'true'
         run: |
           INSTALL_MSG=$(poetry install --dry-run 2>&1 | tail -1)
           if [[ "$INSTALL_MSG" != '' ]]; then
@@ -70,6 +69,11 @@ jobs:
                     <br/> $INSTALL_MSG" >> $GITHUB_STEP_SUMMARY
             exit 3
           fi
+
+      - name: Poetry; configure and install packages
+        working-directory: django-test #INPUT
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
           poetry config repositories.repowered ${{ secrets.PRIVATE_PYPI_URL}}
           poetry config http-basic.repowered ${{ secrets.PRIVATE_PYPI_USER }} ${{ secrets.PRIVATE_PYPI_PASSWORD}}
           poetry config --list
@@ -108,20 +112,18 @@ jobs:
 
         #if branch dev/main/hotfix then --testmon-noselect else --testmon
         run: |
-          poetry run pytest  -rsfF --cov-config=.coveragerc --cov-report=xml --cov=. \
-            --testmon --durations=5 --numprocesses=2 2>&1 | tee /dev/stderr >test_report.md
-          HAS_FAILURES=$(cat test_report | { grep 'failed' || true; } 2>&1 )
+          poetry run pytest -v \
+            --testmon --durations=5 --numprocesses=2 \
+            --cov-config=.coveragerc --cov-report=xml --cov=.
+            --md-report --md-report-flavor gfm --md-report-exclude-outcomes passed skipped xpassed --md-report-output test_report.md 
+          HAS_FAILURES=$(cat test_report.md | { grep 'failed' || true; } 2>&1 )
           if [ -f test_report.md ]; then
               if [ "$HAS_FAILURES" == '' ]; then
-                echo "<details><summary>:white_check_mark: Tests Succeeded</summary>" >> $GITHUB_STEP_SUMMARY
-                echo "" >> $GITHUB_STEP_SUMMARY
-                cat test_report.md >> $GITHUB_STEP_SUMMARY
-                echo "" >> $GITHUB_STEP_SUMMARY
-                echo "</details>" >> $GITHUB_STEP_SUMMARY
+                echo "<h1>:white_check_mark: Tests Succeeded</h1>" >> $GITHUB_STEP_SUMMARY
               else
                 echo "<details><summary>:x: Tests Failed</summary>" >> $GITHUB_STEP_SUMMARY
                 echo "" >> $GITHUB_STEP_SUMMARY
-                cat test_report >> $GITHUB_STEP_SUMMARY
+                cat test_report.md >> $GITHUB_STEP_SUMMARY
                 echo "" >> $GITHUB_STEP_SUMMARY
                 echo "</details>" >> $GITHUB_STEP_SUMMARY
                 exit 3
