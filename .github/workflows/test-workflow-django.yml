@@ -93,18 +93,15 @@ jobs:
 #          SQL_HOST: ${{ vars.POSTGRES_HOST }}
 #          SQL_PORT: 5432
 
-      - name: Run tests with coverage #TODO: MISS TOCH MAAR WEER MET PRETTY EN MINDER KOLOMMEN OFZO??
+      - name: Run tests with coverage
         working-directory: django-test #INPUT
+        # Bash command explanations:
+        # 2>&1: redirect stderr to stdout
+        # tee /dev/stderr >test_report: Copy standard input to 'test_report' and to stdout
+        # { grep 'failed' || true; }: makes sure that grep does not exit with code 1 when no failures are found
         run: |
           poetry run pytest --durations=5 --numprocesses=2 2>&1 | tee /dev/stderr >test_report
-          echo "---------------------------"
-          echo ""
-          echo "hi" >> test
-          cat test | grep 'failed'
-          cat test_report | grep 'failed'
-          echo "---------------------------"
-          echo ""
-          HAS_FAILURES=$(cat test_report | grep 'failed' 2>&1 )
+          HAS_FAILURES=$(cat test_report | { grep 'failed' || true; } 2>&1 )
           if [ -f test_report ]; then
               if [ "$HAS_FAILURES" == '' ]; then
                 echo "<details><summary>:white_check_mark: Tests Succeeded</summary>" >> $GITHUB_STEP_SUMMARY
