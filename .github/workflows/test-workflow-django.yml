@@ -59,7 +59,7 @@ jobs:
           virtualenvs-in-project: true
           installer-parallel: true
 
-      - name: Check poetry
+      - name: Check pyproject.toml
         working-directory: django-test #INPUT
         run: |
           INSTALL_MSG=$(poetry install --dry-run 2>&1 | tail -1)
@@ -81,7 +81,6 @@ jobs:
 
       - name: Download tetstmondata artifact
         uses: actions/download-artifact@v4
-        working-directory: django-test #INPUT
         with:
           name: django-test/.testmondata
 
