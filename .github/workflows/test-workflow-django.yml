@@ -106,13 +106,13 @@ jobs:
               if [ "$HAS_FAILURES" == '' ]; then
                 echo "<details><summary>:white_check_mark: Tests Succeeded</summary>" >> $GITHUB_STEP_SUMMARY
                 echo "" >> $GITHUB_STEP_SUMMARY
-                cat test_report >> $GITHUB_STEP_SUMMARY
+                cat test_report > $GITHUB_STEP_SUMMARY
                 echo "" >> $GITHUB_STEP_SUMMARY
                 echo "</details>" >> $GITHUB_STEP_SUMMARY
               else
                 echo "<details><summary>:x: Tests Failed</summary>" >> $GITHUB_STEP_SUMMARY
                 echo "" >> $GITHUB_STEP_SUMMARY
-                cat test_report >> $GITHUB_STEP_SUMMARY
+                cat test_report > $GITHUB_STEP_SUMMARY
                 echo "" >> $GITHUB_STEP_SUMMARY
                 echo "</details>" >> $GITHUB_STEP_SUMMARY
                 exit 3
