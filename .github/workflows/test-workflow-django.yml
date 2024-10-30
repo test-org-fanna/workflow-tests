@@ -112,10 +112,11 @@ jobs:
 
         #if branch dev/main/hotfix then --testmon-noselect else --testmon
         run: |
+          cat .testmondata
           poetry run pytest -v \
             --testmon --durations=5 --numprocesses=2 \
             --cov-config=.coveragerc --cov-report=xml --cov=. \
-            --md-report --md-report-flavor github --md-report-exclude-outcomes passed skipped xpassed --md-report-tee test_report.md
+            --md-report --md-report-flavor github --md-report-exclude-outcomes passed skipped xpassed --md-report-tee "$REPORT_OUTPUT"
           echo "------------------"
           echo ""
           cat test_report.md
@@ -138,6 +139,7 @@ jobs:
         env:
           CI: true
           COLUMNS: 100
+          REPORT_OUTPUT: test_report.md
           SQL_DATABASE: ${{ vars.POSTGRES_DB }}
           SQL_USER: ${{ vars.POSTGRES_USER }}
           SQL_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
