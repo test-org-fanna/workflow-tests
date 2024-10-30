@@ -92,10 +92,11 @@ jobs:
           SQL_PORT: 5432
 
       - name: Show test failures in the job summary
+        working-directory: django-test #INPUT
         if: failure()
         run: |
           if [ -f test_report.md ]; then
-            echo "<details><summary>Failed Test Report</summary>" >> $GITHUB_STEP_SUMMARY
+            echo "<details><summary>:x: Tests Failed</summary>" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             cat test_report.md >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
