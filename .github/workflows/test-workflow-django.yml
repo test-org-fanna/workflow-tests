@@ -81,6 +81,7 @@ jobs:
 
       - name: Simple tests
         working-directory: django-test #INPUT
+        shell: bash
         run: |
           echo "REPORT_FILE=${REPORT_OUTPUT}" >> "$GITHUB_ENV"
           poetry run pytest -v --md-report --md-report-flavor gfm --md-report-exclude-outcomes passed skipped xpassed --md-report-output "$REPORT_OUTPUT"
