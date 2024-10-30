@@ -21,7 +21,7 @@ pytest-xdist = "^3.6.1"
 [tool.poetry.group.A.dependencies]
 alan = {version = "^0.1.16", source = "repowered"}
 
-# Instead of the 'old way' using an 'ini' file
+# Instead of using an 'ini' file
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "dummy.settings"
 python_files = ["test_*.py", "*_test.py", "tests.py"]

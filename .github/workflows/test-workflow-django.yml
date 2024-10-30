@@ -102,8 +102,8 @@ jobs:
 
         #if branch dev/main/hotfix then --testmon-noselect else --testmon
         run: |
-          poetry run pytest --cov-config=.coveragerc --cov-report=xml --cov-report term --cov=. \
-            --testmon --durations=5 --numprocesses=2 2>&1 | tee /dev/stderr >test_report
+          poetry run pytest  -rsfF --cov-config=.coveragerc --cov-report=xml --cov=. \
+            --testmon --durations=5 --numprocesses=2 2>&1 | tee /dev/stderr >test_report.md
           HAS_FAILURES=$(cat test_report | { grep 'failed' || true; } 2>&1 )
           if [ -f test_report ]; then
               if [ "$HAS_FAILURES" == '' ]; then
