@@ -80,6 +80,7 @@ jobs:
           poetry install --no-interaction --no-root --no-ansi
 
       - name: Download tetstmondata artifact
+        continue-on-error: true
         uses: actions/download-artifact@v4
         with:
           name: django-test/.testmondata
