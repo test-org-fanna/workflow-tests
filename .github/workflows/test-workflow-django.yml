@@ -81,10 +81,9 @@ jobs:
 
       - name: Simple tests
         working-directory: django-test #INPUT
-        shell: bash
         run: |
           echo "REPORT_FILE=${REPORT_OUTPUT}" >> "$GITHUB_ENV"
-          poetry run pytest -v --md-report --md-report-flavor gfm --md-report-exclude-outcomes passed skipped xpassed --md-report-output "$REPORT_OUTPUT"
+          poetry run pytest -v --md-report --md-report-flavor gfm --md-report-exclude-outcomes passed skipped xpassed --md-report-output test_report.md
         env:
           CI: true
           REPORT_OUTPUT: md_report.md
@@ -97,12 +96,14 @@ jobs:
       - name: Output reports to the job summary when tests fail
         if: failure()
         run: |
-          if [ -f "$REPORT_FILE" ]; then
+          if [ -f test_report.md ]; then
             echo "<details><summary>Failed Test Report</summary>" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             cat "$REPORT_FILE" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "</details>" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "no file was found but it did fail"
           fi
 
 #      - name: Download tetstmondata artifact
