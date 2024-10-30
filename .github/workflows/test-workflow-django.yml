@@ -48,74 +48,74 @@ jobs:
           key: cache-poetry-${{ matrix.poetry_version }}-python-${{ matrix.python_version }}-${{ hashFiles('**/poetry.lock') }}
 
       - name: ls on django-test
-        run: ls -alhR django-test
+        run: ls -alh django-test
 
       - name: Add cache to path
         if: steps.cache.outputs.cache-hit == 'true'
         run: echo "/github/home/.local/bin" >> $GITHUB_PATH
 
-#      - name: Install Poetry V${{ matrix.poetry_version }}
-#        if: steps.cache.outputs.cache-hit != 'true'
-#        uses: snok/install-poetry@v1
-#        with:
-#          version: ${{ matrix.poetry_version }}
-#          virtualenvs-create: true
-#          virtualenvs-in-project: true
-#          installer-parallel: true
-#
-#      - name: Check pyproject.toml
-#        working-directory: django-test #INPUT
-#        run: |
-#          INSTALL_MSG=$(poetry install --dry-run 2>&1 | tail -1)
-#          if [[ "$INSTALL_MSG" != '' ]]; then
-#            echo "<h2>:no_entry_sign: Poetry install dry-run failed </h2>
-#                    <h3>You should probably run 'poetry lock' </h3>
-#                    <br/> $INSTALL_MSG" >> $GITHUB_STEP_SUMMARY
-#            exit 3
-#          fi
-#
-#      - name: Poetry; configure and install packages
-#        working-directory: django-test #INPUT
-#        if: steps.cache.outputs.cache-hit != 'true'
-#        run: |
-#          poetry config repositories.repowered ${{ secrets.PRIVATE_PYPI_URL}}
-#          poetry config http-basic.repowered ${{ secrets.PRIVATE_PYPI_USER }} ${{ secrets.PRIVATE_PYPI_PASSWORD}}
-#          poetry config --list
-#          poetry install --no-interaction --no-root --no-ansi
-#
-#      - name: Run tests with coverage (+2 parallel procs, MD report on failures, testmon(-noselect) on branch, 5 slowest tests)
-#        working-directory: django-test #INPUT
-#        # Bash commands explanations:
-#        #  2>&1: redirect stderr to stdout
-#        #  tee /dev/stderr >test_report: Copy standard input to 'test_report' and to stdout
-#        #  { grep 'failed' || true; }: makes sure that grep does not exit with code 1 when no failures are found
-#        # If branch dev/main/hotfix then --testmon-noselect else --testmon
-#        run: |
-#          poetry run pytest -v \
-#            --testmon --durations=5 -n 2 \
-#            --cov-config=.coveragerc --cov-report=xml --cov=. \
-#            --md-report --md-report-flavor gfm --md-report-exclude-outcomes passed skipped xpassed --md-report-output test_report.md
-#        env:
-#          CI: true
-#          REPORT_OUTPUT: test_report.md
-#          SQL_DATABASE: ${{ vars.POSTGRES_DB }}
-#          SQL_USER: ${{ vars.POSTGRES_USER }}
-#          SQL_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-#          SQL_HOST: ${{ vars.POSTGRES_HOST }}
-#          SQL_PORT: 5432
-#
-#      - name: Show test failures in the job summary
-#        working-directory: django-test #INPUT
-#        if: failure()
-#        run: |
-#          if [ -f test_report.md ]; then
-#            echo "<summary>:x: Tests Failed</summary>" >> $GITHUB_STEP_SUMMARY
-#            echo "" >> $GITHUB_STEP_SUMMARY
-#            echo "" >> $GITHUB_STEP_SUMMARY
-#            cat test_report.md >> $GITHUB_STEP_SUMMARY
-#          else
-#            echo "Tests failed but report file 'test_report.md' was not generated"
-#          fi
+      - name: Install Poetry V${{ matrix.poetry_version }}
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: snok/install-poetry@v1
+        with:
+          version: ${{ matrix.poetry_version }}
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          installer-parallel: true
+
+      - name: Check pyproject.toml
+        working-directory: django-test #INPUT
+        run: |
+          INSTALL_MSG=$(poetry install --dry-run 2>&1 | tail -1)
+          if [[ "$INSTALL_MSG" != '' ]]; then
+            echo "<h2>:no_entry_sign: Poetry install dry-run failed </h2>
+                    <h3>You should probably run 'poetry lock' </h3>
+                    <br/> $INSTALL_MSG" >> $GITHUB_STEP_SUMMARY
+            exit 3
+          fi
+
+      - name: Poetry; configure and install packages
+        working-directory: django-test #INPUT
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          poetry config repositories.repowered ${{ secrets.PRIVATE_PYPI_URL}}
+          poetry config http-basic.repowered ${{ secrets.PRIVATE_PYPI_USER }} ${{ secrets.PRIVATE_PYPI_PASSWORD}}
+          poetry config --list
+          poetry install --no-interaction --no-root --no-ansi
+
+      - name: Run tests with coverage (+2 parallel procs, MD report on failures, testmon(-noselect) on branch, 5 slowest tests)
+        working-directory: django-test #INPUT
+        # Bash commands explanations:
+        #  2>&1: redirect stderr to stdout
+        #  tee /dev/stderr >test_report: Copy standard input to 'test_report' and to stdout
+        #  { grep 'failed' || true; }: makes sure that grep does not exit with code 1 when no failures are found
+        # If branch dev/main/hotfix then --testmon-noselect else --testmon
+        run: |
+          poetry run pytest -v \
+            --testmon --durations=5 -n 2 \
+            --cov-config=.coveragerc --cov-report=xml --cov=. \
+            --md-report --md-report-flavor gfm --md-report-exclude-outcomes passed skipped xpassed --md-report-output test_report.md
+        env:
+          CI: true
+          REPORT_OUTPUT: test_report.md
+          SQL_DATABASE: ${{ vars.POSTGRES_DB }}
+          SQL_USER: ${{ vars.POSTGRES_USER }}
+          SQL_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          SQL_HOST: ${{ vars.POSTGRES_HOST }}
+          SQL_PORT: 5432
+
+      - name: Show test failures in the job summary
+        working-directory: django-test #INPUT
+        if: failure()
+        run: |
+          if [ -f test_report.md ]; then
+            echo "<summary>:x: Tests Failed</summary>" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            cat test_report.md >> $GITHUB_STEP_SUMMARY
+          else
+            echo "Tests failed but report file 'test_report.md' was not generated"
+          fi
 
 #      - name: Archive test coverage report
 #        uses: actions/upload-artifact@v4
