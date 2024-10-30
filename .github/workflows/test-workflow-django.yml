@@ -43,8 +43,9 @@ jobs:
         with:
           path: |
             django-test/.venv
+            django-test/.testmondata
             /github/home/.local
-          key: cache-poetry-${{ matrix.poetry_version }}-python-${{ matrix.python_version }}--${{ hashFiles('**/poetry.lock') }}
+          key: cache-poetry-${{ matrix.poetry_version }}-python-${{ matrix.python_version }}-${{ hashFiles('**/poetry.lock') }}
 
       - name: ls on django-test
         run: ls -alhR django-test
