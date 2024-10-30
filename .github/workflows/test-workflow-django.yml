@@ -114,9 +114,9 @@ jobs:
         run: |
           cat .testmondata
           poetry run pytest -v \
+            --md-report --md-report-flavor github --md-report-exclude-outcomes passed skipped xpassed --md-report-tee "$REPORT_OUTPUT" \
             --testmon --durations=5 --numprocesses=2 \
-            --cov-config=.coveragerc --cov-report=xml --cov=. \
-            --md-report --md-report-flavor github --md-report-exclude-outcomes passed skipped xpassed --md-report-tee "$REPORT_OUTPUT"
+            --cov-config=.coveragerc --cov-report=xml --cov=. 
           echo "------------------"
           echo ""
           cat test_report.md
