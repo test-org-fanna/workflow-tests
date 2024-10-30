@@ -19,7 +19,7 @@ class PetRockModelTests(TestCase):
         """Test the creation of a PetRock."""
         rocky = PetRock.objects.get(name="Rocky")
         self.assertEqual(rocky.name, "Rocky")
-        self.assertEqual(rocky.mood, "HAPPYdsfd")
+        self.assertEqual(rocky.mood, "HAPPY")
         self.assertEqual(rocky.resting_spot, "On a soft pillow")
         self.assertEqual(rocky.times_rolled, 0)  # By default, it should be 0
 
