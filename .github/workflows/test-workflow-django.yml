@@ -120,7 +120,7 @@ jobs:
           fi
         env:
           CI: true
-          COLUMNS: 50
+          COLUMNS: 80
           SQL_DATABASE: ${{ vars.POSTGRES_DB }}
           SQL_USER: ${{ vars.POSTGRES_USER }}
           SQL_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
@@ -131,7 +131,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage.xml
-          path: coverage.xml
+          path: django-test/
           if-no-files-found: 'error'
 
 #  quality-control-sonar:
