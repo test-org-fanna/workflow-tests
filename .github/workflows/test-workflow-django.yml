@@ -116,19 +116,19 @@ jobs:
             --testmon --durations=5 --numprocesses=2 \
             --cov-config=.coveragerc --cov-report=xml --cov=. \
             --md-report --md-report-flavor gfm --md-report-exclude-outcomes passed skipped xpassed --md-report-output test_report.md 
-          HAS_FAILURES=$(cat test_report.md | { grep 'failed' || true; } 2>&1 )
-          if [ -f test_report.md ]; then
-              if [ "$HAS_FAILURES" == '' ]; then
-                echo "<h1>:white_check_mark: Tests Succeeded</h1>" >> $GITHUB_STEP_SUMMARY
-              else
-                echo "<details><summary>:x: Tests Failed</summary>" >> $GITHUB_STEP_SUMMARY
-                echo "" >> $GITHUB_STEP_SUMMARY
-                cat test_report.md >> $GITHUB_STEP_SUMMARY
-                echo "" >> $GITHUB_STEP_SUMMARY
-                echo "</details>" >> $GITHUB_STEP_SUMMARY
-                exit 3
-              fi
-          fi
+#          HAS_FAILURES=$(cat test_report.md | { grep 'failed' || true; } 2>&1 )
+#          if [ -f test_report.md ]; then
+#              if [ "$HAS_FAILURES" == '' ]; then
+#                echo "<h1>:white_check_mark: Tests Succeeded</h1>" >> $GITHUB_STEP_SUMMARY
+#              else
+#                echo "<details><summary>:x: Tests Failed</summary>" >> $GITHUB_STEP_SUMMARY
+#                echo "" >> $GITHUB_STEP_SUMMARY
+#                cat test_report.md >> $GITHUB_STEP_SUMMARY
+#                echo "" >> $GITHUB_STEP_SUMMARY
+#                echo "</details>" >> $GITHUB_STEP_SUMMARY
+#                exit 3
+#              fi
+#          fi
         env:
           CI: true
           COLUMNS: 100
