@@ -97,9 +97,10 @@ jobs:
         working-directory: django-test #INPUT
         run: |
           poetry run pytest --durations=5 --numprocesses=2 2>&1 | tee /dev/stderr >test_report
-          echo "---------------------------"
-          cat test_report
-          HAS_FAILURES=$(cat test_report | grep 'failed' )
+          echo "---------------------------\n"
+          cat test_report | grep 'failed'
+          echo "---------------------------\n"
+          HAS_FAILURES=$(cat test_report | grep 'failed' 2>&1 )
           if [ -f test_report ]; then
               if [ "$HAS_FAILURES" == '' ]; then
                 echo "<details><summary>:white_check_mark: Tests Succeeded</summary>" >> $GITHUB_STEP_SUMMARY
