@@ -83,10 +83,10 @@ jobs:
         working-directory: django-test #INPUT
         run: |
           echo "REPORT_FILE=${REPORT_OUTPUT}" >> "$GITHUB_ENV"
-          poetry run pytest -v --md-report --md-report-flavor gfm --md-report-exclude-outcomes passed skipped xpassed --md-report-output test_report.md
+          poetry run pytest -v --md-report --md-report-flavor gfm --md-report-exclude-outcomes passed skipped xpassed --md-report-output "$REPORT_OUTPUT"
         env:
           CI: true
-          REPORT_OUTPUT: md_report.md
+          REPORT_OUTPUT: test_report.md
           SQL_DATABASE: ${{ vars.POSTGRES_DB }}
           SQL_USER: ${{ vars.POSTGRES_USER }}
           SQL_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
@@ -96,14 +96,14 @@ jobs:
       - name: Output reports to the job summary when tests fail
         if: failure()
         run: |
-          if [ -f test_report.md ]; then
+          if [ -f "$REPORT_FILE" ]; then
             echo "<details><summary>Failed Test Report</summary>" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             cat "$REPORT_FILE" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "</details>" >> $GITHUB_STEP_SUMMARY
           else
-            echo "no file was found but it did fail"
+            echo "Tests failed but not report file was generated"
           fi
 
 #      - name: Download tetstmondata artifact
