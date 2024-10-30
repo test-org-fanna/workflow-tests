@@ -80,6 +80,7 @@ jobs:
           poetry install --no-interaction --no-root --no-ansi
 
       - name: Simple tests
+        working-directory: django-test #INPUT
         env:
           REPORT_OUTPUT: md_report.md
         run: |
