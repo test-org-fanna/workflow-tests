@@ -79,6 +79,24 @@ jobs:
           poetry config --list
           poetry install --no-interaction --no-root --no-ansi
 
+      - name: Simple tests
+        env:
+          REPORT_OUTPUT: md_report.md
+        run: |
+          echo "REPORT_FILE=${REPORT_OUTPUT}" >> "$GITHUB_ENV"
+          poetry run pytest -v --md-report --md-report-flavor gfm --md-report-exclude-outcomes passed skipped xpassed --md-report-output "$REPORT_OUTPUT"
+
+      - name: Output reports to the job summary when tests fail
+        if: failure()
+        run: |
+          if [ -f "$REPORT_FILE" ]; then
+            echo "<details><summary>Failed Test Report</summary>" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            cat "$REPORT_FILE" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "</details>" >> $GITHUB_STEP_SUMMARY
+          fi
+
 #      - name: Download tetstmondata artifact
 #        continue-on-error: true
 #        uses: actions/download-artifact@v4
@@ -113,7 +131,7 @@ jobs:
         #if branch dev/main/hotfix then --testmon-noselect else --testmon
         run: |
           poetry run pytest -v \
-            --md-report --md-report-flavor github --md-report-exclude-outcomes passed skipped xpassed --md-report-tee "$REPORT_OUTPUT" \
+#            --md-report --md-report-flavor gfm --md-report-exclude-outcomes passed skipped xpassed --md-report-tee "$REPORT_OUTPUT" \
             --testmon --durations=5 --numprocesses=2 \
             --cov-config=.coveragerc --cov-report=xml --cov=. 
           echo "------------------"
