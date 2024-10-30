@@ -112,7 +112,6 @@ jobs:
 
         #if branch dev/main/hotfix then --testmon-noselect else --testmon
         run: |
-          cat .testmondata
           poetry run pytest -v \
             --md-report --md-report-flavor github --md-report-exclude-outcomes passed skipped xpassed --md-report-tee "$REPORT_OUTPUT" \
             --testmon --durations=5 --numprocesses=2 \
