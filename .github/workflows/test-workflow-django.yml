@@ -87,11 +87,11 @@ jobs:
 #          fi
 #        env:
 #          CI: true
-#          POSTGRES_DB: ${{ vars.POSTGRES_DB }}
-#          POSTGRES_USER: ${{ vars.POSTGRES_USER }}
-#          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-#          POSTGRES_HOST: ${{ vars.POSTGRES_HOST }}
-#          POSTGRES_PORT: 5432
+#          SQL_DATABASE: ${{ vars.POSTGRES_DB }}
+#          SQL_USER: ${{ vars.POSTGRES_USER }}
+#          SQL_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+#          SQL_HOST: ${{ vars.POSTGRES_HOST }}
+#          SQL_PORT: 5432
 
       - name: Run tests with coverage #TODO: MISS TOCH MAAR WEER MET PRETTY EN MINDER KOLOMMEN OFZO??
         working-directory: django-test #INPUT
@@ -119,11 +119,11 @@ jobs:
         env:
           CI: true
           COLUMNS: 500
-          POSTGRES_DB: ${{ vars.POSTGRES_DB }}
-          POSTGRES_USER: ${{ vars.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_HOST: ${{ vars.POSTGRES_HOST }}
-          POSTGRES_PORT: 5432
+          SQL_DATABASE: ${{ vars.POSTGRES_DB }}
+          SQL_USER: ${{ vars.POSTGRES_USER }}
+          SQL_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          SQL_HOST: ${{ vars.POSTGRES_HOST }}
+#          SQL_PORT: 5432
 
       - name: Archive test coverage report
         uses: actions/upload-artifact@v4
