@@ -82,24 +82,22 @@ jobs:
       - name: Simple tests
         working-directory: django-test #INPUT
         run: |
-          echo "REPORT_FILE=${REPORT_OUTPUT}" >> "$GITHUB_ENV"
-          poetry run pytest -v --md-report --md-report-flavor gfm --md-report-exclude-outcomes passed skipped xpassed --md-report-output "$REPORT_OUTPUT"
+          poetry run pytest -v --md-report --md-report-flavor gfm --md-report-exclude-outcomes passed skipped xpassed --md-report-output test_report.md
         env:
           CI: true
-          REPORT_OUTPUT: test_report.md
           SQL_DATABASE: ${{ vars.POSTGRES_DB }}
           SQL_USER: ${{ vars.POSTGRES_USER }}
           SQL_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           SQL_HOST: ${{ vars.POSTGRES_HOST }}
           SQL_PORT: 5432
 
-      - name: Output reports to the job summary when tests fail
+      - name: Show test failures in the job summary
         if: failure()
         run: |
-          if [ -f ${{ env.REPORT_FILE }} ]; then
+          if [ -f test_report.md ]; then
             echo "<details><summary>Failed Test Report</summary>" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            cat "$REPORT_FILE" >> $GITHUB_STEP_SUMMARY
+            cat test_report.md >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "</details>" >> $GITHUB_STEP_SUMMARY
           else
