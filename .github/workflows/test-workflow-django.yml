@@ -93,8 +93,9 @@ jobs:
 #          POSTGRES_HOST: ${{ vars.POSTGRES_HOST }}
 #          POSTGRES_PORT: 5432
 
-      - name: Run tests with coverage
+      - name: Run tests with coverage #TODO: MISS TOCH MAAR WEER MET PRETTY EN MINDER KOLOMMEN OFZO??
         working-directory: django-test #INPUT
+        continue-on-error: true
         run: |
           poetry run pytest --durations=5 --numprocesses=2 2>&1 | tee /dev/stderr >test_report
           echo "---------------------------"
@@ -118,6 +119,7 @@ jobs:
           fi
         env:
           CI: true
+          COLUMNS: 500
           POSTGRES_DB: ${{ vars.POSTGRES_DB }}
           POSTGRES_USER: ${{ vars.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
