@@ -40,7 +40,7 @@ class PetRock(models.Model):
         return f"{self.name} has rolled {self.times_rolled} times. Impressive!"
 
     def __str__(self):
-        return f"{self.name} (Mood: {self.get_mood_display()}, Times Rolled: {self.times_rolled})"
+        return f"{self.name} (Class: {self.classification}, Mood: {self.get_mood_display()}, Times Rolled: {self.times_rolled})"
 
     class Meta:
         verbose_name = "Pet Rock"
