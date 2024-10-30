@@ -102,20 +102,20 @@ jobs:
 
         #if branch dev/main/hotfix then --testmon-noselect else --testmon
         run: |
-          poetry run pytest --cov-config=.coveragerc --cov-report=xml --cov-report stdout --cov=. \
+          poetry run pytest --cov-config=.coveragerc --cov-report=xml --cov-report term --cov=. \
             --testmon --durations=5 --numprocesses=2 2>&1 | tee /dev/stderr >test_report
           HAS_FAILURES=$(cat test_report | { grep 'failed' || true; } 2>&1 )
           if [ -f test_report ]; then
               if [ "$HAS_FAILURES" == '' ]; then
                 echo "<details><summary>:white_check_mark: Tests Succeeded</summary>" >> $GITHUB_STEP_SUMMARY
                 echo "" >> $GITHUB_STEP_SUMMARY
-                cat test_report > $GITHUB_STEP_SUMMARY
+                cat test_report >> $GITHUB_STEP_SUMMARY
                 echo "" >> $GITHUB_STEP_SUMMARY
                 echo "</details>" >> $GITHUB_STEP_SUMMARY
               else
                 echo "<details><summary>:x: Tests Failed</summary>" >> $GITHUB_STEP_SUMMARY
                 echo "" >> $GITHUB_STEP_SUMMARY
-                cat test_report > $GITHUB_STEP_SUMMARY
+                cat test_report >> $GITHUB_STEP_SUMMARY
                 echo "" >> $GITHUB_STEP_SUMMARY
                 echo "</details>" >> $GITHUB_STEP_SUMMARY
                 exit 3
