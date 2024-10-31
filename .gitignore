@@ -10,5 +10,7 @@ db.sqlite3
 media
 .coverage
 coverage.xml
+.testmondata
+
 
 # Vue files includiong test with coverage

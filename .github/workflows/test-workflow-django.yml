@@ -94,16 +94,16 @@ jobs:
       #INPUT FOR PROCS
       - name: Run tests with coverage (${{vars.PARALLEL_TEST_PROCS}} test parallel procs, MD report on failures, testmon(-noselect) on branch, 5 slowest tests)
         working-directory: django-test #INPUT
-        # If .testmondata exists do diff on coverage report
         run: |
           if [ ${{ env.IS_STANDARD_BRANCH }} ]; then
             TEST_MON_FLAG=--testmon
           else
             TEST_MON_FLAG=--testmon-noselect
           fi
+            echo "Running pytest with testmon flag: $TEST_MON_FLAG"
           poetry run pytest -v \
             "$TEST_MON_FLAG" --durations=5 -n ${{vars.PARALLEL_TEST_PROCS}} \
-            --cov-config=.coveragerc --cov-report=xml --cov=. \
+            --cov-report=term --cov-report=xml --cov=. --cov-append \
             --md-report --md-report-flavor gfm --md-report-exclude-outcomes passed skipped xpassed --md-report-output test_report.md
         env:
           CI: true
