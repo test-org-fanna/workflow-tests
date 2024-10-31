@@ -44,6 +44,8 @@ jobs:
           path: |
             django-test/.venv
             django-test/.testmondata
+            django-test/.coverage
+            coverage.xml
             /github/home/.local
           key: cache-poetry-${{ matrix.poetry_version }}-python-${{ matrix.python_version }}-${{ hashFiles('**/poetry.lock') }}
 
@@ -95,7 +97,7 @@ jobs:
       - name: Run tests with coverage (${{vars.PARALLEL_TEST_PROCS}} test parallel procs, MD report on failures, testmon(-noselect) on branch, 5 slowest tests)
         working-directory: django-test #INPUT
         run: |
-          echo $GITHUB.REF
+          echo ${{ GITHUB.REF }}
           if [[ ${{ env.IS_STANDARD_BRANCH }} ]]; then
             TEST_MON_FLAG=--testmon-noselect;
           else
