@@ -96,9 +96,9 @@ jobs:
         working-directory: django-test #INPUT
         run: |
           if [ ${{ env.IS_STANDARD_BRANCH }} ]; then
-            TEST_MON_FLAG=--testmon
-          else
             TEST_MON_FLAG=--testmon-noselect
+          else
+            TEST_MON_FLAG=--testmon
           fi
             echo "Running pytest with testmon flag: $TEST_MON_FLAG"
           poetry run pytest -v \
