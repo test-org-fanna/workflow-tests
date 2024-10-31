@@ -31,8 +31,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install needed apk packages
-        run: apk update && apk add bash && apk add zstd && apk add tar
+#      - name: Install needed apk packages
+#        run: apt update && apk add bash && apk add zstd && apk add tar
 
       - name: Load cache
         id: cache
