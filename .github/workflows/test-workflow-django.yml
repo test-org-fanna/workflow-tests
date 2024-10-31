@@ -47,8 +47,16 @@ jobs:
             /github/home/.local
           key: cache-poetry-${{ matrix.poetry_version }}-python-${{ matrix.python_version }}-${{ hashFiles('**/poetry.lock') }}
 
-      - name: ls on django-test
-        run: ls -alh django-test
+#      - name: Always save cache
+#        id: cache-primes-save
+#        if: always() && steps.cache.outputs.cache-hit != 'true'
+#        uses: actions/cache/save@v4
+#        with:
+#          key: cache-poetry-${{ matrix.poetry_version }}-python-${{ matrix.python_version }}-${{ hashFiles('**/poetry.lock') }}
+#          path: |
+#            django-test/.venv
+#            django-test/.testmondata
+#            /github/home/.local
 
       - name: Add cache to path
         if: steps.cache.outputs.cache-hit == 'true'
