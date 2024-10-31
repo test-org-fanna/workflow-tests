@@ -1,4 +1,6 @@
 name: moi
+on:
+  push:
 
 jobs:
   unit-tests-with-coverage:
