@@ -98,7 +98,7 @@ jobs:
         working-directory: django-test #INPUT
         run: |
           echo ${{ GITHUB.REF }}
-          if [[ ${{ env.IS_STANDARD_BRANCH }} ]]; then
+          if [ ${{ env.IS_STANDARD_BRANCH }} == 'true' ]; then
             TEST_MON_FLAG=--testmon-noselect;
           else
             TEST_MON_FLAG=--testmon;
@@ -112,7 +112,6 @@ jobs:
           CI: true
           IS_STANDARD_BRANCH: ${{ endsWith( GITHUB.REF, 'main') || endsWith( GITHUB.REF, 'dev') 
             || contains( GITHUB.REF, 'release/') || contains( GITHUB.REF, 'hotfix/') }}
-          REPORT_OUTPUT: test_report.md
           SQL_DATABASE: ${{ vars.POSTGRES_DB }}
           SQL_USER: ${{ vars.POSTGRES_USER }}
           SQL_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
