@@ -83,20 +83,24 @@ jobs:
           poetry config --list
           poetry install --no-interaction --no-root --no-ansi
 
-      - name: Run tests with coverage (+2 parallel procs, MD report on failures, testmon(-noselect) on branch, 5 slowest tests)
+      #INPUT FOR PROCS
+      - name: Run tests with coverage (${{vars.PARALLEL_TEST_PROCS}} test parallel procs, MD report on failures, testmon(-noselect) on branch, 5 slowest tests)
         working-directory: django-test #INPUT
-        # Bash commands explanations:
-        #  2>&1: redirect stderr to stdout
-        #  tee /dev/stderr >test_report: Copy standard input to 'test_report' and to stdout
-        #  { grep 'failed' || true; }: makes sure that grep does not exit with code 1 when no failures are found
-        # If branch dev/main/hotfix then --testmon-noselect else --testmon
+        # If .testmondata exists do diff on coverage report
         run: |
+          if [ ${{ env.IS_STANDARD_BRANCH }} ]; then
+            TEST_MON_FLAG=--testmon
+          else
+            TEST_MON_FLAG=--testmon-noselect
+          fi
           poetry run pytest -v \
-            --testmon --durations=5 -n 2 \
+            "$TEST_MON_FLAG" --durations=5 -n ${{vars.PARALLEL_TEST_PROCS}} \
             --cov-config=.coveragerc --cov-report=xml --cov=. \
             --md-report --md-report-flavor gfm --md-report-exclude-outcomes passed skipped xpassed --md-report-output test_report.md
         env:
           CI: true
+          IS_STANDARD_BRANCH: ${{ endsWith( GITHUB.REF, 'main') || endsWith( GITHUB.REF, 'dev') 
+            || contains( GITHUB.REF, 'release/') || contains( GITHUB.REF, 'hotfix/') }}
           REPORT_OUTPUT: test_report.md
           SQL_DATABASE: ${{ vars.POSTGRES_DB }}
           SQL_USER: ${{ vars.POSTGRES_USER }}
