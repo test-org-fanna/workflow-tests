@@ -74,7 +74,7 @@ jobs:
           installer-parallel: true
 
       - name: Check pyproject.toml
-        working-directory: django-test #INPUTs
+        working-directory: django-test #INPUT
         run: |
           INSTALL_MSG=$(poetry install --dry-run 2>&1 | tail -1)
           if [[ "$INSTALL_MSG" != '' ]]; then
@@ -118,7 +118,7 @@ jobs:
           SQL_PORT: 5432
 
       - name: Show test failures in the job summary
-        working-directory: django-test #INPUTd
+        working-directory: django-test #INPUT
         if: failure()
         run: |
           if [ -f test_report.md ]; then
