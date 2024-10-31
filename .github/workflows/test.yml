@@ -8,8 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.11.2"]
-        poetry-version: ["1.8.4"]
+        python_version: ["3.11.2"]
+        poetry_version: ["1.8.4"]
 
     services:
       postgres:
