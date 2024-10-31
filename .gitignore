@@ -1,1 +1,16 @@
+# IDE
 .idea
+
+# Django files including test with coverage
+*.log
+*.pot
+*.pyc
+__pycache__
+db.sqlite3
+media
+.coverage
+coverage.xml
+.testmondata
+
+
+# Vue files includiong test with coverage

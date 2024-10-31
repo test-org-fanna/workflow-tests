@@ -1,4 +1,4 @@
-#Just a test compose
+# A test docker-compose file to check if nested docker-compose files are included for SSH deploy
 
 services:
   test-image:

@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1
+# A very simple Dockerfile with secrets to test building and pushing
 FROM python:3.11.10-alpine
 RUN --mount=type=secret,id=first,env=FIRST_ENV \
     --mount=type=secret,id=second,env=SECOND_ENV

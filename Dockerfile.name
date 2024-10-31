@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1
+# A very simple Dockerfile with an extended name to test building and pushing
 FROM python:3.11.10-alpine
 ENTRYPOINT ["sh", "-c"]
 CMD ["trap 'exit' TERM; while true; do sleep 1; done"]
