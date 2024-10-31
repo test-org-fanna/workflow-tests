@@ -119,7 +119,7 @@ jobs:
           SQL_PORT: 5432
 
       - name: Show test failures in the job summary
-        working-directory: django-test #INPUT
+        working-directory: django-test #INPUTd
         if: failure()
         run: |
           if [ -f test_report.md ]; then
