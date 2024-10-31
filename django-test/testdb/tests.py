@@ -12,7 +12,7 @@ class PetRockModelTests(TestCase):
             name="Rocky",
             birth_date=date(2023, 1, 1),
             mood="HAPPY",
-            classification="SEDIMENTARY",
+            # classification="SEDIMENTARY",
             resting_spot="On a soft pillow"
         )
 
