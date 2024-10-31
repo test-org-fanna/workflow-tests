@@ -31,8 +31,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-#      - name: Install needed apk packages
-#        run: apt update && apk add bash && apk add zstd && apk add tar
+      - name: Python stuff
+        run: which python && python --version
 
       - name: Load cache
         id: cache
@@ -44,7 +44,7 @@ jobs:
             coverage.xml
             django-test/.venv
             /github/home/.local
-          key: cache-poetry-${{ matrix.poetry_version }}-python-${{ matrix.python_version }}--${{ hashFiles('**/poetry.lock') }}
+          key: cache-poetry-${{ matrix.poetry_version }}-python-${{ matrix.python_version }}-${{ hashFiles('**/poetry.lock') }}
 
       - name: Add cache to path
         if: steps.cache.outputs.cache-hit == 'true'
