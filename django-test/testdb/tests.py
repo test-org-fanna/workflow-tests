@@ -31,7 +31,8 @@ class PetRockModelTests(TestCase):
 
         # Roll it again
         self.rock.roll()
-        self.assertEqual(self.rock.times_rolled, 2)
+        self.rock.roll()
+        self.assertEqual(self.rock.times_rolled, 3)
 
     def test_get_mood_display(self):
         """Test the get_mood_display method."""
