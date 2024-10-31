@@ -1,3 +1,7 @@
+name: test
+on:
+  push:
+
 jobs:
   quality-control-sonar:
     name: Quality checks via SonarCloud with coverage report
