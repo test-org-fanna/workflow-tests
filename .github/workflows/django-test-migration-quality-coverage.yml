@@ -55,14 +55,3 @@ jobs:
     # coverage_report_name: # Optional, defaults to 'coverage.xml'
     secrets:
       sonar_token: ${{ secrets.SONAR_TOKEN }}
-
-  coverage-comment:
-    needs: django-unit-test
-    permissions:
-      contents: write
-#      actions: read
-#      pull-requests: write
-    uses: test-org-fanna/.github/.github/workflows/coverage-comment.yml@main
-    with:
-      working_directory: django-test/
-    # coverage_report_name: # Optional, defaults to 'coverage.xml'
