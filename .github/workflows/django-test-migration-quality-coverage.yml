@@ -7,8 +7,6 @@ on:
 jobs:
   django-unit-test-coverage:
     uses: test-org-fanna/.github/.github/workflows/django-test-coverage.yml@main
-    permissions:
-      contents: write
     strategy:
       matrix:
         # Make sure that the configured python versions are available here.
