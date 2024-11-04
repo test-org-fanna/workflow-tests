@@ -21,7 +21,7 @@ jobs:
       postgres_host: ${{ vars.POSTGRES_HOST }}
       python_version: ${{ matrix.python_version }}
       poetry_version: ${{ matrix.poetry_version }}
-      working_directory: django-test
+      working_directory: django-test/
     secrets:
       postgres_password: ${{ secrets.POSTGRES_PASSWORD }}
       private_pypi_url: ${{ secrets.PRIVATE_PYPI_URL }}
@@ -40,7 +40,7 @@ jobs:
       postgres_host: ${{ vars.POSTGRES_HOST }}
       python_version: ${{ matrix.python_version }}
       poetry_version: ${{ matrix.poetry_version }}
-      working_directory: django-test
+      working_directory: django-test/
     secrets:
       postgres_password: ${{ secrets.POSTGRES_PASSWORD }}
 
