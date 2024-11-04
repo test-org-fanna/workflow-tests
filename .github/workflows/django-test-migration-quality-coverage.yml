@@ -52,6 +52,6 @@ jobs:
     uses: test-org-fanna/.github/.github/workflows/quality-control-sonar.yml@main
     with:
       working_directory: django-test/
-    # coverage_report_name: # Optional, defaults to 'coverage.xml'
+    # coverage_report_name: # Optional, defaults to 'coverage.xml'g
     secrets:
       sonar_token: ${{ secrets.SONAR_TOKEN }}
