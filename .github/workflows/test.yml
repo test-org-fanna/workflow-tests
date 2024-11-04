@@ -7,18 +7,18 @@ on:
 jobs:
   unit-tests-with-coverage:
     name: Django Tests With Postgres and Coverage for python version ${{ matrix.python.version }}
-    runs-on: ubuntu-latest
-#    strategy:
-#      matrix:
-#        python_version: [ "3.11.2" ]
-#        poetry_version: [ "1.8.4" ]
-#    container: python:${{ matrix.python-version }}-alpine
+#    runs-on: ubuntu-latest
+    #    strategy:
+    #      matrix:
+    #        python_version: [ "3.11.2" ]
+    #        poetry_version: [ "1.8.4" ]
+    #    container: python:${{ matrix.python-version }}-alpine
     uses: test-org-fanna/.github/.github/workflows/django-test-coverage.yml@main
     with:
       postgres_db: ${{ vars.POSTGRES_DB }}
       postgres_user: ${{ vars.POSTGRES_USER }}
       postgres_host: ${{ vars.POSTGRES_HOST }}
-      poetry_version: ${{ matrix.poetry_version }}
+      poetry_version: 1.8.4
       # working_directory: # Optional, defaults to .
     secrets:
       postgres_password: ${{ secrets.POSTGRES_PASSWORD }}
