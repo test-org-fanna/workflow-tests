@@ -60,7 +60,7 @@ jobs:
     needs: django-unit-test
     permissions:
       contents: write
-      actions: read
+#      actions: read
 #      pull-requests: write
     uses: test-org-fanna/.github/.github/workflows/coverage-comment.yml@main
     with:
