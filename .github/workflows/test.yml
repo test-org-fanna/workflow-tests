@@ -7,6 +7,8 @@ jobs:
   unit-tests-with-coverage:
     name: Django Tests With Postgres and Coverage
     runs-on: ubuntu-latest
+    permissions:
+      - write
 
     services:
       postgres:
@@ -49,9 +51,9 @@ jobs:
       - name: lsje
         run: ls -alhR django-test/
 
-      - name: Add cache to path
-        if: steps.cache.outputs.cache-hit == 'true'
-        run: echo "/github/home/.local/bin" >> $GITHUB_PATH
+#      - name: Add cache to path
+#        if: steps.cache.outputs.cache-hit == 'true'
+#        run: echo "/home/runner/.local/bin" >> $GITHUB_PATH
 
       - name: Install Poetry 1.8.4
         if: steps.cache.outputs.cache-hit != 'true'
