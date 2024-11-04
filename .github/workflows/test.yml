@@ -8,7 +8,7 @@ jobs:
     name: Django Tests With Postgres and Coverage
     runs-on: ubuntu-latest
     permissions:
-      - write
+      contents: write
 
     services:
       postgres:
@@ -47,9 +47,6 @@ jobs:
             django-test/.venv
             /home/runner/.local/
           key: cache-python-3.11.2-poetry-1.8.4-${{ hashFiles('**/poetry.lock') }}
-
-      - name: lsje
-        run: ls -alhR django-test/
 
 #      - name: Add cache to path
 #        if: steps.cache.outputs.cache-hit == 'true'
