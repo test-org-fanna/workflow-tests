@@ -1,5 +1,8 @@
 name: Coverage Comment
 
+on:
+  push:
+
 jobs:
   coverage:
     name: Coverage
