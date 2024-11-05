@@ -3,6 +3,7 @@ from sqlalchemy import engine_from_config, pool
 from sqlalchemy_models import Base, FunnyAnimal
 from alembic import context
 import os
+import re
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -30,11 +31,20 @@ if config.config_file_name is not None:
 # target_metadata = mymodel.Base.metadata
 target_metadata = Base.metadata
 
-
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
+
+# The pattern to exclude the django ORM tables
+django_tables_pattern = re.compile(r'(^django_)|(^auth_)|(^testdb_)')
+
+
+def include_object(object, name, type_, reflected, compare_to):
+    # Exclude tables that match the Django naming pattern
+    if type_ == "table" and django_tables_pattern.match(name):
+        return False
+    return True
 
 
 def run_migrations_offline() -> None:
@@ -54,6 +64,7 @@ def run_migrations_offline() -> None:
         url=url,
         target_metadata=target_metadata,
         literal_binds=True,
+        include_object=include_object,
         dialect_opts={"paramstyle": "named"},
     )
 
@@ -76,7 +87,9 @@ def run_migrations_online() -> None:
 
     with connectable.connect() as connection:
         context.configure(
-            connection=connection, target_metadata=target_metadata
+            connection=connection,
+            target_metadata=target_metadata,
+            include_object=include_object
         )
 
         with context.begin_transaction():

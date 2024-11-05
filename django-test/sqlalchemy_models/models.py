@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float, DateTime
 from sqlalchemy.ext.declarative import declarative_base
-from datetime import datetime
+from datetime import datetime, timezone
 
 Base = declarative_base()
 
@@ -12,8 +12,9 @@ class FunnyAnimal(Base):
     name = Column(String, nullable=False)  # The animal's name (e.g., "Grumpy Cat")
     mood = Column(String, nullable=False)  # Mood (e.g., "Grumpy", "Happy", "Confused")
     quirkiness_level = Column(Float, default=1.0)  # Level of quirkiness (1.0 to 10.0)
+    sighting_timestamp = Column(DateTime, default=datetime.now(timezone.utc))  # When the animal was last spotted
+    # ------- To enable the migration check test, uncomment the column below ------
     favorite_food = Column(String)  # Favorite food (e.g., "Pickles")
-    sighting_timestamp = Column(DateTime, default=datetime.utcnow)  # When the animal was last spotted
 
     def __repr__(self):
         return (
