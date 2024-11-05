@@ -56,11 +56,14 @@ jobs:
         working-directory: django-test
         run: |
           INSTALL_MSG=$(poetry install --dry-run 2>&1 | tail -1)
-          if [[ "$INSTALL_MSG" != '' ]]; then
-            echo "<h2>:no_entry_sign: Poetry install dry-run failed </h2>" >> $GITHUB_STEP_SUMMARY
+          UPDATE_MSG=$(poetry update --dry-run | grep -E '([1-9]+\s(install|update|removal))+')
+          if [[ "$INSTALL_MSG" != '' || "$UPDATE_MSG" != '' ]]; then
+            echo "<h2>:no_entry_sign: Poetry check failed </h2>" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Install --dry-run output: " >> $GITHUB_STEP_SUMMARY
             echo "$INSTALL_MSG" >> $GITHUB_STEP_SUMMARY
+            echo "Update --dry-run output: " >> $GITHUB_STEP_SUMMARY
+            echo "$UPDATE_MSG" >> $GITHUB_STEP_SUMMARY
             exit 3
           fi
 
@@ -68,8 +71,8 @@ jobs:
         working-directory: django-test
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
-          poetry config repositories.repowered ${{ secrets.private_pypi_url}}
-          poetry config http-basic.repowered ${{ secrets.private_pypi_user }} ${{ secrets.private_pypi_password}}
+          poetry config repositories.repowered ${{ secrets.PRIVATE_PYPI_URL}}
+          poetry config http-basic.repowered ${{ secrets.PRIVATE_PYPI_USER }} ${{ secrets.PRIVATE_PYPI_PASSWORD}}
           poetry install --no-interaction --no-root --no-ansi
 
       - name: Check poetry stuff
