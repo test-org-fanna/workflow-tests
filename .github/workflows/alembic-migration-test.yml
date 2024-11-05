@@ -81,7 +81,8 @@ jobs:
         run: |
           poetry run alembic upgrade head
           echo "migration_msg=$(poetry run alembic check)" >> GITHUB_OUTPUT
-          echo "exit_code=$(echo "$?")" >> GITHUB_OUTPUT
+          exit_code=$(echo $?)
+          echo "exit_code=${exit_code}" >> GITHUB_OUTPUT
           echo "the exit code: $exit_code"
         env:
           CI: true
