@@ -42,6 +42,8 @@ jobs:
             django-test.venv
             /home/runner/.local/
           key: cache-python-3.11.2-poetry-1.8.4-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            cache-python-3.11.2-poetry-1.8.4-${{ hashFiles('**/poetry.lock') }}
 
       - name: Install Poetry
         if: steps.cache.outputs.cache-hit != 'true'
@@ -74,16 +76,10 @@ jobs:
 
       - name: Check Alembic Migrations
         working-directory: django-test
+        id: migration-check
         run: |
           poetry run alembic upgrade head
-          MIGRATION_MSG=$(poetry run alembic check 2>&1 )
-          HAS_FAILURES=$?
-          if [[ "$HAS_FAILURES" != 0 ]]; then
-            echo "<h2>:no_entry_sign: Migration check failed.</h2>" >> $GITHUB_STEP_SUMMARY
-            echo "<h3>The message:</h3>" >> $GITHUB_STEP_SUMMARY
-            echo "$MIGRATION_MSG" >> $GITHUB_STEP_SUMMARY
-            exit 3
-          fi
+          echo "migration_msg=$(poetry run alembic check 2>&1 )" >> GITHUB_OUTPUT
         env:
           CI: true
           SQL_DATABASE: ${{ vars.POSTGRES_DB }}
@@ -91,3 +87,13 @@ jobs:
           SQL_HOST: ${{ vars.postgres_host }}
           SQL_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           SQL_PORT: 5432
+
+      - name: Output Migration Failures
+        working-directory: django-test
+        if: failure()
+        run: |
+          echo "<h2>:no_entry_sign: Migration check failed.</h2>" >> $GITHUB_STEP_SUMMARY
+          echo "<h3>The message:</h3>" >> $GITHUB_STEP_SUMMARY
+          echo "${{ steps.migration-check.outputs.migration_msg }}" >> $GITHUB_STEP_SUMMARY
+          exit 3
+        
