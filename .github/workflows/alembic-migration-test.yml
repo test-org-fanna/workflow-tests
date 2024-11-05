@@ -82,6 +82,7 @@ jobs:
           poetry run alembic upgrade head
           echo "migration_msg=$(poetry run alembic check)" >> GITHUB_OUTPUT
           echo "exit_code=$(echo $?)" >> GITHUB_OUTPUT
+          echo "$exit_code"
         env:
           CI: true
           SQL_DATABASE: ${{ vars.POSTGRES_DB }}
@@ -91,7 +92,7 @@ jobs:
           SQL_PORT: 5432
 
       - name: Output Migration Failures
-        if:  steps.migration-check.outputs.exit_code > 0 && steps.migration-check.outputs.migration_msg != ''
+        if:  steps.migration-check.outputs.exit_code > 0
         run: |
           echo "<h2>:no_entry_sign: Migration check failed.</h2>" >> $GITHUB_STEP_SUMMARY
           echo "<h3>The message:</h3>" >> $GITHUB_STEP_SUMMARY
