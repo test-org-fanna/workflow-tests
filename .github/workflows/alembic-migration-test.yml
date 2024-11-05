@@ -76,6 +76,10 @@ jobs:
             exit 3
           fi
 
+      - name: fail ofzo
+        if: failure()
+        run: echo "$INSTALL_MSG" >> $GITHUB_STEP_SUMMARY
+
       - name: Check poetry stuff
         working-directory: django-test
         run: |
