@@ -65,7 +65,7 @@ jobs:
         run: |
           poetry install --no-root --no-ansi --dry-run
           INSTALL_MSG=$(poetry install --no-root --no-ansi --dry-run 2>&1 | tail -1)
-#          UPDATE_MSG=$(poetry update --dry-run | grep -E '([1-9]+\s(install|update|removal))+')
+          UPDATE_MSG=$(poetry update --dry-run | grep -E '([1-9]+\s(install|update|removal))+')
 #          if [[ "$INSTALL_MSG" != '' || "$UPDATE_MSG" != '' ]]; then
 #            echo "<h2>:no_entry_sign: Poetry check failed </h2>" >> $GITHUB_STEP_SUMMARY
 #            echo "" >> $GITHUB_STEP_SUMMARY
