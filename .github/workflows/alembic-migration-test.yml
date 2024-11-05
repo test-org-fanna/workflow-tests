@@ -64,7 +64,7 @@ jobs:
         working-directory: django-test
         run: |
           poetry install --no-root --no-ansi --dry-run
-#          INSTALL_MSG=$(poetry install --no-root --no-ansi --dry-run 2>&1 | tail -1)
+          INSTALL_MSG=$(poetry install --no-root --no-ansi --dry-run 2>&1 | tail -1)
 #          UPDATE_MSG=$(poetry update --dry-run | grep -E '([1-9]+\s(install|update|removal))+')
 #          if [[ "$INSTALL_MSG" != '' || "$UPDATE_MSG" != '' ]]; then
 #            echo "<h2>:no_entry_sign: Poetry check failed </h2>" >> $GITHUB_STEP_SUMMARY
@@ -80,19 +80,13 @@ jobs:
         if: failure()
         run: echo "$INSTALL_MSG" >> $GITHUB_STEP_SUMMARY
 
-      - name: Check poetry stuff
-        working-directory: django-test
-        run: |
-          test=$(poetry update --dry-run | grep 'Package')
-          echo "$test"
-          poetry search alembic
-
       - name: Check Alembic Migrations
         working-directory: django-test
         id: migration-check
         run: |
           poetry run alembic upgrade head
           echo "migration_msg=$(poetry run alembic check)" >> GITHUB_OUTPUT
+          echo "exit_code=$(echo $?)" >> GITHUB_OUTPUT
         env:
           CI: true
           SQL_DATABASE: ${{ vars.POSTGRES_DB }}
@@ -102,7 +96,7 @@ jobs:
           SQL_PORT: 5432
 
       - name: Output Migration Failures
-        if: failure() && steps.migration-check.outputs.migration_msg != ''
+        if:  steps.migration-check.outputs.exit_code > 0 && steps.migration-check.outputs.migration_msg != ''
         run: |
           echo "<h2>:no_entry_sign: Migration check failed.</h2>" >> $GITHUB_STEP_SUMMARY
           echo "<h3>The message:</h3>" >> $GITHUB_STEP_SUMMARY
