@@ -52,6 +52,14 @@ jobs:
           virtualenvs-in-project: true
           installer-parallel: true
 
+      - name: Configure Poetry and install packages
+        working-directory: django-test
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          poetry config repositories.repowered ${{ secrets.PRIVATE_PYPI_URL}}
+          poetry config http-basic.repowered ${{ secrets.PRIVATE_PYPI_USER }} ${{ secrets.PRIVATE_PYPI_PASSWORD}}
+          poetry install --no-interaction --no-root --no-ansi
+
       - name: Check Poetry
         working-directory: django-test
         run: |
@@ -66,14 +74,6 @@ jobs:
             echo "$UPDATE_MSG" >> $GITHUB_STEP_SUMMARY
             exit 3
           fi
-
-      - name: Configure Poetry and install packages
-        working-directory: django-test
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: |
-          poetry config repositories.repowered ${{ secrets.PRIVATE_PYPI_URL}}
-          poetry config http-basic.repowered ${{ secrets.PRIVATE_PYPI_USER }} ${{ secrets.PRIVATE_PYPI_PASSWORD}}
-          poetry install --no-interaction --no-root --no-ansi
 
       - name: Check poetry stuff
         working-directory: django-test
