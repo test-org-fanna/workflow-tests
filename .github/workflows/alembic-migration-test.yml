@@ -75,8 +75,9 @@ jobs:
       - name: Check poetry stuff
         working-directory: django-test
         run: |
-          poetry show alembic
-          poetry env list --full-path
+          test=$(poetry update --dry-run | grep 'Package')
+          echo "$test"
+          poetry search alembic
 
       - name: Check Alembic Migrations
         working-directory: django-test
