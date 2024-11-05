@@ -60,11 +60,11 @@ jobs:
           poetry config http-basic.repowered ${{ secrets.PRIVATE_PYPI_USER }} ${{ secrets.PRIVATE_PYPI_PASSWORD}}
           poetry install --no-interaction --no-root --no-ansi
 
+#          UPDATE_MSG=$(poetry update --dry-run | (grep -E '([1-9]+\s(install|update|removal))+' || true))
       - name: Check Poetry
         working-directory: django-test
         run: |
           INSTALL_MSG=$(poetry install --dry-run 2>&1 | tail -1)
-#          UPDATE_MSG=$(poetry update --dry-run | (grep -E '([1-9]+\s(install|update|removal))+' || true))
           if [[ "$INSTALL_MSG" != '' || "$UPDATE_MSG" != '' ]]; then
             echo "<h2>:no_entry_sign: Poetry check failed </h2>" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
