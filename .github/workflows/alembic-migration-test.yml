@@ -42,8 +42,6 @@ jobs:
             django-test.venv
             /home/runner/.local/
           key: cache-python-3.11.2-poetry-1.8.4-${{ hashFiles('**/poetry.lock') }}
-          restore-keys: |
-            cache-python-3.11.2-poetry-1.8.4-${{ hashFiles('**/poetry.lock') }}
 
       - name: Install Poetry
         if: steps.cache.outputs.cache-hit != 'true'
@@ -73,6 +71,11 @@ jobs:
           poetry config repositories.repowered ${{ secrets.private_pypi_url}}
           poetry config http-basic.repowered ${{ secrets.private_pypi_user }} ${{ secrets.private_pypi_password}}
           poetry install --no-interaction --no-root --no-ansi
+
+      - name: Check poetry stuff
+        run: |
+          poetry show alembic
+          poetry env list --full-path
 
       - name: Check Alembic Migrations
         working-directory: django-test
