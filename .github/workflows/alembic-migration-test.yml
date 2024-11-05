@@ -81,8 +81,8 @@ jobs:
         run: |
           poetry run alembic upgrade head
           echo "migration_msg=$(poetry run alembic check)" >> GITHUB_OUTPUT
-          echo "exit_code=$(echo $?)" >> GITHUB_OUTPUT
-          echo "$exit_code"
+          echo "exit_code=$(echo "$?")" >> GITHUB_OUTPUT
+          echo "the exit code: $exit_code"
         env:
           CI: true
           SQL_DATABASE: ${{ vars.POSTGRES_DB }}
