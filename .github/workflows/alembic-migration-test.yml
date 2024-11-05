@@ -81,8 +81,7 @@ jobs:
         run: |
           poetry run alembic upgrade head
           echo "migration_msg=$(poetry run alembic check)" >> "$GITHUB_OUTPUT"
-          $migration_msg
-          echo "output is:  $migration_msg"
+          poetry run alembic check
         env:
           CI: true
           SQL_DATABASE: ${{ vars.POSTGRES_DB }}
