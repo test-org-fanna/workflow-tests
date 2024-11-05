@@ -1,11 +1,11 @@
-name: Django Migration Check
+name: Alembic Migration Check
 
 on:
   push:
 
 jobs:
   test-migrations:
-    name: Django Migration Check
+    name: Alembic Migration Check
     runs-on: ubuntu-latest
 
     services:
@@ -63,7 +63,7 @@ jobs:
       - name: Check Poetry
         working-directory: django-test
         run: |
-          poetry install --dry-run 2>&1 | tail -1
+          poetry install --dry-run
           INSTALL_MSG=$(poetry install --dry-run 2>&1 | tail -1)
           UPDATE_MSG=$(poetry update --dry-run | grep -E '([1-9]+\s(install|update|removal))+')
           if [[ "$INSTALL_MSG" != '' || "$UPDATE_MSG" != '' ]]; then
