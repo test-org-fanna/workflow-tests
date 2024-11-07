@@ -8,7 +8,7 @@ jobs:
   generate-image-tag:
     runs-on: ubuntu-latest
     outputs:
-      image_tag: XXX
+      image_tag: ${{ steps.docker-image-tag.outputs.image_tag }}
     steps:
       # Sets the docker image tag according to the file system structure of Dockerhub with versioning
       # Examples:
@@ -22,7 +22,7 @@ jobs:
         run: |
           DOCKERFILE=Dockerfile
           DOCKERFILE_NAME=$(echo $DOCKERFILE | sed 's/Dockerfile./-/;s/Dockerfile//')
-          echo "image_tag=${{ env.hub_repo }}${DOCKERFILE_NAME}:${{ inputs.tag }}" >> $GITHUB_OUTPUT
+          echo "image_tag=${{ env.hub_repo }}${DOCKERFILE_NAME}:XXX" >> $GITHUB_OUTPUT
 
   build-and-push:
     runs-on: ubuntu-latest
