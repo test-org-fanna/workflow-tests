@@ -1,0 +1,50 @@
+name: Docker build and push
+
+on:
+  push:
+
+
+jobs:
+  generate-image-tag:
+    runs-on: ubuntu-latest
+    outputs:
+      image_tag: XXX
+    steps:
+      # Sets the docker image tag according to the file system structure of Dockerhub with versioning
+      # Examples:
+      # - standard Dockerfile: thehubusername/repositoryfoobar:v1.0.1.beta.3
+      # - with name (i.e. Dockerfile.foobar): thehubusername/repositoryfoobar-helloworld:v1.0.1.beta.3
+      # - Repowered example: repowered/platform-django:v1.0.1.beta.3
+      - name: Set docker image tag for 'Dockerfile'
+        id: docker-image-tag
+        env:
+          hub_repo: ${{ vars.DOCKER_HUB_USERNAME }}/${{ github.event.repository.name }}
+        run: |
+          DOCKERFILE=Dockerfile
+          DOCKERFILE_NAME=$(echo $DOCKERFILE | sed 's/Dockerfile./-/;s/Dockerfile//')
+          echo "image_tag=${{ env.hub_repo }}${DOCKERFILE_NAME}:${{ inputs.tag }}" >> $GITHUB_OUTPUT
+
+  build-and-push:
+    runs-on: ubuntu-latest
+    needs: generate-image-tag
+    steps:
+      #  Log in to the desired docker hub space
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.docker_hub_access_token }}
+
+      # Build the Dockerfile(s) with the image tag in the correct format and push to the hub
+      - name: Build Dockerfile and push with tag
+        uses: docker/build-push-action@v6
+        with:
+          build-args: |
+            ONE=1
+          context: "{{defaultContext}}:./"
+          file: Dockerfile
+          push: false
+          tags: ${{ needs.generate-image-tag.outputs.image_tag }}
+          secrets: |
+            first=${{ secrets.FIRST_ENV }}
+            second=${{ secrets.SECOND_ENV }}
