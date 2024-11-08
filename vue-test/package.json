@@ -1,6 +1,6 @@
 {
   "name": "vue-test",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "type": "module",
   "scripts": {
@@ -12,7 +12,7 @@
     "test:e2e:dev": "start-server-and-test 'vite dev --port 4173' http://localhost:4173 'cypress open --e2e'",
     "lint": "eslint . --fix",
     "format": "prettier --write src/",
-    "postversion": "git commit -am 'Updated version to $npm_package_version [skip ci]' && git push"
+    "postversion": "git commit -am 'Updated version to \"$npm_package_version\" [skip ci]' && git push"
   },
   "dependencies": {
     "vue": "^3.5.12",
