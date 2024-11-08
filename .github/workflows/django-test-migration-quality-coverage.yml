@@ -1,0 +1,62 @@
+name: Run Pytest with Coverage, Check the Django Migrations and run the Sonar Analysis
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  pytest-with-coverage:
+    uses: test-org-fanna/.github/.github/workflows/python-test-coverage.yml@main
+    permissions:
+      contents: write
+    strategy:
+      matrix:
+        # Make sure that the configured python versions are available here.
+        # These versions are cached on the runner; otherwise setting up python is too slow for the CI
+        # https://github.com/actions/runner-images/blob/main/images/ubuntu/toolsets/toolset-2004.json#L4
+        python_version: [ "3.11.2" ]
+        poetry_version: [ "1.8.4" ]
+    with:
+      postgres_db: ${{ vars.POSTGRES_DB }}
+      postgres_user: ${{ vars.POSTGRES_USER }}
+      postgres_host: ${{ vars.POSTGRES_HOST }}
+      python_version: ${{ matrix.python_version }}
+      poetry_version: ${{ matrix.poetry_version }}
+      working_directory: django-test/
+      # num_test_processes: # Optional, defaults to 2
+    secrets:
+      postgres_password: ${{ secrets.POSTGRES_PASSWORD }}
+      private_pypi_url: ${{ secrets.PRIVATE_PYPI_URL }}
+      private_pypi_user: ${{ secrets.PRIVATE_PYPI_USER }}
+      private_pypi_password: ${{ secrets.PRIVATE_PYPI_PASSWORD }}
+
+  django-migration-test:
+    uses: test-org-fanna/.github/.github/workflows/django-migration-test.yml@main
+    strategy:
+      matrix:
+        # Make sure that the configured python versions are available here.
+        # These versions are cached on the runner; otherwise setting up python is too slow for the CI
+        # https://github.com/actions/runner-images/blob/main/images/ubuntu/toolsets/toolset-2004.json#L4
+        python_version: [ "3.11.2" ]
+        poetry_version: [ "1.8.4" ]
+    with:
+      postgres_db: ${{ vars.POSTGRES_DB }}
+      postgres_user: ${{ vars.POSTGRES_USER }}
+      postgres_host: ${{ vars.POSTGRES_HOST }}
+      python_version: ${{ matrix.python_version }}
+      poetry_version: ${{ matrix.poetry_version }}
+      working_directory: django-test/
+    secrets:
+      postgres_password: ${{ secrets.POSTGRES_PASSWORD }}
+      private_pypi_url: ${{ secrets.PRIVATE_PYPI_URL }}
+      private_pypi_user: ${{ secrets.PRIVATE_PYPI_USER }}
+      private_pypi_password: ${{ secrets.PRIVATE_PYPI_PASSWORD }}
+
+  sonar-cloud:
+    needs: pytest-with-coverage
+    uses: test-org-fanna/.github/.github/workflows/quality-control-sonar.yml@main
+    with:
+      working_directory: django-test/
+      # coverage_report_name: # Optional, defaults to 'coverage.xml'
+    secrets:
+      sonar_token: ${{ secrets.SONAR_TOKEN }}
