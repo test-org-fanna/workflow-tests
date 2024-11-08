@@ -3,6 +3,7 @@ name: Pytest with Coverage, Check the Alembic Migration and run the Sonar Analys
 on:
   workflow_dispatch:
   pull_request:
+  push:
 
 jobs:
   pytest-with-coverage:
