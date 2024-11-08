@@ -21,3 +21,4 @@ jobs:
     needs: tag
     with:
       tag: ${{ needs.tag.outputs.tag }}
+      working_directory: vue-test
