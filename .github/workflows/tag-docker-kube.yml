@@ -18,7 +18,7 @@ jobs:
     permissions:
       contents: write
     # If the package.json is in a different folder than the root, make sure to update it here
-    if: ${{ hashFiles('vue-test/package.json') != '' }}
+    if: ${{ always() && hashFiles('vue-test/package.json') }}
     uses: test-org-fanna/.github/.github/workflows/bump-package-json.yml@main
     needs: tag
     with:
