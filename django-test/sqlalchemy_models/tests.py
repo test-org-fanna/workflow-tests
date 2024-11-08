@@ -26,7 +26,7 @@ def session():
 # Test case: Verify creation of a FunnyAnimal instance
 def test_create_funny_animal(session):
     animal = FunnyAnimal(
-        name="Grumpy Cats",
+        name="Grumpy Cat",
         mood="Grumpy",
         quirkiness_level=10.0,
         favorite_food="Pickles"
