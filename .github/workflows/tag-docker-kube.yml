@@ -1,0 +1,25 @@
+name: GitHub Tag, Docker publish build, SSH Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - dev
+      - qa #TODO(REP-2853): temporarily until the rollback workflow is in place
+
+jobs:
+  tag:
+    permissions:
+      contents: write
+    uses: test-org-fanna/.github/.github/workflows/generate-github-tag.yml@main
+
+  bump:
+    permissions:
+      contents: write
+    # If the package.json is in a different folder than the root, make sure to update it here
+    if: ${{ hashFiles('vue-test/package.json') != '' }}
+    uses: test-org-fanna/.github/.github/workflows/bump-package-json.yml@main
+    needs: tag
+    with:
+      tag: ${{ needs.tag.outputs.tag }}
