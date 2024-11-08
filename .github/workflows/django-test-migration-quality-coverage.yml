@@ -25,7 +25,7 @@ jobs:
       file_paths_to_cache: |
         django-test/.venv
         /home/runner/.local/
-      working_directory: django-test # Optional, defaults to './' fdgfdgd
+      working_directory: django-test # Optional, defaults to './'
     secrets:
       postgres_password: ${{ secrets.POSTGRES_PASSWORD }}
       private_pypi_url: ${{ secrets.PRIVATE_PYPI_URL }}
