@@ -1,6 +1,6 @@
 {
   "name": "vue-test",
-  "version": "1.0.2",
+  "version": "v0.0.1",
   "private": true,
   "type": "module",
   "scripts": {
