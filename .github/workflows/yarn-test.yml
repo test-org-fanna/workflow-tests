@@ -4,7 +4,7 @@ on:
   push:
 
 jobs:
-  analyze:
+  yarn-check-lint-prettier-test-publish:
     runs-on: ubuntu-latest
     env:
       CI: true
@@ -18,7 +18,7 @@ jobs:
         with:
           node-version: "20"
           cache: 'yarn'
-          cache-dependency-path: ./yarn.lock
+          cache-dependency-path: yarn.lock
 
       - name: Install dependencies
         working-directory: vue-test
