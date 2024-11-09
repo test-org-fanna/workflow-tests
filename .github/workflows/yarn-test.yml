@@ -63,9 +63,8 @@ jobs:
           fi   
 
       - name: Archive 'coverage.xml' report
-        working-directory: vue-test
         uses: actions/upload-artifact@v4
         with:
           name: coverage.xml
-          path: coverage/clover.xml
+          path: vue-test/coverage/clover.xml
           if-no-files-found: 'error'
