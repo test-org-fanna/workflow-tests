@@ -6,7 +6,6 @@ on:
 jobs:
   analyze:
     runs-on: ubuntu-latest
-    working-directory: vue-test
     env:
       CI: true
       NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
@@ -22,9 +21,11 @@ jobs:
           cache-dependency-path: ./yarn.lock
 
       - name: Install dependencies
+        working-directory: vue-test
         run: yarn install --immutable
 
       - name: Check for outdated dependencies
+        working-directory: vue-test
         continue-on-error: true
         run: |
           OUTDATED_CHECK=$(yarn run ncu)
@@ -43,12 +44,15 @@ jobs:
         run: yarn lint
 
       - name: Yarn prettier check
+        working-directory: vue-test
         run: yarn prettier --check "{json-server,src}/**/*.{js,vue,json,html,css,md}"
 
       - name: Yarn tests with coverage
+        working-directory: vue-test
         run: yarn test:coverage
 
       - name: Show test failures in the job summary
+        working-directory: vue-test
         if: failure()
         run: |
           if [ -f coverage/clover.xml ]; then
@@ -59,6 +63,7 @@ jobs:
           fi   
 
       - name: Archive 'coverage.xml' report
+        working-directory: vue-test
         uses: actions/upload-artifact@v4
         with:
           name: coverage.xml
