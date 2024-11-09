@@ -15,10 +15,11 @@ jobs:
 
       - name: Setup Node.js with yarn cache
         uses: actions/setup-node@v4
+        working-directory: vue-test
         with:
           node-version: "20"
           cache: 'yarn'
-          cache-dependency-path: yarn.lock
+          cache-dependency-path: ./yarn.lock
 
       - name: Install dependencies
         working-directory: vue-test
