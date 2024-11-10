@@ -55,7 +55,11 @@ jobs:
       - name: Show test failures in the job summary
         working-directory: vue-test
         if: failure()
-        run: cat test_report.md >> $GITHUB_STEP_SUMMARY
+        # Clean up the test report with 'sed' since we're only interested in the summary and failures
+        run: |
+          sed -n '/## ✅/q;p' test_report.md > report_summary.md && \
+            sed -n '/## ❌/,/^## /{ /^## ✅/!p }' test_report.md >> report_summary.md
+          cat report_summary.md >> $GITHUB_STEP_SUMMARY
 
       - name: Show coverage report in the job summary
         working-directory: vue-test

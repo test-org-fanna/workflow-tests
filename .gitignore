@@ -20,4 +20,4 @@ dist
 coverage
 *.gz
 test_report.md
-**/test-report.md
+**/test_report.md
