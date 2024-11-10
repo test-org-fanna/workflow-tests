@@ -54,17 +54,14 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      TEST: github.event.head_commit.message
+      TEST:  ${{ github.event.pull_request.head }}
       TEST2: ${{ github.event.pull_request.head_commit.message }}
       TEST3: ${{ github.event_name }}
-      SANITY_CHECK: "Hello"
     steps:
       - run: |
-          echo "head: ${{ github.event.head_commit.message }}"
+          echo "$TEST"
           echo "$TEST2"
           echo "$TEST3"
-          echo ${{ env.TEST3 }}
-          echo ${{ env.SANITY_CHECK }}
 
   environment:
     if: contains(github.event.head_commit.message, '[deploy]') || ${{ github.event_name != 'pull_request' }}
