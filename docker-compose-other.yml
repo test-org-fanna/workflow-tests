@@ -1,0 +1,5 @@
+# A test docker-compose file to check if a standard docker-compose file for SSH deploy
+
+services:
+  test-image:
+    image: fannarepowered/workflow-tests-name:${TAG}
