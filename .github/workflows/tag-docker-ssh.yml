@@ -52,7 +52,7 @@ jobs:
       # docker_secret_6:
 
   environment:
-    if: { (github.event_name != 'pull_request') || (contains(github.event.head_commit.message, '[deploy]')) }
+    if: (github.event_name != 'pull_request') || (contains(github.event.head_commit.message, '[deploy]'))
     uses: test-org-fanna/.github/.github/workflows/determine-environment.yml@main
 
   deploy:
