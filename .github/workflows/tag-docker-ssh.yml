@@ -7,9 +7,11 @@ on:
       - dev
       - main
   pull_request:
+    types:
+      - closed
     branches:
-      - main
-      - dev
+        - main
+        - dev
 
 jobs:
   tag:
