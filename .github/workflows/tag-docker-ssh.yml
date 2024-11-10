@@ -27,9 +27,9 @@ jobs:
             SHOULD_RUN=false
           fi
           echo "should_run=${SHOULD_RUN}" >> $GITHUB_OUTPUT
-          TEST=$(github.event.pull_request.title == *"[deploy]"* || github.event_name != "pull_request")
-          TEST1=$(github.event.pull_request.title == *"[deploy]"*)
-          TEST2=$(github.event_name != "pull_request")
+          TEST=$( ${{ github.event.pull_request.title}} == *"[deploy]"* || github.event_name != "pull_request")
+          TEST1=$( ${{github.event.pull_request.title}} == *"[deploy]"*)
+          TEST2=$(${{github.event_name}} != "pull_request")
           echo "${TEST1} && ${TEST2} == ${TEST}, should_run: ${SHOULD_RUN} for title ${{ github.event.pull_request.title }} " >> $GITHUB_STEP_SUMMARY
 
   tag:
