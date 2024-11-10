@@ -1,5 +1,6 @@
 # IDE
 .idea
+.vscode
 
 # Django files including test with coverage
 *.log
@@ -12,7 +13,9 @@ media
 coverage.xml
 .testmondata
 
-
-# Vue files includiong test with coverage
-.env*
-.yarn/install-state.gz
+# Vue files including test with coverage
+node_modules
+.env.personal
+dist
+coverage
+*.gz
