@@ -12,7 +12,7 @@ jobs:
     with:
       should_publish: false
       should_test: true
-      # prettier_check_content: # Optional, defaults to "{json-server,src}/**/*.{js,vue,json,html,css,md}"df
+      # prettier_check_content: # Optional, defaults to "{json-server,src}/**/*.{js,vue,json,html,css,md}"
       # node_version: # Optional, defaults to "20"
       working_directory: vue-test
     secrets:
