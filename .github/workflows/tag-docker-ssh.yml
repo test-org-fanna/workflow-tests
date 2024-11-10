@@ -8,8 +8,8 @@ on:
       - release/**
       - hotfix/**
   pull_request:
-    branches:
-      - main
+#    branches:
+#      - main
 
 jobs:
   should_run:
