@@ -2,6 +2,9 @@ name: GitHub Tag, Docker publish build, SSH Deploy
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - master
   pull_request:
     branches:
       - main
