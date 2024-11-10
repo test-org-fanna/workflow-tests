@@ -11,7 +11,11 @@ jobs:
   moi:
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{ github.event.pull_request.merged == true }} >> $GITHUB_STEP_SUMMARY
+      - run: echo "${{ github.event.pull_request.merged == true }}" >> $GITHUB_STEP_SUMMARY
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT" >> $GITHUB_STEP_SUMMARY
 
 
   tag:
