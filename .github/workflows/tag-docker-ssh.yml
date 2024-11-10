@@ -58,9 +58,11 @@ jobs:
         uses: actions/checkout@v4
       - name: Dump GitHub context
         env:
-          test: ${{ github.event.pull_request.commits[0].commit.message }}
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "message is $test" >> $GITHUB_STEP_SUMMARY
+          test: ${{ github.event.pull_request.head.sha }}
+#          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: |
+          echo "HEAD_COMMIT_MESSAGE=$(git show -s --format=%s)" >> $GITHUB_STEP_SUMMARY
+          echo "message is $test" >> $GITHUB_STEP_SUMMARY
 
   environment:
     if: ${{ github.event_name != 'pull_request' }} || contains(github.event.head_commit.message, '[deploy]')
