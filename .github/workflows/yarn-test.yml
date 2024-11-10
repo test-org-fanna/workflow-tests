@@ -52,14 +52,6 @@ jobs:
         working-directory: vue-test
         run: yarn test:coverage
 
-      - name: Show coverage report in the job summary
-        working-directory: vue-test
-        run: |
-            echo "<h2>Coverage report</h2>" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            cat coverage/clover.xml >> $GITHUB_STEP_SUMMARY
-
       - name: Show test failures in the job summary
         working-directory: vue-test
         if: failure()
@@ -67,6 +59,15 @@ jobs:
           if [ -f test_report.md ]; then
             cat test_report.md >> $GITHUB_STEP_SUMMARY
           fi   
+
+      - name: Show coverage report in the job summary
+        working-directory: vue-test
+        run: |
+            ls -alhR coverage/
+            echo "<h2>Coverage report</h2>" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            cat coverage/clover.xml >> $GITHUB_STEP_SUMMARY
 
       - name: Archive 'coverage.xml' report
         uses: actions/upload-artifact@v4

@@ -916,7 +916,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@repowerednl/ui-component-library@npm:^0.3.40":
+"@repowerednl/ui-component-library@npm:^0.3.47":
   version: 0.3.47
   resolution: "@repowerednl/ui-component-library@npm:0.3.47::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40repowerednl%2Fui-component-library%2F0.3.47%2Feb70af3d4401c65d3775b5993280f0e43646d374"
   dependencies:
@@ -1252,9 +1252,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vitest/eslint-plugin@npm:1.1.7":
-  version: 1.1.7
-  resolution: "@vitest/eslint-plugin@npm:1.1.7"
+"@vitest/eslint-plugin@npm:1.1.8":
+  version: 1.1.8
+  resolution: "@vitest/eslint-plugin@npm:1.1.8"
   peerDependencies:
     "@typescript-eslint/utils": ">= 8.0"
     eslint: ">= 8.57.0"
@@ -1265,7 +1265,7 @@ __metadata:
       optional: true
     vitest:
       optional: true
-  checksum: 10c0/a2c7e3361dcf02b214eaaead63838abd0a07f0fa6294871b61df4e5dc3ca951056acf75b64feeec196e12f129306dc5780601dd94a88f9df3c2e6623863b39f2
+  checksum: 10c0/4cd0314800e82a0dd332c83b32c576d4b4f0622fbf63ae358afc9f9991ddb97033c9378317e40caa6dc2380b9928b4c86d088c195f360224534e61c6bb261bbb
   languageName: node
   linkType: hard
 
@@ -6183,11 +6183,11 @@ __metadata:
   resolution: "vue-test@workspace:."
   dependencies:
     "@eslint/js": "npm:^9.14.0"
-    "@repowerednl/ui-component-library": "npm:^0.3.40"
+    "@repowerednl/ui-component-library": "npm:^0.3.47"
     "@typescript-eslint/utils": "npm:^8.13.0"
     "@vitejs/plugin-vue": "npm:^5.1.4"
     "@vitest/coverage-v8": "npm:^2.1.4"
-    "@vitest/eslint-plugin": "npm:1.1.7"
+    "@vitest/eslint-plugin": "npm:1.1.8"
     "@vue/eslint-config-prettier": "npm:^10.1.0"
     "@vue/test-utils": "npm:^2.4.6"
     cypress: "npm:^13.15.2"
