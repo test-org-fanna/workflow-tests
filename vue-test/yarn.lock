@@ -916,7 +916,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@repowerednl/ui-component-library@npm:^0.3.47":
+"@repowerednl/ui-component-library@npm:^0.3.41":
   version: 0.3.47
   resolution: "@repowerednl/ui-component-library@npm:0.3.47::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40repowerednl%2Fui-component-library%2F0.3.47%2Feb70af3d4401c65d3775b5993280f0e43646d374"
   dependencies:
@@ -6183,7 +6183,7 @@ __metadata:
   resolution: "vue-test@workspace:."
   dependencies:
     "@eslint/js": "npm:^9.14.0"
-    "@repowerednl/ui-component-library": "npm:^0.3.47"
+    "@repowerednl/ui-component-library": "npm:^0.3.41"
     "@typescript-eslint/utils": "npm:^8.13.0"
     "@vitejs/plugin-vue": "npm:^5.1.4"
     "@vitest/coverage-v8": "npm:^2.1.4"
