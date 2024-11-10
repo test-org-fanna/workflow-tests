@@ -29,7 +29,8 @@ jobs:
         continue-on-error: true
         run: |
           OUTDATED_CHECK=$(yarn run ncu)
-          if [ $(echo "$OUTDATED_CHECK" | tail -n 1) != "All dependencies match the latest package versions :)" ]; then
+          echo "$OUTDATED_CHECK"
+          if [[ $(echo "$OUTDATED_CHECK" | tail -n 1) != "All dependencies match the latest package versions :)" ]]; then
             echo "<h2>:eyes: Outdated dependencies found</h2>" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
@@ -41,6 +42,7 @@ jobs:
           fi
 
       - name: Yarn lint
+        working-directory: vue-test
         run: yarn lint
 
       - name: Yarn prettier check
