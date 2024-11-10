@@ -54,19 +54,19 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      TEST: ${{ github.event.head_commit.message }}
-      TEST2: ${{ github.event.workflow_run.head_commit.message }}
-      TEST3: ${{ github.event.commits[0].message }}
-      leuk: "moi"
+      TEST: github.event.head_commit.message
+      TEST2: github.event.workflow_run.head_commit.message
+      TEST3: github.event.commits[0].message
+      SANITY_CHECK: "Hello"
     steps:
       - run: |
-          echo ${{ env.TEST }}
-          echo ${{ env.TEST2 }}
+          echo "head: $TEST"
+          echo $TEST2
           echo ${{ env.TEST3 }}
-          echo ${{ env.leuk }}
+          echo ${{ env.SANITY_CHECK }}
 
   environment:
-    if: contains(github.event.head_commit.message, '[deploy]')
+    if: contains(github.event.head_commit.message, '[deploy]') || ${{ github.event_name != 'pull_request' }}
     uses: test-org-fanna/.github/.github/workflows/determine-environment.yml@main
 
   deploy:
