@@ -60,7 +60,7 @@ jobs:
         env:
           test: ${{ github.event.pull_request.commits[0].commit.message }}
           GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "::warning:: $test"
+        run: echo "message is $test" >> $GITHUB_STEP_SUMMARY
 
   environment:
     if: ${{ github.event_name != 'pull_request' }} || contains(github.event.head_commit.message, '[deploy]')
