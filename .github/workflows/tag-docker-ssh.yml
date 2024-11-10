@@ -52,6 +52,7 @@ jobs:
       # docker_secret_6:
 
   test:
+    runs-on: ubuntu-latest
     steps:
       - run: |
           echo "array: $github.event.commits[0].message"
