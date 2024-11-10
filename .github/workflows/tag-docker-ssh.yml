@@ -8,6 +8,11 @@ on:
       - dev
 
 jobs:
+  moi:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ${{ github.event.pull_request.merged == true }} >> $GITHUB_STEP_SUMMARY
+
   tag:
     if: ${{ github.event.pull_request.merged == true || contains(github.event.pull_request.title, '[deploy]') }}
     permissions:
