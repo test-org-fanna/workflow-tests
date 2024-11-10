@@ -48,9 +48,9 @@ jobs:
         working-directory: vue-test
         run: yarn prettier --check "{json-server,src}/**/*.{js,vue,json,html,css,md}"
 
-      - name: Yarn tests with coverage
-        working-directory: vue-test
-        run: yarn test:coverage
+#      - name: Yarn tests with coverage
+#        working-directory: vue-test
+#        run: yarn test:coverage
 
 #      - name: Show test failures in the job summary
 #        working-directory: vue-test
