@@ -55,7 +55,7 @@ jobs:
       - name: Show coverage report in the job summary
         working-directory: vue-test
         run: |
-            echo "<h2>:x: Tests Failed</h2>" >> $GITHUB_STEP_SUMMARY
+            echo "<h2>Coverage report</h2>" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             cat coverage/clover.xml >> $GITHUB_STEP_SUMMARY
@@ -64,11 +64,8 @@ jobs:
         working-directory: vue-test
         if: failure()
         run: |
-          if [ -f coverage/clover.xml ]; then
-            echo "<h2>:x: Tests Failed</h2>" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            cat coverage/clover.xml >> $GITHUB_STEP_SUMMARY
+          if [ -f test_report.md ]; then
+            cat test_report.md >> $GITHUB_STEP_SUMMARY
           fi   
 
       - name: Archive 'coverage.xml' report

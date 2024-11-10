@@ -19,3 +19,5 @@ node_modules
 dist
 coverage
 *.gz
+test_report.md
+**/test-report.md
