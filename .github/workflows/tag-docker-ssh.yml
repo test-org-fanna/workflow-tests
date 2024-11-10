@@ -21,8 +21,8 @@ jobs:
       - name: Get commit message header
         id: get_commit_message
         env:
-          title: ${{ github.event.pull_request.title }}
-          event_name: ${{ github.event_name }}
+          event_name: github.event_name != 'pull_request'
+          title: contains(github.event.pull_request.title, '[deploy]')
         run: |
           if [[ github.event.pull_request.title == *"[deploy]"* || github.event_name != "pull_request" ]]; then
             SHOULD_RUN=true
@@ -30,10 +30,7 @@ jobs:
             SHOULD_RUN=false
           fi
           echo "should_run=${SHOULD_RUN}" >> $GITHUB_OUTPUT
-          TEST=$( "$title" == *"[deploy]"* || "$event_name" != "pull_request")
-          TEST1=$( "$title" == *"[deploy]"*)
-          TEST2=$( "$event_name" != "pull_request")
-          echo "${TEST1} && ${TEST2} == ${TEST}, should_run: ${SHOULD_RUN} for title ${{ github.event.pull_request.title }} " >> $GITHUB_STEP_SUMMARY
+          echo "$title && $event_name == ${SHOULD_RUN}" >> $GITHUB_STEP_SUMMARY
 
   tag:
     if: github.event_name != 'pull_request' || contains(github.event.head_commit.message, '[deploy]')
