@@ -24,13 +24,13 @@ jobs:
           is_not_pr: ${{ github.event_name != 'pull_request' }}
           title_with_deploy: ${{ contains(github.event.pull_request.title, '[deploy]') }}
         run: |
-          if [[ "$title_with_deploy" || "$is_not_pr" ]]; then
+          if [ "$title_with_deploy" || "$is_not_pr" ]; then
             SHOULD_RUN=true
           else
             SHOULD_RUN=false
           fi
           echo "should_run=${SHOULD_RUN}" >> $GITHUB_OUTPUT
-          echo "$title_with_deploy && $is_not_pr == $should_run" >> $GITHUB_STEP_SUMMARY
+          echo "$title_with_deploy && $is_not_pr == $SHOULD_RUN" >> $GITHUB_STEP_SUMMARY
 
 #  tag:
 #    if: ${{ github.event_name != 'pull_request' }} || ${{ contains(github.event.pull_request.title, '[deploy]') }}
