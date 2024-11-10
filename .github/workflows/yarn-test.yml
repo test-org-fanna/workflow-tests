@@ -32,10 +32,9 @@ jobs:
           echo "$OUTDATED_CHECK"
           if [[ $(echo "$OUTDATED_CHECK" | tail -n 1) != "All dependencies match the latest package versions :)" ]]; then
             echo "<summary>:point_up: Outdated dependencies found</summary>" >> $GITHUB_STEP_SUMMARY
-            <h3>It is recommended to run 'yarn run ncu -u' for fast and non-interactive upgrades \
-              or 'yarn upgrade-interactive' to manually select upgrades</h3>
-            echo "<details> $OUTDATED_CHECK" >> $GITHUB_STEP_SUMMARY
-            echo "</details>" >> $GITHUB_STEP_SUMMARY
+            echo "<h3>It is recommended to run 'yarn run ncu -u' for fast and non-interactive upgrades \
+              or 'yarn upgrade-interactive' to manually select upgrades</h3>" >> $GITHUB_STEP_SUMMARY
+            echo "<details> $OUTDATED_CHECK </details>" >> $GITHUB_STEP_SUMMARY
             exit 3
           fi
 
