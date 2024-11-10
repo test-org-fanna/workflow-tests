@@ -10,6 +10,29 @@ on:
   pull_request:
 
 jobs:
+  should_run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Get commit message header
+        id: get_commit_message
+        run: |
+          COMMIT_MESSAGE_HEADER=$(git log -1 --pretty=%B | head -n 1)
+          echo "COMMIT_MESSAGE_HEADER=${COMMIT_MESSAGE_HEADER}" >> $GITHUB_ENV
+          if [[ $COMMIT_MESSAGE_HEADER == *"[deploy]"* || github.event_name != "pull_request" ]]; then
+            SHOULD_RUN=true
+          else
+            SHOULD_RUN=false
+          fi
+          echo "should_run=${SHOULD_RUN}" >> $GITHUB_OUTPUT
+
+      - name: Use commit message header
+        run: |
+          echo "The commit message header is: $COMMIT_MESSAGE_HEADER" >> $GITHUB_STEP_SUMMARY
+          echo "Should run: $COMMIT_MESSAGE_HEADER" >> $GITHUB_STEP_SUMMARY
+
   tag:
     if: github.event_name != 'pull_request' || contains(github.event.head_commit.message, '[deploy]')
     permissions:
@@ -50,19 +73,6 @@ jobs:
       # docker_secret_4:
       # docker_secret_5:
       # docker_secret_6:
-
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Dump GitHub context
-        env:
-          test: ${{ github.event.pull_request.head.sha }}
-#          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: |
-          echo "HEAD_COMMIT_MESSAGE=$(git show -s --format=%s)" >> $GITHUB_STEP_SUMMARY
-          echo "message is $test" >> $GITHUB_STEP_SUMMARY
 
   environment:
     if: ${{ github.event_name != 'pull_request' }} || contains(github.event.head_commit.message, '[deploy]')
