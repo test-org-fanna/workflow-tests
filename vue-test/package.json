@@ -15,7 +15,7 @@
     "postversion": "git commit -am \"Updated version to $npm_package_version [skip ci]\" && git push"
   },
   "dependencies": {
-    "@repowerednl/ui-component-library": "^0.3.41",
+    "@repowerednl/ui-component-library": "^0.3.47",
     "vue": "^3.5.12",
     "vue-router": "^4.4.5"
   },
