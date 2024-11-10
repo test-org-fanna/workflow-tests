@@ -12,7 +12,7 @@ export default mergeConfig(
       root: fileURLToPath(new URL('./', import.meta.url)),
       reporters: [new VitestMarkdownReporter({ enableGithubActionsSummary: false })],
       outputFile: {
-        markdown: "test-report.md",
+        markdown: "test_report.md",
       },
     },
   }),
