@@ -4,13 +4,10 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - !dev
+      - dev
+      - release/**
+      - hotfix/**
   pull_request:
-    types:
-      - closed
-    branches:
-        - main
-        - dev
 
 jobs:
   tag:
