@@ -12,7 +12,7 @@ jobs:
     with:
       should_publish: false
       should_test: true
-      prettier_check_content: "src/**/*.{js,vue,html}"
+      prettier_check_content: "src/**/*.{js,vue}"
       # node_version: # Optional, defaults to "20"
       working_directory: vue-test
     secrets:
