@@ -55,13 +55,14 @@ jobs:
     runs-on: ubuntu-latest
     env:
       TEST: github.event.head_commit.message
-      TEST2: github.event.workflow_run.head_commit.message
-      TEST3: github.event.commits[0].message
+      TEST2: ${{ github.event.pull_request.head.sha }}
+      TEST3: ${{ github.event_name }}
       SANITY_CHECK: "Hello"
     steps:
       - run: |
           echo "head: ${{ github.event.head_commit.message }}"
-          echo $TEST2
+          echo "$TEST2"
+          echo "$TEST3"
           echo ${{ env.TEST3 }}
           echo ${{ env.SANITY_CHECK }}
 
