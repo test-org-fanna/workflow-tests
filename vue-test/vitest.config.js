@@ -10,7 +10,7 @@ export default mergeConfig(
       environment: 'jsdom',
       exclude: [...configDefaults.exclude, 'e2e/**'],
       root: fileURLToPath(new URL('./', import.meta.url)),
-      reporters: [new VitestMarkdownReporter()],
+      reporters: [new VitestMarkdownReporter({ enableGithubActionsSummary: false })],
       outputFile: {
         markdown: "test-report.md",
       },
