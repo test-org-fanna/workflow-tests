@@ -20,8 +20,8 @@ jobs:
         id: get_commit_message
         run: |
           echo "${{ toJson(github.event.pull_request) }}" >> $GITHUB_STEP_SUMMARY
-          git log --pretty=%B | head -n 10
           git show -s --format=%s
+          git log --pretty=%B | head -n 10
 #          echo "${{ github.event.pull_request.head.sha }}" >> $GITHUB_STEP_SUMMARY
 #          echo "${{ toJson(github) }}" >> $GITHUB_STEP_SUMMARY
   #          COMMIT_MESSAGE_HEADER=$(git log -1 --pretty=%B ${{ github.event.pull_request.head.sha }} | head -n 1)
