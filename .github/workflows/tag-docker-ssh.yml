@@ -53,18 +53,14 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    env:
-      message: ${{ github.event.head_commit.message }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        env:
-          message2: ${{ github.event.head_commit.message }}
       - name: Dump GitHub context
         env:
+          test: ${{ github.event.pull_request.commits[0].commit.message }}
           GITHUB_CONTEXT: ${{ toJson(github) }}
-          test: ${{ github.event.pull_request.commits }}
-        run: echo "$GITHUB_CONTEXT"
+        run: echo "::warning:: $test"
 
   environment:
     if: ${{ github.event_name != 'pull_request' }} || contains(github.event.head_commit.message, '[deploy]')
