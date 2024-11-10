@@ -28,7 +28,7 @@ jobs:
       dockerfile_name: Dockerfile.name
       # build_argument_one: # Optional, no default; from GitHub Variables
       # build_argument_two: # Optional, no default; from GitHub Variables
-      # build_argument_three: # Optional, no default; from GitHub Variablescc
+      # build_argument_three: # Optional, no default; from GitHub Variables
     secrets:
       docker_hub_access_token: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       # Optional (Current maximum of secrets that can be set =  6 secrets. Can be expanded)
