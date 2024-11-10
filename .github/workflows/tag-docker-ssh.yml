@@ -52,11 +52,11 @@ jobs:
       # docker_secret_6:
 
   environment:
-    if: (github.event_name != 'pull_request') || (contains(github.event.head_commit.message, '[deploy]'))
+    if: "contains(github.event.head_commit.message, '[deploy]') || github.event_name != 'pull_request')"
     uses: test-org-fanna/.github/.github/workflows/determine-environment.yml@main
 
   deploy:
-    if: github.event_name != 'pull_request' || contains(github.event.head_commit.message, '[deploy]')
+    if: github.event_name != 'pull_request' contains(github.event.head_commit.message, '[deploy]')
     needs: [ environment, docker, tag ]
     uses: test-org-fanna/.github/.github/workflows/deploy-docker-compose.yml@main
     with:
