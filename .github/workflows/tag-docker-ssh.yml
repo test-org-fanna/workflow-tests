@@ -19,7 +19,7 @@ jobs:
       - name: Get commit message header
         id: get_commit_message
         run: |
-          COMMIT_MESSAGE_HEADER=$(git log -1 --pretty=%B | head -n 1)
+          COMMIT_MESSAGE_HEADER=$(git log -1 --pretty=%B ${{ github.event.pull_request.head.sha }} | head -n 1)
           echo "COMMIT_MESSAGE_HEADER=${COMMIT_MESSAGE_HEADER}" >> $GITHUB_ENV
           if [[ $COMMIT_MESSAGE_HEADER == *"[deploy]"* || github.event_name != "pull_request" ]]; then
             SHOULD_RUN=true
