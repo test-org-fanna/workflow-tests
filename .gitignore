@@ -15,4 +15,4 @@ coverage.xml
 
 # Vue files includiong test with coverage
 .env*
-.yarn
+.yarn/install-state.gz
