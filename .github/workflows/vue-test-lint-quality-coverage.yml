@@ -24,7 +24,7 @@ jobs:
     uses: test-org-fanna/.github/.github/workflows/quality-control-sonar.yml@main
     with:
       working_directory: vue-test
-      # coverage_report_name: # Optional, defaults to 'coverage.xml'cv
+      # coverage_report_name: # Optional, defaults to 'coverage.xml'
     secrets:
       sonar_token: ${{ secrets.SONAR_TOKEN }}
 
