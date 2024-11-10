@@ -60,7 +60,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
       - run: |
-          echo "test: {{ github.event.head_commit.message }}"
+          echo "test: ${{ github.event.head_commit.message }}"
           echo "$TEST2"
           echo "$TEST3"
 
