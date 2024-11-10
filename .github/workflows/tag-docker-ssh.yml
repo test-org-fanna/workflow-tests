@@ -60,7 +60,7 @@ jobs:
       SANITY_CHECK: "Hello"
     steps:
       - run: |
-          echo "head: $TEST"
+          echo "head: ${{ github.event.head_commit.message }}"
           echo $TEST2
           echo ${{ env.TEST3 }}
           echo ${{ env.SANITY_CHECK }}
