@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: 'yarn'
+#          cache: 'vue-test/yarn'
           cache-dependency-path: vue-test/yarn.lock
 
       - name: Install dependencies
