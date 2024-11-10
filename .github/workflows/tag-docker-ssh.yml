@@ -32,6 +32,10 @@ jobs:
           echo "should_run=${SHOULD_RUN}" >> $GITHUB_OUTPUT
           echo "$title_with_deploy && $is_not_pr == $SHOULD_RUN" >> $GITHUB_STEP_SUMMARY
 
+      - name: if run then fail
+        if: ${{ github.event_name != 'pull_request' }} || ${{ contains(github.event.pull_request.title, '[deploy]') }}
+        run: exit 1
+
 #  tag:
 #    if: ${{ github.event_name != 'pull_request' }} || ${{ contains(github.event.pull_request.title, '[deploy]') }}
 #    permissions:
