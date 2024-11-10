@@ -19,7 +19,7 @@ jobs:
       - name: Get commit message header
         id: get_commit_message
         run: |
-#          echo "${{ toJson(github.event.pull_request) }}" >> $GITHUB_STEP_SUMMARY
+          echo "${{ github.event.pull_request.title }}" >> $GITHUB_STEP_SUMMARY
           git show -s --format=%s
           git log --pretty=%B | head -n 10
 #          echo "${{ github.event.pull_request.head.sha }}" >> $GITHUB_STEP_SUMMARY
