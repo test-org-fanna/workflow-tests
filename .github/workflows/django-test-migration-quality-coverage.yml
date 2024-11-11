@@ -16,4 +16,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run check
-        run: echo "It runs goed; zou leuk zijn"
+        run: echo "It runs"
