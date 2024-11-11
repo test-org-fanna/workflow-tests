@@ -2,7 +2,7 @@ name: GitHub Tag, Docker publish build, SSH Deploy
 
 on:
   push:
-    - branches:
+    branches:
       - main
       - dev
   pull_request:
