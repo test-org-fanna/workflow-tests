@@ -1,8 +1,8 @@
-name: Deploy
+name: GitHub Tag, Docker publish build, SSH Deploy
 
 on:
   workflow_run:
-    workflows: [Tests]
+    workflows: [Run Pytest with Coverage, Check the Django Migrations and run the Sonar Analysis]
     types:
       - completed
 
