@@ -16,7 +16,7 @@ on:
 #      - completed
 
 jobs:
-  run-check:
+  deploy-run-check:
     if: ${{ contains(github.event.head_commit.message, '[merge]') || contains(github.event.pull_request.title, '[deploy]') }}
     runs-on: ubuntu-latest
     steps:
