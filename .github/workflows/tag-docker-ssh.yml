@@ -12,11 +12,11 @@ on:
 #      - dev
   workflow_run:
     workflows:
-      - "Run Pytest with Coverage, Check the Django Migrations and run the Sonar Analysis"
+      - "Test"
 #    branches:
 #      - dev
-    types:
-      - completed
+#    types:
+#      - completed
 
 jobs:
   deploy-run-check:
