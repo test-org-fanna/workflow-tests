@@ -1,0 +1,19 @@
+name: Run Pytest with Coverage, Check the Django Migrations and run the Sonar Analysis
+
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore:
+      - main
+  pull_request:
+    types:
+      - closed
+    branches-ignore:
+      - main
+
+jobs:
+  run-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run check
+        run: echo "It runs yeey"
