@@ -15,5 +15,5 @@ jobs:
   run-check:
     runs-on: ubuntu-latest
     steps:
-      - name: Run check
-        run: echo "It runs"
+      - name: Test run check
+        run: echo "Tests done"

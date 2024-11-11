@@ -20,5 +20,5 @@ jobs:
     if: ${{ contains(github.event.head_commit.message, '[merge]') || contains(github.event.pull_request.title, '[deploy]') }}
     runs-on: ubuntu-latest
     steps:
-      - name: Run check
-        run: echo "It runs"
+      - name: DEPLOY Run check
+        run: echo "Deploy done"
