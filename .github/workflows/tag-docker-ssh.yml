@@ -10,10 +10,10 @@ on:
       branches:
         - main
         - dev
-  workflow_run:
-    workflows: [ "Run Pytest with Coverage, Check the Django Migrations and run the Sonar Analysis" ]
-    types:
-      - completed
+#  workflow_run:
+#    workflows: [ "Run Pytest with Coverage, Check the Django Migrations and run the Sonar Analysis" ]
+#    types:
+#      - completed
 
 jobs:
   run-check:
