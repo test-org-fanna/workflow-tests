@@ -15,5 +15,5 @@ jobs:
   test-run-check:
     runs-on: ubuntu-latest
     steps:
-      - name: Test run check
-        run: echo "Tests done"
+      - name: Test run check; github event drop
+        run: echo "${{ toJson(github.event) }}"
