@@ -11,12 +11,11 @@ on:
 #      - main
 #      - dev
   workflow_run:
-    workflows:
-      - "Test"
+    workflows: [Test]
 #    branches:
 #      - dev
-#    types:
-#      - completed
+    types:
+      - completed
 
 jobs:
   deploy-run-check:
