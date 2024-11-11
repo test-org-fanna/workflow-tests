@@ -1,29 +1,28 @@
 name: GitHub Tag, Docker publish build, SSH Deploy
 
 on:
-#  workflow_dispatch:
-#  push:
-#    branches:
-#      - main
-#      - dev
-#  pull_request:
-#    branches:
-#      - main
-#      - dev
-  workflow_run:
-    workflows: [Run Pytest with Coverage, Check the Django Migrations and run the Sonar Analysis]
-#    branches:
-#      - dev
-    types:
-      - completed
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
+#  workflow_run:
+#    workflows: [Run Pytest with Coverage, Check the Django Migrations and run the Sonar Analysis]
+##    branches:
+##      - dev
+#    types:
+#      - completed
 
 jobs:
-  deploy-run-check:
-    if: contains(github.event.workflow_run.conclusion, 'success')
-    runs-on: ubuntu-latest
-    steps:
-      - name: DEPLOY Run check
-        run: echo "Deploy done"
+#  deploy-run-check:
+#    if: contains(github.event.workflow_run.conclusion, 'success')
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: DEPLOY Run check
+#        run: echo "Deploy done"
 
   sanity-check:
     runs-on: ubuntu-latest
