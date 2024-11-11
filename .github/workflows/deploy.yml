@@ -1,4 +1,4 @@
-name: GitHub Tag, Docker publish build, SSH Deploy
+name: Deploy
 
 on:
   workflow_run:
