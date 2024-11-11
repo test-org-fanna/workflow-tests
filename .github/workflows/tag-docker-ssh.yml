@@ -1,17 +1,17 @@
 name: GitHub Tag, Docker publish build, SSH Deploy
 
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-      - dev
+#  workflow_dispatch:
+#  push:
+#    branches:
+#      - main
+#      - dev
 #  pull_request:
 #    branches:
 #      - main
 #      - dev
   workflow_run:
-    workflows: [Test]
+    workflows: [Run Pytest with Coverage, Check the Django Migrations and run the Sonar Analysis]
 #    branches:
 #      - dev
     types:
