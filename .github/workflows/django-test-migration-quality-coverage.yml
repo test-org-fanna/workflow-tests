@@ -2,14 +2,6 @@ name: Test
 
 on:
   pull_request:
-#  workflow_dispatch:
-#  push:
-#    branches-ignore:
-#      - main
-#    types:
-#      - closed
-#    branches-ignore:
-#      - main
 
 jobs:
   test-run-check:
