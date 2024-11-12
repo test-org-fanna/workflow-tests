@@ -1,0 +1,12 @@
+name: Test
+
+on:
+  pull_request:
+
+
+jobs:
+  test-run-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test run check; github event drop
+        run: echo "${{ toJson(github) }}"

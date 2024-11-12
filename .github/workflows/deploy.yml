@@ -2,9 +2,8 @@ name: Deploy
 
 on:
   workflow_run:
-    workflows: [Run Pytest with Coverage, Check the Django Migrations and run the Sonar Analysis]
-    types:
-      - completed
+    workflows: [Test]
+    types: [completed]
 
 jobs:
   deploy-run-check:
@@ -13,11 +12,3 @@ jobs:
     steps:
       - name: DEPLOY Run check
         run: echo "Deploy done"
-
-  sanity-check:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Conclusion
-        run: |
-          echo "${{ github.event_name }}"
-          echo "${{ github.event.workflow_run.conclusion }}"
