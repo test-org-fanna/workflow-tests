@@ -18,37 +18,19 @@ on:
       - dev
 
 jobs:
-  check-deployment-trigger:
-    runs-on: ubuntu-latest
-    outputs:
-      should_deploy: ${{ steps.check-triggers.outputs.should_deploy }}
-    steps:
-      - name: Check deployment triggers
-        id: check-triggers
-        run: |
-          echo "Event name: ${{ github.event_name }}"
-          if [[ ${{ github.event_name }} == "workflow_run" ]]; then
-            echo "should_deploy=${{contains(github.event.workflow_run.conclusion, 'success')}}" >> $GITHUB_OUTPUT
-            echo "::stop-commands::$(echo "stop commands")"
-            echo "Contains success?: ${{contains(github.event.workflow_run.conclusion, 'success')}}"
-          elif [[ ${{ github.event_name }} == "pull_request" ]]; then
-            echo "should_deploy=${{contains(github.event.pull_request.title, '[deploy]')}}" >> $GITHUB_OUTPUT
-            echo "Contains deploy?: ${{contains(github.event.pull_request.title, '[deploy]')}}"
-          elif [[ ${{ github.event_name }} == "push" ]]; then
-            echo "should_deploy=${{contains(github.event.head_commit.message, '[merge]')}}" >> $GITHUB_OUTPUT
-            echo "Contains merge?: ${{contains(github.event.head_commit.message, '[merge]')}}"
-          else
-            echo "should_deploy=false" >> $GITHUB_OUTPUT
-          fi
-          if [[ !"$should_deploy" ]]; then
-            echo "::notice:: No deployment trigger found"
-            exit 2
-          fi
-
   deploy-run-check:
-    needs: check-deployment-trigger
-    if: needs.check-deployment-trigger.outputs.should_deploy == 'true'
+    if: |
+        echo "Event name: ${{ github.event_name }}"
+        if [[ ${{ github.event_name }} == "workflow_run" ]]; then
+          ${{contains(github.event.workflow_run.conclusion, 'success')}}
+        elif [[ ${{ github.event_name }} == "pull_request" ]]; then
+          ${{contains(github.event.pull_request.title, '[deploy]')}}
+        elif [[ ${{ github.event_name }} == "push" ]]; then
+          echo "${{contains(github.event.head_commit.message, '[merge]')}}"
+        else
+          false
+        fi
     runs-on: ubuntu-latest
     steps:
       - name: Deploy run check
-        run: echo "trigger=${{ needs.check-deployment-trigger.outputs.should_deploy }}. Deploy done"
+        run: echo "Deploy done"
