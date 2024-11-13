@@ -23,4 +23,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy run check
-        run: echo "Deploy done"
+        run: |
+          test=$([[ "${{ github.event_name }}" == "workflow_run" && contains(github.event.workflow_run.conclusion, 'success') == true ]] || [[ "${{ github.event_name }}" == "pull_request" && $(contains(github.event.pull_request.title, '[deploy]')) == true ]] || [[ "${{ github.event_name }}" == "push" && $(contains(github.event.head_commit.message, '[merge]')) == true ]])
+          echo "test: ${test}. Deploy done"
