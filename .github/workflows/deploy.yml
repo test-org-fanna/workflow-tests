@@ -29,10 +29,13 @@ jobs:
           echo "Event name: ${{ github.event_name }}"
           if [[ ${{ github.event_name }} == "workflow_run" ]]; then
             echo "should_deploy=${{contains(github.event.workflow_run.conclusion, 'success')}}" >> $GITHUB_OUTPUT
+            echo "Contains success?: ${{contains(github.event.workflow_run.conclusion, 'success')}}"
           elif [[ ${{ github.event_name }} == "pull_request" ]]; then
             echo "should_deploy=${{contains(github.event.pull_request.title, '[deploy]')}}" >> $GITHUB_OUTPUT
+            echo "Contains deploy?: ${{contains(github.event.pull_request.title, '[deploy]')}}"
           elif [[ ${{ github.event_name }} == "push" ]]; then
             echo "should_deploy=${{contains(github.event.head_commit.message, '[merge]')}}" >> $GITHUB_OUTPUT
+            echo "Contains merge?: ${{contains(github.event.head_commit.message, '[merge]')}}"
           else
             echo "should_deploy=false" >> $GITHUB_OUTPUT
           fi
