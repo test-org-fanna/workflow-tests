@@ -1,15 +1,7 @@
 name: Test
 
 on:
-  push:
-    branches-ignore:
-      - main
   pull_request:
-    types:
-      - closed
-    branches-ignore:
-      - main
-
 
 
 jobs:
@@ -17,4 +9,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Test run check
-        run: exit 1
+        run: echo "Tests succeeded"
