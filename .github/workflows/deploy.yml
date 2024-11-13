@@ -42,7 +42,7 @@ jobs:
 
   deploy-run-check:
     needs: check-deployment-trigger
-    if: ${{ needs.check-deployment-trigger.outputs.should_deploy }} == "true"
+    if: ${{ needs.check-deployment-trigger.outputs.should_deploy = "true" }}
     runs-on: ubuntu-latest
     steps:
       - name: Deploy run check
