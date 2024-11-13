@@ -39,6 +39,10 @@ jobs:
           else
             echo "should_deploy=false" >> $GITHUB_OUTPUT
           fi
+          if [[ !"$should_deploy" ]]; then
+            echo "::notice:: No deployment trigger found"
+            exit 2
+          fi
 
   deploy-run-check:
     needs: check-deployment-trigger
