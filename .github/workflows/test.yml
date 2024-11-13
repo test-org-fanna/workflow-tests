@@ -9,4 +9,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Test run check
-        run: echo "Tests succeeded"
+        run: echo "Test success"
