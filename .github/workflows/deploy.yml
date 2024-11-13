@@ -22,13 +22,14 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       should_deploy: ${{ steps.check-triggers.outputs.should_deploy }}
+#      deploy_reason: ${{ steps.check-triggers.outputs.deploy_reason }}
     steps:
       - name: Check deployment triggers
         id: check-triggers
         run: |
           echo "Event name: ${{ github.event_name }}"
           if [[ ${{ github.event_name }} == "workflow_run" ]]; then
-            IS_TEST_WORKFLOW_SUCCESS=$(contains(github.event.workflow_run.conclusion, 'success'))
+            IS_TEST_WORKFLOW_SUCCESS=$(${{contains(github.event.workflow_run.conclusion, 'success')}})
             echo "Successful workflow?: $IS_TEST_WORKFLOW_SUCCESS"
             echo "should_deploy=$IS_TEST_WORKFLOW_SUCCESS" >> $GITHUB_OUTPUT
           elif [[ ${{ github.event_name }} == "pull_request" ]]; then
