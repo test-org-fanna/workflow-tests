@@ -29,7 +29,7 @@ jobs:
           echo "Event name: ${{ github.event_name }}"
           if [[ ${{ github.event_name }} == "workflow_run" ]]; then
             echo "should_deploy=${{contains(github.event.workflow_run.conclusion, 'success')}}" >> $GITHUB_OUTPUT
-            echo "::stop-commands::$should_deploy"
+            echo "::stop-commands::$(echo "stop commands")"
             echo "Contains success?: ${{contains(github.event.workflow_run.conclusion, 'success')}}"
           elif [[ ${{ github.event_name }} == "pull_request" ]]; then
             echo "should_deploy=${{contains(github.event.pull_request.title, '[deploy]')}}" >> $GITHUB_OUTPUT
