@@ -20,7 +20,7 @@ on:
 jobs:
   deploy-run-check:
     if: |
-        if [[ ${{ github.event_name }} == "workflow_run" ]]; then
+        if [[ github.event_name = "workflow_run" ]]; then
           contains(github.event.workflow_run.conclusion, 'success') == true
         elif [[ ${{ github.event_name }} == "pull_request" ]]; then
           contains(github.event.pull_request.title, '[deploy]') == true
