@@ -1,7 +1,15 @@
 name: Test
 
 on:
+  push:
+    branches-ignore:
+      - main
   pull_request:
+    types:
+      - closed
+    branches-ignore:
+      - main
+
 
 
 jobs:
