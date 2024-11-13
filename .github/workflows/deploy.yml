@@ -26,7 +26,7 @@ jobs:
       - name: Check deployment triggers
         id: check-triggers
         run: |
-          echo "Event name: ${github.event_name == "workflow_run" }"
+          echo "Event name: ${{ github.event_name == "workflow_run" }}"
           IS_TEST_WORKFLOW_SUCCESS=$(${github.event_name == "workflow_run" } && \
             contains(github.event.workflow_run.conclusion, 'success'))
           echo "Successful workflow?: $IS_TEST_WORKFLOW_SUCCESS"
