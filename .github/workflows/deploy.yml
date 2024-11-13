@@ -1,14 +1,44 @@
 name: Deploy
 
 on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+      - dev
   workflow_run:
-    workflows: [Test]
-    types: [completed]
+    workflows:
+        - Test
+    types:
+      - completed
+    branches:
+      - main
+      - dev
 
 jobs:
+  check-deployment-trigger:
+    runs-on: ubuntu-latest
+    outputs:
+      should_deploy: ${{ steps.check-triggers.outputs.should_deploy }}
+    steps:
+      - name: Check deployment triggers
+        id: check-triggers
+        run: |
+          IS_TEST_WORKFLOW_SUCCESS=$(contains(github.event.workflow_run.conclusion, 'success'))
+          echo "Successful workflow?: $IS_TEST_WORKFLOW_SUCCESS"
+          ON_PUSH_MERGE_COMMIT=$(contains(github.event.head_commit.message, '[merge]'))
+          echo "PR MERGE?: $ON_PUSH_MERGE_COMMIT"
+          ON_PR_DEPLOY_TITLE=$(contains(github.event.pull_request.title, '[deploy]'))
+          echo "Deploy in PR title?: $ON_PR_DEPLOY_TITLE"
+          SHOULD_DEPLOY=$($IS_TEST_WORKFLOW_SUCCESS && ($ON_PUSH_MERGE_COMMIT || $ON_PR_DEPLOY_TITLE))
+          echo "should_deploy=$SHOULD_DEPLOY" >> $GITHUB_OUTPUT
+
   deploy-run-check:
-    if: contains(github.event.workflow_run.conclusion, 'success')
+    needs: check-deployment-trigger
+    if: ${{ needs.check-deployment-trigger.outputs.should_deploy }}
     runs-on: ubuntu-latest
     steps:
-      - name: DEPLOY Run check
+      - name: Deploy run check
         run: echo "Deploy done"
