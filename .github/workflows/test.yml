@@ -2,11 +2,10 @@ name: Test
 
 on:
   push:
-    branches-ignore:
+    branches:
+      - dev
       - main
   pull_request:
-    types:
-      - closed
     branches-ignore:
       - main
 

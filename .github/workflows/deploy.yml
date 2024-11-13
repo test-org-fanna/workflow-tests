@@ -4,25 +4,17 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
-      - dev
   workflow_run:
     workflows:
         - Test
     types:
       - completed
-    branches:
-      - main
-      - dev
 
 jobs:
   deploy-run-check:
     if: >
       (github.event_name == 'workflow_run' && contains(github.event.workflow_run.conclusion, 'success')) ||
-      (github.event_name == 'pull_request' && contains(github.event.pull_request.title, '[deploy]')) ||
-      (github.event_name == 'push' && contains(github.event.head_commit.message, '[merge]'))
+      (github.event_name == 'pull_request' && contains(github.event.pull_request.title, '[deploy]'))
     runs-on: ubuntu-latest
     steps:
       - name: Deploy run check
