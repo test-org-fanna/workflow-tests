@@ -13,9 +13,9 @@ on:
         - Test
     types:
       - completed
-    branches:
-      - main
-      - dev
+#    branches:
+#      - main
+#      - dev
 
 jobs:
   deploy-run-check:
