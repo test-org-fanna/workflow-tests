@@ -26,15 +26,16 @@ jobs:
       - name: Check deployment triggers
         id: check-triggers
         run: |
-          if [[ ${{ github.event_name }} == "workflow_run" }} ]]; then
+          echo "Event name: ${{ github.event_name }}"
+          if [[ ${{ github.event_name }} == "workflow_run" ]]; then
             IS_TEST_WORKFLOW_SUCCESS=$(contains(github.event.workflow_run.conclusion, 'success'))
             echo "Successful workflow?: $IS_TEST_WORKFLOW_SUCCESS"
             echo "should_deploy=$IS_TEST_WORKFLOW_SUCCESS" >> $GITHUB_OUTPUT
-          elif [[ ${{ github.event_name == "pull_request" }} ]]; then
+          elif [[ ${{ github.event_name }} == "pull_request" ]]; then
             ON_PR_DEPLOY_TITLE=$(contains(github.event.pull_request.title, '[deploy]'))
             echo "Deploy in PR title?: $ON_PR_DEPLOY_TITLE"
             echo "should_deploy=$ON_PR_DEPLOY_TITLE" >> $GITHUB_OUTPUT
-          elif [[ ${{ github.event_name == "push" }} ]]; then
+          elif [[ ${{ github.event_name }} == "push" ]]; then
             ON_PUSH_MERGE_COMMIT=$(contains(github.event.head_commit.message, '[merge]'))
             echo "PR MERGE?: $ON_PUSH_MERGE_COMMIT"
             echo "should_deploy=$ON_PUSH_MERGE_COMMIT" >> $GITHUB_OUTPUT
