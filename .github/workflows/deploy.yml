@@ -46,4 +46,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy run check
-        run: echo "Deploy done"
+        run: echo "trigger=${{ needs.check-deployment-trigger.outputs.should_deploy }}. Deploy done"
