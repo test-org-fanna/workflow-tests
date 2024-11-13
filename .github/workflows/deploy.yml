@@ -19,16 +19,7 @@ on:
 
 jobs:
   deploy-run-check:
-    if: |
-        if [[ github.event_name = "workflow_run" ]]; then
-          contains(github.event.workflow_run.conclusion, 'success') == true
-        elif [[ ${{ github.event_name }} == "pull_request" ]]; then
-          contains(github.event.pull_request.title, '[deploy]') == true
-        elif [[ ${{ github.event_name }} == "push" ]]; then
-          contains(github.event.head_commit.message, '[merge]') == true
-        else
-          false
-        fi
+    if: [[ "${{ github.event_name }}" == "workflow_run" && $(contains(github.event.workflow_run.conclusion, 'success')) == true ]] || [[ "${{ github.event_name }}" == "pull_request" && $(contains(github.event.pull_request.title, '[deploy]')) == true ]] || [[ "${{ github.event_name }}" == "push" && $(contains(github.event.head_commit.message, '[merge]')) == true ]]
     runs-on: ubuntu-latest
     steps:
       - name: Deploy run check
