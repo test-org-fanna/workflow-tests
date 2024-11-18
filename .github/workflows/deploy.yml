@@ -4,9 +4,12 @@ on:
   pull_request:
     branches:
       - main
+  push:
+    branches:
+      - main
   workflow_run:
     workflows:
-        - Test
+      - Test
     types:
       - completed
 
@@ -14,10 +17,9 @@ jobs:
   deploy-run-check:
     runs-on: ubuntu-latest
     if: >
-      ((github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main') ||
-      (github.event_name == 'workflow_run' 
-      && contains(github.event.workflow_run.conclusion, 'success') 
-      && contains(github.event.workflow_run.head_commit.message, '[deploy]')))
+      ((github.event_name == 'push') ||
+      (github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main') ||
+      (github.event_name == 'workflow_run' && contains(github.event.workflow_run.conclusion, 'success') && contains(github.event.workflow_run.head_commit.message, '[deploy]')))
     steps:
       - name: Deploy run check
 
