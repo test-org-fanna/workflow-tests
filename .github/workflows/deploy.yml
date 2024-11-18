@@ -14,10 +14,6 @@ jobs:
   deploy-run-check:
     runs-on: ubuntu-latest
     steps:
-      - name: show context
-        run: |
-          echo "${{ toJson(github.event.workflow_run) }}"
-
       - name: Deploy run check
         if: >
           (github.event_name == 'workflow_run' && contains(github.event.workflow_run.conclusion, 'success')) &&
