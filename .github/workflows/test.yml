@@ -1,12 +1,19 @@
 name: Test
 
 on:
+  push:
+    branches:
+      - dev
+      - main
   pull_request:
+    branches-ignore:
+      - main
+
 
 
 jobs:
   test-run-check:
     runs-on: ubuntu-latest
     steps:
-      - name: Test run check; github event drop
-        run: echo "${{ toJson(github) }}"
+      - name: Test run check
+        run: echo "Test success"

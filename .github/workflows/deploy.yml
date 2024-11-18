@@ -1,14 +1,26 @@
 name: Deploy
 
 on:
+  pull_request:
+    branches:
+      - main
   workflow_run:
-    workflows: [Test]
-    types: [completed]
+    workflows:
+        - Test
+    types:
+      - completed
 
 jobs:
   deploy-run-check:
-    if: contains(github.event.workflow_run.conclusion, 'success')
     runs-on: ubuntu-latest
+    if: >
+      ((github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main') ||
+      (github.event_name == 'workflow_run' 
+      && contains(github.event.workflow_run.conclusion, 'success') 
+      && contains(github.event.workflow_run.head_commit.message, '[deploy]')))
     steps:
-      - name: DEPLOY Run check
-        run: echo "Deploy done"
+      - name: Deploy run check
+
+        run: |
+          echo "event name: ${{ github.event_name }} "
+          echo "Deploy done!"
