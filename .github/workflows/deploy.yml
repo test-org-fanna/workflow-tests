@@ -1,7 +1,7 @@
 name: Deploy
 
 on:
-  push:
+  pull_request:
     branches:
       - main
   workflow_run:
@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     if: >
       (github.event_name == 'workflow_run' && contains(github.event.workflow_run.conclusion, 'success') && contains(github.event.workflow_run.head_commit.message, '[deploy]'))
-#      (github.event_name == 'push' && contains(github.event.head_commit.message, '[merge]')))
+      || (github.event_name == 'push' && contains(github.event.head_commit.message, '[deploy]')))
     steps:
       - name: Deploy run check
         run: |
