@@ -21,7 +21,7 @@ jobs:
     steps:
       - name: Deploy run check
         if: >
-          ((github.event_name == 'pull_request' && github.ref == 'main') ||
+          ((github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main') ||
           (github.event_name == 'workflow_run' 
           && contains(github.event.workflow_run.conclusion, 'success') 
           && contains(github.event.workflow_run.head_commit.message, '[deploy]')))
