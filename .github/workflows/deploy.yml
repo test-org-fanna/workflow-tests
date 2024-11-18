@@ -25,4 +25,4 @@ jobs:
           (github.event_name == 'push' && contains(github.event.head_commit.message, '[merge]')))
         run: |
           echo "event name: ${{ github.event_name }} "
-          echo "Deploy done"
+          echo "Deploy done!"
