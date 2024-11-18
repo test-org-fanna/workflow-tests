@@ -12,13 +12,17 @@ on:
 
 jobs:
   deploy-run-check:
-    if: >
-      (github.event_name == 'workflow_run' && contains(github.event.workflow_run.conclusion, 'success')) &&
-      ((contains(github.event.workflow_run.pull_requests[0].number, '[deploy]')) ||
-      (github.event_name == 'push' && contains(github.event.head_commit.message, '[merge]')))
     runs-on: ubuntu-latest
     steps:
+      - name: show context
+        run: |
+          echo "${{ toJson(github) }}"
+
       - name: Deploy run check
+        if: >
+          (github.event_name == 'workflow_run' && contains(github.event.workflow_run.conclusion, 'success')) &&
+          ((contains(github.event.workflow_run.pull_requests[0].number, '[deploy]')) ||
+          (github.event_name == 'push' && contains(github.event.head_commit.message, '[merge]')))
         run: |
           echo "event name: ${{ github.event_name }} "
           echo "Deploy done"
