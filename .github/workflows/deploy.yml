@@ -14,9 +14,10 @@ jobs:
   deploy-run-check:
     runs-on: ubuntu-latest
     if: >
+      ((github.event_name == 'pull_request' && github.ref == 'main') ||
       (github.event_name == 'workflow_run' 
       && contains(github.event.workflow_run.conclusion, 'success') 
-      && contains(github.event.workflow_run.head_commit.message, '[deploy]'))
+      && contains(github.event.workflow_run.head_commit.message, '[deploy]')))
     steps:
       - name: Deploy run check
         run: |
