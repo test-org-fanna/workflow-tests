@@ -1,14 +1,19 @@
 name: GitHub Tag, Docker publish build, SSH Deploy
 
 on:
-  push:
-    branches:
-      - main
-      - dev
   pull_request:
     branches:
       - main
-      - dev
+    types:
+      - opened
+  push:
+    branches:
+      - main
+  workflow_run:
+    workflows:
+      - Test
+    types:
+      - completed
 
 jobs:
   tag:
@@ -35,7 +40,7 @@ jobs:
     with:
       tag: ${{ needs.tag.outputs.tag }}
       docker_hub_username: ${{ vars.DOCKER_HUB_USERNAME }}
-      dockerfile_name: vue-test/Dockerfile.vue-test
+      dockerfile_name: Dockerfile.vue-test
       # build_argument_one: # Optional, no default; from GitHub Variables
       # build_argument_two: # Optional, no default; from GitHub Variables
       # build_argument_three: # Optional, no default; from GitHub Variables
