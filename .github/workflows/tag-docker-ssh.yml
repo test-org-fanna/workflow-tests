@@ -28,9 +28,9 @@ jobs:
       - name: Determine if pre-release
         id: is_pre-release
         env:
-          IS_PRERELEASE: ((github.event_name == 'push') ||
+          IS_PRERELEASE: ${{ github.event_name == 'push' ||
             (github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main') ||
-            (github.event_name == 'workflow_run' && contains(github.event.workflow_run.head_commit.message, '[deploy]')))
+            (github.event_name == 'workflow_run' && contains(github.event.workflow_run.head_commit.message, '[deploy]')) }}
         run:
           echo "is_prerelease=${IS_PRERELEASE} >> $GITHUB_OUTPUT
           echo "Is it?${IS_PRERELEASE} >> $GITHUB_STEP_SUMMARY
