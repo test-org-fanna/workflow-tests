@@ -32,7 +32,7 @@ jobs:
         env:
           IS_PRERELEASE: ${{ github.event_name == 'push' ||
             (github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main') ||
-            (contains(github.ref, "main") || contains(github.ref, "dev")) ||
+            (contains(github.ref, 'main') || contains(github.ref, 'dev')) ||
             (github.event_name == 'workflow_run' && contains(github.event.workflow_run.head_commit.message, '[deploy]')) }}
         run: |
           echo "is_prerelease=${IS_PRERELEASE}" >> $GITHUB_OUTPUT
