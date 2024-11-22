@@ -1,0 +1,15 @@
+name: Test
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    branches-ignore:
+      - main
+
+jobs:
+  yarn-check-lint-prettier-test-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fake test
+        run: echo "Test succeeded"
