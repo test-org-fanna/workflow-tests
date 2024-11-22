@@ -15,8 +15,8 @@ COPY src ./src
 COPY public ./public
 
 # Mount npm authentication, install packages and build
-RUN --mount=type=secret,id=npm_auth_token \
-  export NPM_AUTH_TOKEN=$(cat /run/secrets/npm_auth_token) && yarn install && \
+RUN --mount=type=secret,id=first \
+  export NPM_AUTH_TOKEN=$(cat /run/secrets/first) && yarn install && \
   yarn config get npmScopes && \
   yarn build
 
