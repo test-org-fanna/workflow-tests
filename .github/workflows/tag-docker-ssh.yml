@@ -35,7 +35,7 @@ jobs:
     with:
       tag: ${{ needs.tag.outputs.tag }}
       docker_hub_username: ${{ vars.DOCKER_HUB_USERNAME }}
-      dockerfile_name: Dockerfile.vue-test
+      dockerfile_name: vue-test/Dockerfile.vue-test
       # build_argument_one: # Optional, no default; from GitHub Variables
       # build_argument_two: # Optional, no default; from GitHub Variables
       # build_argument_three: # Optional, no default; from GitHub Variables
