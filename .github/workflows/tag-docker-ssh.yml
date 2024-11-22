@@ -17,6 +17,8 @@ on:
 
 jobs:
   generate-tag:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     steps:
       # Checkout the repository with all commit history
@@ -42,5 +44,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
-          RELEASE_BRANCHES: main, d-v
+          RELEASE_BRANCHES: main, dev
           PRERELEASE: ${{ steps.is_pre-release.outputs.is_prerelease }}
