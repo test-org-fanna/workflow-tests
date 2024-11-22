@@ -31,10 +31,10 @@ jobs:
         with:
           fetch-depth: '0'
 
-      - name: Determine if pre-release ${{ github.event_name }}
+      - name: Determine if pre-release ${{ github.ref }}, ${{ github.head_ref }}
         id: is_pre-release
         env:
-          IS_PRERELEASE: ${{ !(contains(github.ref, 'main') || contains(github.ref, 'dev')) }}
+          IS_PRERELEASE: ${{ github.event_name == 'workflow_run' && contains(github.event.workflow_run.conclusion, 'success') && contains(github.event.workflow_run.head_commit.message, '[deploy]') }}
         run: |
           echo "is_prerelease=${IS_PRERELEASE}" >> $GITHUB_OUTPUT
           echo "Is it?${IS_PRERELEASE}" >> $GITHUB_STEP_SUMMARY
