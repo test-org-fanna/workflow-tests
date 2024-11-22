@@ -34,7 +34,7 @@ jobs:
       - name: Determine if pre-release ${{ github.event_name }}
         id: is_pre-release
         env:
-          IS_PRERELEASE: ${{ !((contains(github.ref, 'main') || contains(github.ref, 'dev')) }}
+          IS_PRERELEASE: ${{ !(contains(github.ref, 'main') || contains(github.ref, 'dev')) }}
         run: |
           echo "is_prerelease=${IS_PRERELEASE}" >> $GITHUB_OUTPUT
           echo "Is it?${IS_PRERELEASE}" >> $GITHUB_STEP_SUMMARY
