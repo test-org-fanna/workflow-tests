@@ -12,4 +12,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Fake test
-        run: echo "Test succeeded!!"
+        run: echo "Test succeeded"
