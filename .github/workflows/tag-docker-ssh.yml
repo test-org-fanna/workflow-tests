@@ -18,7 +18,6 @@ jobs:
 
   # Only for the front-end; delete this job if you don't have a 'package.json'
   bump:
-    if: ${{ contains(github.event.head_commit.message, '[merge]') || contains(github.event.pull_request.title, '[deploy]') }}
     permissions:
       contents: write
     uses: test-org-fanna/.github/.github/workflows/bump-package-json.yml@main
@@ -26,7 +25,7 @@ jobs:
     with:
       tag: ${{ needs.tag.outputs.tag }}
       # node_version: # Optional, defaults to "20"
-      working_directory: django-test
+      working_directory: vue-test
 
   # Repeat steps below if there are multiple Dockerfiles and/or docker-compose files
 
@@ -36,7 +35,7 @@ jobs:
     with:
       tag: ${{ needs.tag.outputs.tag }}
       docker_hub_username: ${{ vars.DOCKER_HUB_USERNAME }}
-      dockerfile_name: Dockerfile.name
+      dockerfile_name: Dockerfile.vue-test
       # build_argument_one: # Optional, no default; from GitHub Variables
       # build_argument_two: # Optional, no default; from GitHub Variables
       # build_argument_three: # Optional, no default; from GitHub Variables
@@ -59,7 +58,7 @@ jobs:
     with:
       environment: ${{ needs.environment.outputs.environment }}
       tag: ${{ needs.tag.outputs.tag }}
-      # should_scp: # Optional, defaults to true
+      should_scp: false
       # server_username: # Optional, defaults to 'root'
       # docker-compose_remote_dir: # Optional, defaults to '/root'
       # docker-compose_file_path: # Optional, defaults to 'docker-compose.yml'
