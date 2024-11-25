@@ -40,6 +40,7 @@ jobs:
           RELEASE_BRANCHES: main, dev
           DEFAULT_BRANCH: dev
           TAG_CONTEXT: branch
+          FORCE_WITHOUT_CHANGES_PRE: true
           PRERELEASE: >
             ${{ (( github.event_name == 'workflow_run' && contains(github.event.workflow_run.conclusion, 'success') && contains(github.event.workflow_run.head_commit.message, '[deploy]') ) ||
             ( github.event_name == 'pull_request' && github.event.action == 'opened' )) }}
