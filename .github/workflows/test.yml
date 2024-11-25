@@ -13,24 +13,3 @@ jobs:
     steps:
       - name: Fake test
         run: echo "Test succeeded"
-
-      - name: if test
-        id: migration-check
-        run: |
-          MIGRATION_MSG=$(echo -e "Line 1\nLine 2\nLine 3\nLine 4\nNo changes detected ")
-          echo 'migration_msg<<EOF' >> $GITHUB_OUTPUT
-          echo "$MIGRATION_MSG" >> $GITHUB_OUTPUT
-          echo 'EOF' >> $GITHUB_OUTPUT
-          if ! echo "$MIGRATION_MSG" | grep -q "No changes detected"; then
-            exit 1
-          fi
-
-      - name: Output Migration Failures
-        if:  failure()
-        run: |
-          if [ ${{ contains(steps.migration-check.outputs.migration_msg, 'No changes detected') }} == false ]; then
-            echo "<h2>:no_entry_sign: Migration check failed.</h2>" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "${{ steps.migration-check.outputs.migration_msg }}" >> $GITHUB_STEP_SUMMARY
-          fi
