@@ -14,7 +14,7 @@ on:
     types:
       - completed
 
-run-name: Deploy tag ... to .. from ${{ github.head_ref }} by @${{ github.actor }}
+run-name: Deploy tag ... to .. from ${{ github.ref }} by @${{ github.actor }}
 
 jobs:
   generate-tag:
