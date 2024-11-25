@@ -36,3 +36,4 @@ CMD ["poetry", "run", "python", "manage.py", "runserver"]
 #               --secret id=url,env=PRIVATE_PYPI_URL \
 #               --secret id=user,env=PRIVATE_PYPI_USER \
 #               --secret id=password,env=PRIVATE_PYPI_PASSWORD .
+#moet eigx first,second,third zijn natuurlijk
