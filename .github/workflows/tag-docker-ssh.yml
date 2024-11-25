@@ -1,0 +1,46 @@
+name: Deploy
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+  push:
+    branches:
+      - main
+  workflow_run:
+    workflows:
+      - Test
+    types:
+      - completed
+
+jobs:
+  generate-tag:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    if: >
+      ((github.event_name == 'push') ||
+      (github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main') ||
+      (github.event_name == 'workflow_run' && contains(github.event.workflow_run.conclusion, 'success') && contains(github.event.workflow_run.head_commit.message, '[deploy]')))
+    steps:
+      # Checkout the repository with all commit history
+      - name: Checkout ${{ github.repository }}
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: '0'
+
+      # Automatically bump and tag with the latest SemVer formatted version.
+      - name: Generate and push GitHub tag
+        id: github-tag
+        uses: anothrNick/github-tag-action@1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          RELEASE_BRANCHES: main, dev
+          DEFAULT_BRANCH: dev
+          TAG_CONTEXT: branch
+          FORCE_WITHOUT_CHANGES_PRE: true
+          PRERELEASE: >
+            ${{ (( github.event_name == 'workflow_run' && contains(github.event.workflow_run.conclusion, 'success') && contains(github.event.workflow_run.head_commit.message, '[deploy]') ) ||
+            ( github.event_name == 'pull_request' && github.event.action == 'opened' )) }}

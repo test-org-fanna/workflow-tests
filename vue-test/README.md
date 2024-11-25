@@ -1,6 +1,6 @@
-# vue-test
+# Vue-test
 
-This template should help get you started developing with Vue 3 in Vite.....
+This template should help get you started developing with Vue 3 in Vite...
 
 ## Recommended IDE Setup
 
@@ -40,8 +40,7 @@ yarn test:unit
 yarn test:e2e:dev
 ```
 
-This runs the end-to-end tests against the Vite development server.
-It is much faster than the production build.
+This runs the end-to-end tests against the Vite development server. It is much faster than the production build which is really neat.
 
 But it's still recommended to test the production build with `test:e2e` before deploying (e.g. in CI environments):
 

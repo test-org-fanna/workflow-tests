@@ -1,0 +1,32 @@
+FROM node:20-alpine
+
+# Javascript heap memory settings can be invoked with a build argument
+ARG HEAP_MEMORY=4096
+RUN NODE_OPTIONS=--max-old-space-size=${HEAP_MEMORY}
+
+WORKDIR /app
+
+COPY package.json yarn.lock .yarnrc.yml ./
+COPY .yarn ./.yarn
+
+# Only copy project files; copying everything is not recommeded
+COPY jsconfig.json vite.config.js index.html ./
+COPY src ./src
+COPY public ./public
+
+# Mount npm authentication, install packages and build
+RUN --mount=type=secret,id=first \
+  export NPM_AUTH_TOKEN=$(cat /run/secrets/first) && yarn install && \
+  yarn config get npmScopes && \
+  yarn build
+
+CMD ["yarn", "dev"]
+
+# Build with:
+# docker build -t vue-test \
+#   -f Dockerfile.vue-test \
+#   --build-arg HEAP_MEMORY=3840 \
+#   --secret id=npm_auth_foken,env=NPM_AUTH_TOKEN .
+
+# Run with:
+# docker run --env-file .env.personal vue-test
