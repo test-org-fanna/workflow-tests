@@ -22,7 +22,7 @@ yarn
 yarn dev
 ```
 
-### Compile and Minify for Productiondfd
+### Compile and Minify for Production
 
 ```sh
 yarn build
