@@ -30,16 +30,6 @@ jobs:
         with:
           fetch-depth: '0'
 
-      - name: Determine if pre-release ${{ github.ref }}, ${{ github.head_ref }}
-        id: is_pre-release
-        env:
-          IS_PRERELEASE: >
-            ${{ github.event_name == 'workflow_run' && contains(github.event.workflow_run.conclusion, 'success') && contains(github.event.workflow_run.head_commit.message, '[deploy]') }} ||
-            ${{ github.event_name == 'pull_request' && github.event.action == 'opened' }}
-        run: |
-          echo "is_prerelease=${IS_PRERELEASE}" >> $GITHUB_OUTPUT
-          echo "Is it?${IS_PRERELEASE}" >> $GITHUB_STEP_SUMMARY
-
       # Automatically bump and tag with the latest SemVer formatted version.
       - name: Generate and push GitHub tag
         id: github-tag
@@ -48,4 +38,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
           RELEASE_BRANCHES: main, dev
-          PRERELEASE: ${{ steps.is_pre-release.outputs.is_prerelease }}
+          DEFAULT_BRANCH: dev
+          TAG_CONTEXT: branch
+          FORCE_WITHOUT_CHANGES_PRE: true
+          PRERELEASE: >
+            ${{ (( github.event_name == 'workflow_run' && contains(github.event.workflow_run.conclusion, 'success') && contains(github.event.workflow_run.head_commit.message, '[deploy]') ) ||
+            ( github.event_name == 'pull_request' && github.event.action == 'opened' )) }}
