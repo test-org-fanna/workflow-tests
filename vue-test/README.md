@@ -1,7 +1,7 @@
 # Vue-test
 
 This template should help get you started developing with Vue 3 in Vite.
-Ain't it pretty
+Ain't it pretty; Erik wel
 
 ## Recommended IDE Setup
 
