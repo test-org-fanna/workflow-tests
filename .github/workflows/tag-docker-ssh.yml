@@ -22,6 +22,10 @@ jobs:
           fetch-depth: '0'
           ref: ${{ github.event.workflow_run.head_sha }}
 
+      - name: prs
+        run:
+          echo "${{ github.event.workflow_run.pull_requests }}" >> $GITHUB_STEP_SUMMARY
+
       # Automatically bump and tag with the latest SemVer formatted version.
       - name: Generate and push GitHub tag
         id: github-tag
