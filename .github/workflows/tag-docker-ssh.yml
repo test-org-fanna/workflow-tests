@@ -9,14 +9,14 @@ on:
     types:
       - completed
 
-run-name: Tag generate; event ${{ github.event }} by @${{ github.actor }}
+run-name: Tag generate; event ${{ github.event_name }} by @${{ github.actor }}
 
 jobs:
   generate-tag:
     permissions:
       contents: write
     runs-on: ubuntu-latest
-    if: ${{ github.event == 'push' || (contains(github.event.workflow_run.conclusion, 'success') && (contains(github.event.workflow_run.head_branch, 'dev') || contains(github.event.workflow_run.head_commit.message, '[deploy]'))) }}
+    if: ${{ github.event_name == 'push' || (contains(github.event.workflow_run.conclusion, 'success') && (contains(github.event.workflow_run.head_branch, 'dev') || contains(github.event.workflow_run.head_commit.message, '[deploy]'))) }}
     steps:
       # Checkout the repository with all commit history
       - name: Checkout ${{ github.repository }}
