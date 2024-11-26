@@ -37,6 +37,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
+          RELEASE_BRANCHES: .*
           DEFAULT_BUMP: patch
           DEFAULT_BRANCH: dev
           FORCE_WITHOUT_CHANGES_PRE: true
