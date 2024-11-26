@@ -14,10 +14,10 @@ jobs:
       contents: write
     runs-on: ubuntu-latest
     env:
-      IS_SUCCESS: (github.event_name == 'workflow_run' && contains(github.event.workflow_run.conclusion, 'success')
-      IS_DEV: contains(github.head_ref, 'dev')
-      COMMIT_CONTAINS_DEPLOY: contains(github.event.workflow_run.head_commit.message, '[deploy]')
-    if: ${{ "$IS_SUCCESS" && ("$IS_DEV" || "$COMMIT_CONTAINS_DEPLOY") }}
+      IS_SUCCESS: ${{ github.event_name == 'workflow_run' && contains(github.event.workflow_run.conclusion, 'success') }}
+      IS_DEV: ${{ contains(github.head_ref, 'dev') }}
+      COMMIT_CONTAINS_DEPLOY: ${{ contains(github.event.workflow_run.head_commit.message, '[deploy]') }}
+    if: ${{ env.IS_SUCCESS && (env.IS_DEV || env.COMMIT_CONTAINS_DEPLOY) }}
     steps:
       # Checkout the repository with all commit history
       - name: Checkout ${{ github.repository }}
@@ -34,4 +34,4 @@ jobs:
           WITH_V: true
           RELEASE_BRANCHES: main, dev
           DEFAULT_BRANCH: dev
-          PRERELEASE: ${{ !"$IS_DEV" && "$COMMIT_CONTAINS_DEPLOY" }}
+          PRERELEASE: ${{ env.IS_DEV && env.COMMIT_CONTAINS_DEPLOY }}
