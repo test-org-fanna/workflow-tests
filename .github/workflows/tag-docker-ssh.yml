@@ -6,14 +6,14 @@ on:
     types:
       - completed
 
-run-name: Deploy tag ... to .. by @${{ github.actor }}; head ref=${{github.ref}}; head ref=${{github.head_ref}}; workflow_head=${{ github.event.workflow_run.head_branch }}
+run-name: Deploy branch ${{ github.event.workflow_run.head_branch }} with tag ... to .. by @${{ github.actor }}
 
 jobs:
   generate-tag:
     permissions:
       contents: write
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_run' && contains(github.event.workflow_run.conclusion, 'success') }} && ${{ contains(github.ref, 'dev') || contains(github.event.workflow_run.head_commit.message, '[deploy]') }}
+    if: ${{ github.event_name == 'workflow_run' && contains(github.event.workflow_run.conclusion, 'success') }} && ${{ contains(github.event.workflow_run.head_branch, 'dev') || contains(github.event.workflow_run.head_commit.message, '[deploy]') }}
     steps:
       # Checkout the repository with all commit history
       - name: Checkout ${{ github.repository }}
@@ -31,4 +31,4 @@ jobs:
           DEFAULT_BUMP: patch
           RELEASE_BRANCHES: main, dev
           DEFAULT_BRANCH: dev
-          PRERELEASE: ${{ contains(github.ref, 'dev') && contains(github.event.workflow_run.head_commit.message, '[deploy]') }}
+          PRERELEASE: ${{ contains(github.event.workflow_run.head_branch, 'dev') && contains(github.event.workflow_run.head_commit.message, '[deploy]') }}
