@@ -28,7 +28,7 @@ jobs:
           echo "Is NOT dev = ${{ !contains(github.event.workflow_run.head_branch, 'dev') }}" >> $GITHUB_STEP_SUMMARY
           echo "Is [deploy] = ${{ contains(github.event.workflow_run.head_commit.message, '[deploy]') }}" >> $GITHUB_STEP_SUMMARY
           echo "Should tag = ${{ contains(github.event.workflow_run.conclusion, 'success') && (contains(github.event.workflow_run.head_branch, 'dev') || contains(github.event.workflow_run.head_commit.message, '[deploy]')) }}" >> $GITHUB_STEP_SUMMARY
-          echo "Is prereleaseg = $${{ !contains(github.event.workflow_run.head_branch, 'dev') && contains(github.event.workflow_run.head_commit.message, '[deploy]') }}" >> $GITHUB_STEP_SUMMARY
+          echo "Is Pre-release = ${{ !contains(github.event.workflow_run.head_branch, 'dev') && contains(github.event.workflow_run.head_commit.message, '[deploy]') }}" >> $GITHUB_STEP_SUMMARY
 
       # Automatically bump and tag with the latest SemVer formatted version.
       - name: Generate and push GitHub tag
