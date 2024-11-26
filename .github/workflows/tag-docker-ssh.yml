@@ -6,14 +6,14 @@ on:
     types:
       - completed
 
-run-name: Deploy branch ${{ github.event.workflow_run.head_branch }} to .. by @${{ github.actor }}
+run-name: Deploy branch ${{ github.event.workflow_run.head_branch }} by @${{ github.actor }}
 
 jobs:
   generate-tag:
     permissions:
       contents: write
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'workflow_run' && contains(github.event.workflow_run.conclusion, 'success') }} && ${{ contains(github.event.workflow_run.head_branch, 'dev') || contains(github.event.workflow_run.head_commit.message, '[deploy]') }}
+    if: ${{ contains(github.event.workflow_run.conclusion, 'success') && (contains(github.event.workflow_run.head_branch, 'dev') || contains(github.event.workflow_run.head_commit.message, '[deploy]')) }}
     steps:
       # Checkout the repository with all commit history
       - name: Checkout ${{ github.repository }}
