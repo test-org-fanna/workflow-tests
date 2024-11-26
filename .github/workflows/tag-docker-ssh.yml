@@ -16,17 +16,6 @@ jobs:
       contents: write
     uses: test-org-fanna/.github/.github/workflows/generate-github-tag.yml@main
 
-  # Only for the front-end; delete this job if you don't have a 'package.json'
-  bump:
-    permissions:
-      contents: write
-    uses: test-org-fanna/.github/.github/workflows/bump-package-json.yml@main
-    needs: tag
-    with:
-      tag: ${{ needs.tag.outputs.tag }}
-      # node_version: # Optional, defaults to "20"
-      # working_directory: # Optional, defaults to './'.
-
   environment:
     uses: test-org-fanna/.github/.github/workflows/determine-environment.yml@main
 
@@ -34,7 +23,7 @@ jobs:
 
   docker:
     uses: test-org-fanna/.github/.github/workflows/docker-build-and-push.yml@main
-    needs: [tag, environment]
+    needs: tag
     with:
       tag: ${{ needs.tag.outputs.tag }}
       docker_hub_username: ${{ vars.DOCKER_HUB_USERNAME }}
