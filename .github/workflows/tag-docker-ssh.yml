@@ -41,5 +41,4 @@ jobs:
           DEFAULT_BUMP: patch
           DEFAULT_BRANCH: dev
           FORCE_WITHOUT_CHANGES: true
-          BRANCH_HISTORY: last
           PRERELEASE: ${{ !contains(github.event.workflow_run.head_branch, 'dev') && contains(github.event.workflow_run.head_commit.message, '[deploy]') }}
