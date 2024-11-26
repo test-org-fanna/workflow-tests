@@ -6,7 +6,7 @@ on:
     types:
       - completed
 
-run-name: Deploy tag ... to .. by @${{ github.actor }}
+run-name: Deploy tag ... to .. by @${{ github.actor }}; head ref= ${{github.head_ref}}
 
 jobs:
   generate-tag:
@@ -28,6 +28,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
+          DEFAULT_BUMP: patch
           RELEASE_BRANCHES: main, dev
           DEFAULT_BRANCH: dev
           PRERELEASE: ${{ contains(github.head_ref, 'dev') && contains(github.event.workflow_run.head_commit.message, '[deploy]') }}
