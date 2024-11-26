@@ -6,7 +6,7 @@ on:
     types:
       - completed
 
-run-name: Deploy branch ${{ github.event.workflow_run.head_branch }} with tag ${{ steps.github-tag.outputs.tag }} to .. by @${{ github.actor }}
+run-name: Deploy branch ${{ github.event.workflow_run.head_branch }} to .. by @${{ github.actor }}
 
 jobs:
   generate-tag:
