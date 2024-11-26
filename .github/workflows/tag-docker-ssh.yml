@@ -25,8 +25,10 @@ jobs:
         run: |
           echo "Is success = ${{ contains(github.event.workflow_run.conclusion, 'success') }}" >> $GITHUB_STEP_SUMMARY
           echo "Is dev = ${{ contains(github.event.workflow_run.head_branch, 'dev') }}" >> $GITHUB_STEP_SUMMARY
+          echo "Is NOT dev = ${{ !contains(github.event.workflow_run.head_branch, 'dev') }}" >> $GITHUB_STEP_SUMMARY
           echo "Is [deploy] = ${{ contains(github.event.workflow_run.head_commit.message, '[deploy]') }}" >> $GITHUB_STEP_SUMMARY
           echo "Should tag = ${{ contains(github.event.workflow_run.conclusion, 'success') && (contains(github.event.workflow_run.head_branch, 'dev') || contains(github.event.workflow_run.head_commit.message, '[deploy]')) }}" >> $GITHUB_STEP_SUMMARY
+          echo "Is prereleaseg = $${{ !contains(github.event.workflow_run.head_branch, 'dev') && contains(github.event.workflow_run.head_commit.message, '[deploy]') }}" >> $GITHUB_STEP_SUMMARY
 
       # Automatically bump and tag with the latest SemVer formatted version.
       - name: Generate and push GitHub tag
@@ -38,4 +40,5 @@ jobs:
           DEFAULT_BUMP: patch
           RELEASE_BRANCHES: main, dev
           DEFAULT_BRANCH: dev
-          PRERELEASE: ${{ contains(github.event.workflow_run.head_branch, 'dev') && contains(github.event.workflow_run.head_commit.message, '[deploy]') }}
+          FORCE_WITHOUT_CHANGES_PRE: false
+          PRERELEASE: ${{ !contains(github.event.workflow_run.head_branch, 'dev') && contains(github.event.workflow_run.head_commit.message, '[deploy]') }}
