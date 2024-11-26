@@ -9,7 +9,7 @@ on:
     types:
       - completed
 
-run-name: Deploy branch ${{ github.event.workflow_run.head_branch }} by @${{ github.actor }}
+run-name: Tag generate; event ${{ github.event }} by @${{ github.actor }}
 
 jobs:
   generate-tag:
