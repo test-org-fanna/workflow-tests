@@ -24,7 +24,7 @@ jobs:
 
       - name: prs
         run:
-          echo "${{ github.event.workflow_run.pull_requests[0] }}" >> $GITHUB_STEP_SUMMARY
+          echo "${{ toJson(github.event.workflow_run) }}" >> $GITHUB_STEP_SUMMARY
 
       # Automatically bump and tag with the latest SemVer formatted version.
       - name: Generate and push GitHub tag
