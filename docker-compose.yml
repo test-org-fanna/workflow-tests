@@ -2,7 +2,7 @@
 
 services:
   test-image:
-    image: fannarepowered/workflow-tests-vue-test:${TAG}
+    image: fannarepowered/workflow-tests:${TAG}
     labels:
       - test=${HOST}
       - domain-test=HOST('${EXTRA_DOMAIN}')
