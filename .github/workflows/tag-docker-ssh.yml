@@ -13,7 +13,7 @@ jobs:
     permissions:
       contents: write
     runs-on: ubuntu-latest
-    if: ${{ (github.event_name == 'workflow_run' && contains(github.event.workflow_run.conclusion, 'success')) && (contains(github.head_ref, 'dev') || contains(github.event.workflow_run.head_commit.message, '[deploy]')) }}
+    if: ${{ github.event_name == 'workflow_run' && contains(github.event.workflow_run.conclusion, 'success') }} && ${{ contains(github.head_ref, 'dev') || contains(github.event.workflow_run.head_commit.message, '[deploy]') }}
     steps:
       # Checkout the repository with all commit history
       - name: Checkout ${{ github.repository }}
