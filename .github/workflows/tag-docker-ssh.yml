@@ -1,5 +1,8 @@
 name: Deploy
 on:
+  push:
+    branches:
+      - main
   workflow_run:
     workflows:
       - Test
@@ -13,7 +16,7 @@ jobs:
     permissions:
       contents: write
     runs-on: ubuntu-latest
-    if: ${{ contains(github.event.workflow_run.conclusion, 'success') && (contains(github.event.workflow_run.head_branch, 'dev') || contains(github.event.workflow_run.head_commit.message, '[deploy]')) }}
+    if: ${{ github.event == 'push' || (contains(github.event.workflow_run.conclusion, 'success') && (contains(github.event.workflow_run.head_branch, 'dev') || contains(github.event.workflow_run.head_commit.message, '[deploy]'))) }}
     steps:
       # Checkout the repository with all commit history
       - name: Checkout ${{ github.repository }}
@@ -21,10 +24,6 @@ jobs:
         with:
           fetch-depth: '0'
           ref: ${{ github.event.workflow_run.head_sha }}
-
-      - name: prs
-        run:
-          echo "${{ toJson(github.event.workflow_run) }}" >> $GITHUB_STEP_SUMMARY
 
       # Automatically bump and tag with the latest SemVer formatted version.
       - name: Generate and push GitHub tag
