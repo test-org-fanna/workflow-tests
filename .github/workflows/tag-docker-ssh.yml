@@ -38,7 +38,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
           DEFAULT_BUMP: patch
-          RELEASE_BRANCHES: main, dev
           DEFAULT_BRANCH: dev
           FORCE_WITHOUT_CHANGES_PRE: true
           PRERELEASE: ${{ !contains(github.event.workflow_run.head_branch, 'dev') && contains(github.event.workflow_run.head_commit.message, '[deploy]') }}
