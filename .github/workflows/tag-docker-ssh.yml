@@ -1,36 +1,30 @@
 name: Deploy
 on:
-  pull_request:
-    branches:
-      - main
-    types:
-      - opened
-  push:
-    branches:
-      - main
   workflow_run:
     workflows:
       - Test
     types:
       - completed
 
-run-name: Deploy tag ... to .. from ${{ github.ref }} by @${{ github.actor }}
+run-name: Deploy branch ${{ github.event.workflow_run.head_branch }} by @${{ github.actor }}
 
 jobs:
   generate-tag:
     permissions:
       contents: write
     runs-on: ubuntu-latest
-    if: >
-      ((github.event_name == 'push') ||
-      (github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'main') ||
-      (github.event_name == 'workflow_run' && contains(github.event.workflow_run.conclusion, 'success') && contains(github.event.workflow_run.head_commit.message, '[deploy]')))
+    if: ${{ contains(github.event.workflow_run.conclusion, 'success') && (contains(github.event.workflow_run.head_branch, 'dev') || contains(github.event.workflow_run.head_commit.message, '[deploy]')) }}
     steps:
       # Checkout the repository with all commit history
       - name: Checkout ${{ github.repository }}
         uses: actions/checkout@v4
         with:
           fetch-depth: '0'
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - name: prs
+        run:
+          echo "${{ toJson(github.event.workflow_run) }}" >> $GITHUB_STEP_SUMMARY
 
       # Automatically bump and tag with the latest SemVer formatted version.
       - name: Generate and push GitHub tag
@@ -40,7 +34,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
           RELEASE_BRANCHES: main, dev
-          DEFAULT_BRANCH: dev
-          PRERELEASE: >
-            ${{ (( github.event_name == 'workflow_run' && contains(github.event.workflow_run.conclusion, 'success') && contains(github.event.workflow_run.head_commit.message, '[deploy]') ) ||
-            ( github.event_name == 'pull_request' && github.event.action == 'opened' )) }}
+          DEFAULT_BUMP: patch
+          PRERELEASE: ${{ (!contains(github.event.workflow_run.head_branch, 'dev') || contains(github.event.workflow_run.pull_requests[0].base.ref, 'main')) && contains(github.event.workflow_run.head_commit.message, '[deploy]') }}
