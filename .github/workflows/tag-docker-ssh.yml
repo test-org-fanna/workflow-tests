@@ -35,7 +35,6 @@ jobs:
   docker:
     uses: test-org-fanna/.github/.github/workflows/docker-build-and-push.yml@main
     needs: [tag, environment]
-    environment: ${{ needs.environment.outputs.environment {}}
     with:
       tag: ${{ needs.tag.outputs.tag }}
       docker_hub_username: ${{ vars.DOCKER_HUB_USERNAME }}
