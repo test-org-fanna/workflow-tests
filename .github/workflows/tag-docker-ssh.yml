@@ -25,7 +25,7 @@ jobs:
           fetch-depth: '0'
           ref: ${{ github.event.workflow_run.head_sha }}
 
-      # Automatically bump and tag with the latest SemVer formatted version.
+      # Automatically bump and tag with the latest SemVer formatted version...
       - name: Generate and push GitHub tag
         id: github-tag
         uses: anothrNick/github-tag-action@1
