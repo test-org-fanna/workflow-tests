@@ -9,28 +9,11 @@ on:
 run-name: Deploy tag ... to .. by @${{ github.actor }}
 
 jobs:
-  check-deploy-trigger:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check deploy trigger
-        run: |
-          IS_SUCCESS=${{ github.event_name == 'workflow_run' && contains(github.event.workflow_run.conclusion, 'success') }}
-          IS_DEV=${{ contains(github.head_ref, 'dev') }}
-          COMMIT_CONTAINS_DEPLOY=${{ contains(github.event.workflow_run.head_commit.message, '[deploy]') }}
-          echo "is_success=$IS_SUCCESS" >> $GITHUB_OUTPUT
-          echo "is_dev=$IS_DEV" >> $GITHUB_OUTPUT
-          echo "commit_contains_dpeloy=$COMMIT_CONTAINS_DEPLOY" >> $GITHUB_OUTPUT
-
   generate-tag:
-    needs: [check-deploy-trigger]
     permissions:
       contents: write
     runs-on: ubuntu-latest
-    env:
-      IS_SUCCESS: ${{ needs.check-deploy-trigger.outputs.is_success }}
-      IS_DEV: ${{ needs.check-deploy-trigger.outputs.is_dev }}
-      COMMIT_CONTAINS_DEPLOY: ${{ needs.check-deploy-trigger.outputs.commit_contains_deploy }}
-    if: ${{ env.IS_SUCCESS && (env.IS_DEV || env.COMMIT_CONTAINS_DEPLOY) }}
+    if: ${{ (github.event_name == 'workflow_run' && contains(github.event.workflow_run.conclusion, 'success')) && (contains(github.head_ref, 'dev') || contains(github.event.workflow_run.head_commit.message, '[deploy]') }}
     steps:
       # Checkout the repository with all commit history
       - name: Checkout ${{ github.repository }}
@@ -47,4 +30,4 @@ jobs:
           WITH_V: true
           RELEASE_BRANCHES: main, dev
           DEFAULT_BRANCH: dev
-          PRERELEASE: ${{ env.IS_DEV && env.COMMIT_CONTAINS_DEPLOY }}
+          PRERELEASE: ${{ contains(github.head_ref, 'dev') && contains(github.event.workflow_run.head_commit.message, '[deploy]') }}
