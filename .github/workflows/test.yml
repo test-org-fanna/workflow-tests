@@ -23,7 +23,7 @@ jobs:
         id: retrieve-environment
         run: |
           echo "Running on branch ${{ github.ref }}"
-          if [ "${{ github.ref }}" = "refs/heads/main" ] || [ "${{ github.base_ref }}" = "main" || [ "${{ github.head_ref }}" = "main" ]; then
+          if [ "${{ github.ref }}" = "refs/heads/main" ] || [ "${{ github.base_ref }}" = "main" ] || [ "${{ github.head_ref }}" = "main" ]; then
             echo "env_name=prod" >> $GITHUB_OUTPUT
           else
             echo "env_name=dev" >> $GITHUB_OUTPUT
