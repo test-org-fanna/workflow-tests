@@ -14,3 +14,17 @@ jobs:
     steps:
       - name: Fake test
         run: echo "Test succeeded"
+
+  determine-environment:
+    name: Determine the GitHub environment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Retrieve environment
+        id: retrieve-environment
+        run: |
+          echo "Running on branch ${{ github.ref }}"
+          if [ "${{ github.ref }}" = "refs/heads/main" ] || [ "${{ github.base_ref }}" = "main" ]; then
+            echo "env_name=prod" >> $GITHUB_OUTPUT
+          else
+            echo "env_name=dev" >> $GITHUB_OUTPUT
+          fi
